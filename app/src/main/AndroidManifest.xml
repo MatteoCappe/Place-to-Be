@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.nomeapp">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NomeApp">
+        <activity
+            android:name="com.nomeapp.activities.MainActivity"
+            android:exported="false" /> <!-- warning rimosso (manca constructor) -->
+            android:name=".MainActivity"
+            android:label="NomeApp"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        <activity
+            android:name="com.nomeapp.activities.SplashActivity"
+            android:exported="false" />
+        <!--
+        <activity
+            android:name="com.nomeapp.models.FirebaseWrapper"
+            android:exported="false" />
+        -->
+        <activity
+            android:name="com.nomeapp.activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.nomeapp.listeners.GrantPermissionListener"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+    </application>
+
+</manifest>
