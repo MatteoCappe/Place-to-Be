@@ -1,25 +1,20 @@
 package com.nomeapp.models
 
 
+//import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import com.nomeapp.activities.SplashActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.util.*
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.collections.HashMap
-import kotlin.concurrent.withLock
+import com.nomeapp.activities.SplashActivity
+
 
 // NOTE: With firebase we have to do a network request --> We need to add the permission in the AndroidManifest.xml
 //      -> ref: https://developer.android.com/training/basics/network-ops/connecting
@@ -48,17 +43,43 @@ class FirebaseAuthWrapper(private val context: Context) {
         return auth.currentUser?.uid
     }
 
-    fun signUp(email: String, password: String) {
+    fun signUp(userName: String, email: String, password: String) {
         this.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Sign in success -> ask for permission
-                Log.d(TAG, "createUserWithEmail:success")
-                logSuccess()
+                val database = Firebase.database.reference
+                val userid = FirebaseAuth.getInstance().currentUser!!.uid
+                writeDbUserName(userName, userid, database)
+                //non penso che queste cose siano molto sensate per salvare lo userName
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                Toast.makeText(context, "Sign-up failed. Error message: ${task.exception!!.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    context,
+                    "Sign-up failed. Error message: ${task.exception!!.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
+            //codice preso da internet per provare a capire come fare
+            /*if (task.isSuccessful) {
+                FirebaseUser = auth.getCurrentUser() //da qui sto mettendo roba di cui non sono molto sicuro
+                user = FirebaseUser.getUid()
+                //Log.e("id", user);
+                reff.child(user).setValue(Employee)
+                Toast.makeText(this@AddEmployee, "User Created.", Toast.LENGTH_SHORT).show()
+                startActivity(
+                    Intent(
+                        ApplicationProvider.getApplicationContext<Context>(),
+                        AppStartActivity::class.java
+                    )
+                )
+            } else {
+                Toast.makeText(
+                    this@AddEmployee,
+                    "Error ! " + task.exception.getMessage(),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }*/
         }
     }
 
@@ -75,6 +96,7 @@ class FirebaseAuthWrapper(private val context: Context) {
                     Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }
+        //controllo anche su userName se non si riesce a capire come dare a login solo campi email e pw
     }
 
     private fun logSuccess() {
@@ -82,21 +104,35 @@ class FirebaseAuthWrapper(private val context: Context) {
         context.startActivity(intent)
     }
 
+    //in toeria dovrebbe mettere lo userName dove lo userid è == user_id ma boh
+    fun writeDbUserName(userName: String, userid: String, database: DatabaseReference) {  //non penso sia molto sensato
+
+        if (userid == null) {
+            return; //in teoria se succede è per qualche errore nel sign up
+        }
+
+        //check if userid == $user_id ????
+
+        database.child("user_id").child("user").setValue(userName)  //ref.child(setValue(userName)) ?????
+    }
+
 }
-/*
-fun mergeMyEventWithFirebaseInfo (context: Context, events: List<MyEvent>) {
+
+
+
+/*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
 
-    val mapFirebaseEvents = HashMap<Long, FirebaseDbWrapper.Companion.FirebaseEvent>()
+    val mapFirebaseFavourites = HashMap<Long, FirebaseDbWrapper.Companion.FirebaseFavourite>()
     GlobalScope.launch{
         FirebaseDbWrapper(context).readDbData(object : FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
 
                 for (child in snapshot.children){
-                    val firebaseEvent : FirebaseDbWrapper.Companion.FirebaseEvent = child.getValue(FirebaseDbWrapper.Companion.FirebaseEvent::class.java)!!
-                    mapFirebaseEvents.put(firebaseEvent.id, firebaseEvent)
+                    val firebaseEvent : FirebaseDbWrapper.Companion.FirebaseFavourite = child.getValue(FirebaseDbWrapper.Companion.FirebaseFavourite::class.java)!!
+                    mapFirebaseFavourites.put(firebaseFavourite.id, firebaseFavourite)
                 }
 
                 lock.withLock {
@@ -114,34 +150,38 @@ fun mergeMyEventWithFirebaseInfo (context: Context, events: List<MyEvent>) {
     lock.withLock {
         condition.await()
     }
-/*
-    for (myEvent : MyEvent in events) {
-        myEvent.isWeather = mapFirebaseEvents[myEvent.id]?.weather ?: myEvent.isWeather
-        myEvent.location = mapFirebaseEvents[myEvent.id]?.location ?: myEvent.location
-    }
-*/
+
+    //for (myEvent : MyEvent in events) {
+        //myEvent.isWeather = mapFirebaseEvents[myEvent.id]?.weather ?: myEvent.isWeather
+        //myEvent.location = mapFirebaseEvents[myEvent.id]?.location ?: myEvent.location
+    //}
+
 }
-*/
+
 // Database
-/*
+
 // NB: For security reason update the access rules from firebase console --> an user can access on its data!
 // rules: https://firebase.google.com/docs/rules/rules-and-auth?authuser=0
 // doc: https://firebase.google.com/docs/rules/basics?utm_source=studio#realtime-database_5
-// Example
-{
-  "rules": {
-    "events": {
-      "$uid": {
-        ".read": "auth.uid === $uid",
-        ".write": "auth.uid === $uid",
-      }
-    }
-  },
-}
- */
+
 class FirebaseDbWrapper(private val context: Context) {
     private val TAG: String = FirebaseDbWrapper::class.simpleName.toString()
-    private val CHILD: String = "events"
+    private val CHILD: String = "favourites"
+    //possiamo usarlo anche per mettere eventi a cui uno è iscritto
+    //mettendo String = "events"
+    //events dovrebbe andare sotto users ma non sono troppo sicuro
+    //example
+/*"rules": {
+    "users": {
+      //lista userName //non so se vada anche qui il ".read" e il ".write", in teoria email e pw le prende da authentication
+        "favourites": { //lista eventi seguiti
+          "$uid": {
+            ".read": "auth.uid === $uid",
+            ".write": "auth.uid === $uid",
+            }
+          }
+        }
+    },*/
 
     private fun getDb() : DatabaseReference? {
         val ref = Firebase.database.getReference(CHILD)
@@ -154,14 +194,14 @@ class FirebaseDbWrapper(private val context: Context) {
         return ref.child(uid)
     }
 
-    fun writeDbData(firebaseEvent: FirebaseEvent) {
+    fun writeDbData(firebaseFavourite: FirebaseFavourite) {
         val ref = getDb()
 
         if (ref == null) {
             return;
         }
 
-        ref.child(firebaseEvent.id.toString()).setValue(firebaseEvent)
+        ref.child(firebaseFavourite.id.toString()).setValue(firebaseFavourite)
     }
 
     fun readDbData(callback : FirebaseReadCallback) {
@@ -176,15 +216,22 @@ class FirebaseDbWrapper(private val context: Context) {
     }
 
     companion object {
-        class FirebaseEvent() {
-            var id : Long = -1
-            var weather: Boolean = false
-            var location: String = ""
+        class FirebaseFavourite() {
+            var id : Long = -1 //?
+            var luogo: String = ""
+            var data: ...
+            var descrizione: String = ""
+            var IdProfile: ...
+            //lista Id dei partrecipanti ??
 
             constructor(id: Long, weather: Boolean, location: String) : this() {
                 this.id = id
-                this.location = location
-                this.weather = weather
+                this.luogo = location
+                this.descrizione = descrizione
+                this.IdProfile = IdProfile
+                this.data = data
+                //lista Id dei partrecipanti ??
+
             }
         }
 
@@ -204,4 +251,4 @@ class FirebaseDbWrapper(private val context: Context) {
         }
     }
 
-}
+}*/

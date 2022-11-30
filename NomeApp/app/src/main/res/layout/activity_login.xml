@@ -6,11 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.LoginActivity">
 
+    <!-- credo che qua si possa mettere uno switch tra login e signup view mettendo un if == login e un else -->
+    <!-- ma non so bene come per ora -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
+
+        <EditText
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Insert UserName.."
+            android:layout_margin="10dp"/>
 
         <EditText
             android:id="@+id/userEmail"

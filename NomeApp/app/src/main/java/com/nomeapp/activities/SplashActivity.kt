@@ -12,8 +12,6 @@ import com.example.nomeapp.R
 import com.nomeapp.listeners.GrantPermissionListener
 import com.nomeapp.models.FirebaseAuthWrapper
 
-
-
 class SplashActivity : AppCompatActivity() {
     private val TAG = SplashActivity::class.simpleName
     private var allPermissionGranted : Boolean? = null
@@ -41,6 +39,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         Log.d(TAG, "The SplashActivity is started!")
+
 
         // Check if user logged or not
         val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(this)

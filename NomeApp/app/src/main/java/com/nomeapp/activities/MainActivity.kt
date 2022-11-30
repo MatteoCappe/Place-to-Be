@@ -9,7 +9,7 @@ import android.widget.CalendarView
 import com.example.nomeapp.R
 
 
-
+//TODO link alle varie parti dell'app
 
 
 
