@@ -10,16 +10,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NomeApp">
-        <activity
-            android:name="com.nomeapp.activities.MainActivity"
-            android:exported="false" /> <!-- warning rimosso (manca constructor) -->
-            android:name=".MainActivity"
-            android:label="NomeApp"
-            android:theme="@style/AppTheme.NoActionBar" >
+
+        <activity android:name="com.nomeapp.activities.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!--
+                        warning rimosso (manca constructor)
+            android:name=".MainActivity"
+            android:label="NomeApp"
+            android:theme="@style/AppTheme.NoActionBar" >
+        -->
+
+
         <activity
             android:name="com.nomeapp.activities.SplashActivity"
             android:exported="false" />
@@ -28,13 +35,16 @@
             android:name="com.nomeapp.models.FirebaseWrapper"
             android:exported="false" />
         -->
+
         <activity
             android:name="com.nomeapp.activities.LoginActivity"
             android:exported="false" />
+
         <activity
             android:name="com.nomeapp.listeners.GrantPermissionListener"
             android:exported="false"
             tools:ignore="Instantiatable" />
+
     </application>
 
 </manifest>
