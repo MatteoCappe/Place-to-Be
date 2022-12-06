@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.example.nomeapp.R
 import androidx.fragment.app.commit
+import com.example.nomeapp.R
 import com.nomeapp.fragments.LogInFragment
 import com.nomeapp.fragments.SignUpFragment
 

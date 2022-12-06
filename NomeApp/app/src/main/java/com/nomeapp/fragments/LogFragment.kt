@@ -1,7 +1,5 @@
 package com.nomeapp.fragments
 
-
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +9,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.nomeapp.R
-import com.nomeapp.models.FirebaseAuthWrapper
 import com.nomeapp.activities.LoginActivity
+import com.nomeapp.models.FirebaseAuthWrapper
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,18 +44,16 @@ abstract class LogFragment(label: String, buttonLabel: String) : Fragment() {
         val button : Button = view.findViewById(R.id.logButton)
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val userName : EditText = thiz.requireActivity().findViewById(R.id.userName)
                 val email : EditText = thiz.requireActivity().findViewById(R.id.userEmail)
                 val password : EditText = thiz.requireActivity().findViewById(R.id.userPassword)
 
-                if (userName.text.isEmpty() || email.text.isEmpty() || password.text.isEmpty()) {
-                    userName.setError("This is required")
+                if (email.text.isEmpty() || password.text.isEmpty()) {
                     email.setError("This is required")
                     password.setError("This is required")
                     return
                 }
 
-                action(userName.text.toString(), email.text.toString(), password.text.toString())
+                action(email.text.toString(), password.text.toString())
             }
 
         })
@@ -68,43 +64,37 @@ abstract class LogFragment(label: String, buttonLabel: String) : Fragment() {
         return view
     }
 
-    abstract fun action(userName: String, email: String, password: String);
+    abstract fun action(email: String, password: String);
 
 }
 
+// TODO: Remove hardcoded strings and put them in the file res/values/strings and retrieve them with the R.string.<string_id>
 class LogInFragment : LogFragment("Switch to SignUp","LOGIN") {
-    override fun action(userName: String, email: String, password: String) {
+    override fun action(email: String, password: String) {
         val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(this.requireContext())
         firebaseAuthWrapper.signIn(email, password)
-        //in questo momento userName non viene usato in login
     }
 
-    override fun onCreateView(
+    /*override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_log, container, false)
-    }
+    }*/
 }
 
 class SignUpFragment : LogFragment("Switch to LogIn", "SIGNUP") {
-
-    override fun action(userName: String, email: String, password: String) {
+    override fun action(email: String, password: String) {
         val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(this.requireContext())
-        firebaseAuthWrapper.signUp(userName,
-            email, password) //no value passed for parameter: pw
-        //store userName in db
-        
-        //TODO: mettere userName in dB where userID == $userId
+        firebaseAuthWrapper.signUp(email, password)
     }
 
-    override fun onCreateView(
+    /*override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log, container, false)
-    }
+        return inflater.inflate(R.layout.activity_login, container, false)
+    }*/
 }
-
