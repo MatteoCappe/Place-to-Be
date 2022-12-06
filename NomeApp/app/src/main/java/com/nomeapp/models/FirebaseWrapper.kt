@@ -43,13 +43,13 @@ class FirebaseAuthWrapper(private val context: Context) {
         return auth.currentUser?.uid
     }
 
-    fun signUp(/*userName: String, */email: String, password: String) {
+    fun signUp(userName: String, email: String, password: String) {
         this.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Sign in success -> ask for permission
                 val database = Firebase.database.reference
                 val userid = getUid() //?????????
-                //writeDbUserName(userName, userid, database)
+                writeDbUserName(userName, userid, database)
                 //non penso che queste cose siano molto sensate per salvare lo userName
             } else {
                 // If sign in fails, display a message to the user.
@@ -105,7 +105,7 @@ class FirebaseAuthWrapper(private val context: Context) {
     }
 
     //in toeria dovrebbe mettere lo userName dove lo userid è == user_id ma boh
-    /*fun writeDbUserName(userName: String, userid: String?, database: DatabaseReference) {  //non penso sia molto sensato
+    fun writeDbUserName(userName: String, userid: String?, database: DatabaseReference) {  //non penso sia molto sensato
 
         val user_id = database.child("user_id").toString()
         if (userid == user_id) {
@@ -119,7 +119,7 @@ class FirebaseAuthWrapper(private val context: Context) {
         // si può controllare usando auth.currentUser e getUid() del prof
 
         //only where userid == user_id
-    }*/
+    }
 
 }
 
@@ -227,7 +227,7 @@ class FirebaseDbWrapper(private val context: Context) {
             var data: ...
             var descrizione: String = ""
             var IdProfile: ...
-            //lista Id dei partecipanti ??
+            //lista Id dei partrecipanti ??
 
             constructor(id: Long, weather: Boolean, location: String) : this() {
                 this.id = id
