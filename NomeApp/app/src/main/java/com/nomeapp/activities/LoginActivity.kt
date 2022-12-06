@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Render fragment
         this.fragmentManager = this.getSupportFragmentManager()
-        renderFragment();
+        renderFragment()
     }
 
     private fun renderFragment() {

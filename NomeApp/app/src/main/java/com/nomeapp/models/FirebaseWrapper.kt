@@ -222,7 +222,7 @@ class FirebaseDbWrapper(private val context: Context) {
             var data: ...
             var descrizione: String = ""
             var IdProfile: ...
-            //lista Id dei partrecipanti ??
+            //lista Id dei partecipanti ??
 
             constructor(id: Long, weather: Boolean, location: String) : this() {
                 this.id = id

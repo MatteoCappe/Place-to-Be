@@ -61,9 +61,9 @@ class SplashActivity : AppCompatActivity() {
 
         // Show a message and react to a click button
         // grantPermission
-        val grantPermissionButton : Button = this.findViewById<Button>(R.id.grantPermission);
-        val listener : View.OnClickListener = GrantPermissionListener(this);
-        grantPermissionButton.setOnClickListener(listener);
+        val grantPermissionButton : Button = this.findViewById<Button>(R.id.grantPermission)
+        val listener : View.OnClickListener = GrantPermissionListener(this)
+        grantPermissionButton.setOnClickListener(listener)
     }
 
     override fun onRequestPermissionsResult(
@@ -79,7 +79,7 @@ class SplashActivity : AppCompatActivity() {
 
         for (result in grantResults) {
             if (result != PackageManager.PERMISSION_GRANTED) {
-                Log.w(TAG, "A needed permission is not granted!");
+                Log.w(TAG, "A needed permission is not granted!")
                 allPermissionGranted = false
                 return
             }
