@@ -5,48 +5,44 @@ package com.nomeapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.commit
+import android.os.PersistableBundle
+import androidx.viewpager.widget.ViewPager
 import com.example.nomeapp.R
-import com.nomeapp.fragments.LogInFragment
-import com.nomeapp.fragments.SignUpFragment
+import com.google.android.material.tabs.TabLayout
+import com.nomeapp.adapter.LoginRegisterAdapter
+import com.nomeapp.fragments.LoginFragment
+import com.nomeapp.fragments.RegisterFragment
 
 
 
 class LoginActivity : AppCompatActivity() {
-    var isLogin : Boolean = false
-    var fragmentManager : FragmentManager? = null
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewpager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Render fragment
-        this.fragmentManager = this.getSupportFragmentManager()
-        renderFragment();
-    }
+        tabLayout = findViewById(R.id.tab_layout)
+        viewpager = findViewById(R.id.view_pager)
 
-    private fun renderFragment() {
-        val frag : Fragment
-        if (isLogin) {
-            // Login
-            frag = LogInFragment()
-        } else {
-            // Creation
-            frag = SignUpFragment()
-        }
+        tabLayout.addTab(tabLayout.newTab().setText("Login"))
+        tabLayout.addTab(tabLayout.newTab().setText("Register"))
+        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
-        fragmentManager!!.commit {
-            setReorderingAllowed(true)
-            this.replace(R.id.loginRegisterFragment, frag)
-        }
+        val adapter = LoginRegisterAdapter(this, supportFragmentManager, tabLayout.tabCount)
+        viewpager.adapter = adapter
 
-    }
+        viewpager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewpager.currentItem = tab!!.position
+            }
 
-    fun switchFragment() {
-        isLogin = !isLogin
-        renderFragment()
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
     }
 }
 
