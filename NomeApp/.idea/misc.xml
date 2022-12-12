@@ -12,6 +12,7 @@
         <entry key="..\:/Users/Marco/Documents/GitHub/Nome_App/NomeApp/app/src/main/res/layout/fragment_log.xml" value="0.371875" />
         <entry key="..\:/Users/matte/Desktop/Nome_App-main/NomeApp/app/src/main/res/layout/activity_login.xml" value="0.14325842696629212" />
         <entry key="..\:/Users/matte/Desktop/Nome_App-main/NomeApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/matte/Desktop/Nome_App-main/NomeApp/app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="..\:/Users/matte/Desktop/Nome_App-main/NomeApp/app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="..\:/Users/matte/Desktop/Nome_App-main/NomeApp/app/src/main/res/layout/fragment_log.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Nome_App-main/NomeApp/app/src/main/res/layout/fragment_login.xml" value="0.21458333333333332" />
@@ -28,7 +29,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.14325842696629212" />
+        <option name="scale" value="0.33" />
       </ProjectState>
     </option>
   </component>

@@ -14,6 +14,8 @@
         android:theme="@style/Theme.NomeApp">
 
         <activity android:name="com.nomeapp.activities.LoginActivity"/>
+        <activity android:name="com.nomeapp.activities.RegisterActivity"/>
+        <!-- mettendoli cosi al prossimo avvio dovrebbero esserci i dati salvati -->
         <activity android:name="com.nomeapp.activities.SplashActivity"
             android:exported="true">
             <intent-filter>

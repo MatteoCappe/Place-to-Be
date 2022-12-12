@@ -3,47 +3,66 @@ package com.nomeapp.activities
 
 
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.viewpager.widget.ViewPager
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import com.example.nomeapp.R
-import com.google.android.material.tabs.TabLayout
-import com.nomeapp.adapter.LoginRegisterAdapter
-import com.nomeapp.fragments.LoginFragment
-import com.nomeapp.fragments.RegisterFragment
-
+import com.google.firebase.auth.FirebaseAuth
+import com.nomeapp.models.FirebaseAuthWrapper
 
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewpager: ViewPager
+    val context : Context = this
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        tabLayout = findViewById(R.id.tab_layout)
-        viewpager = findViewById(R.id.view_pager)
+        val switch: TextView = findViewById<View>(R.id.switchToRegister) as TextView
+        val LoginButton: Button = findViewById<View>(R.id.loginButton) as Button
 
-        tabLayout.addTab(tabLayout.newTab().setText("Login"))
-        tabLayout.addTab(tabLayout.newTab().setText("Register"))
-        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+        switch.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
-        val adapter = LoginRegisterAdapter(this, supportFragmentManager, tabLayout.tabCount)
-        viewpager.adapter = adapter
+        LoginButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val email: EditText = findViewById<View>(R.id.userEmail) as EditText
+                val password: EditText = findViewById<View>(R.id.userPassword) as EditText
 
-        viewpager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewpager.currentItem = tab!!.position
+                if (email.text.isEmpty() || password.text.isEmpty()) {
+                    email.setError("This is required")
+                    password.setError("This is required")
+                    return
+                }
+
+                action(email.text.toString(), password.text.toString())
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
     }
+
+    fun action(email: String, password: String) {
+        val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(context)
+        firebaseAuthWrapper.signIn(email, password)
+    }
+
+    /*override fun onStart() {
+        super.onStart()
+
+        if(firebaseAuth.currentUser != null){
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }*/ //in teoria cosi lo fa vedere solo se è già almeno il secondo accesso
 }
 
 

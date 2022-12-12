@@ -50,7 +50,8 @@ class FirebaseAuthWrapper(private val context: Context) {
                 val database = Firebase.database.reference
                 val userid = getUid() //?????????
                 writeDbUserName(userName, userid, database)
-                //non penso che queste cose siano molto sensate per salvare lo userName
+                //ovviamente non funziona ma non avevo dubbi
+                //TODO save username on DB ora che abbiamo la schermata per metterlo
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -59,6 +60,7 @@ class FirebaseAuthWrapper(private val context: Context) {
                     "Sign-up failed. Error message: ${task.exception!!.message}",
                     Toast.LENGTH_LONG
                 ).show()
+                //qui viene fuori l'errore dell'email già usata
             }
             //codice preso da internet per provare a capire come fare
             /*if (task.isSuccessful) {
