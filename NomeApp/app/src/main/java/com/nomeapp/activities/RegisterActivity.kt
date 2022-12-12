@@ -14,6 +14,8 @@ import android.widget.TextView
 import com.example.nomeapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.nomeapp.models.FirebaseAuthWrapper
+import com.nomeapp.models.FirebaseDbWrapper
+import com.nomeapp.models.User
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -33,38 +35,39 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         LoginButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
+            override fun onClick(view: View?) {
+                val Name: EditText = findViewById<View>(R.id.Name) as EditText
+                val Surname: EditText = findViewById<View>(R.id.Surname) as EditText
                 val userName: EditText = findViewById<View>(R.id.userName) as EditText
                 val email: EditText = findViewById<View>(R.id.userEmail) as EditText
                 val password: EditText = findViewById<View>(R.id.userPassword) as EditText
 
-                if (userName.text.isEmpty() || email.text.isEmpty() || password.text.isEmpty()) {
+                if (Name.text.isEmpty() || Surname.text.isEmpty() || userName.text.isEmpty() || email.text.isEmpty() || password.text.isEmpty()) {
+                    Name.setError("This is required")
+                    Surname.setError("This is required")
                     userName.setError("This is required")
                     email.setError("This is required")
                     password.setError("This is required")
                     return
                 }
 
-                action(userName.text.toString(), email.text.toString(), password.text.toString())
+                val user = User(
+                    userName.text.toString(),
+                    Name.text.toString(),
+                    Surname.text.toString()
+                )
 
-                val intent = Intent(context, LoginActivity::class.java)
-                startActivity(intent)
-                //rimanda a login dopo registration
-                //poi si può mettere direttamente al main/splash ma per ora va bene cosi
+                action(user, email.text.toString(), password.text.toString())
+
             }
-            //problema della mail già usata, il primo register funziona, rimane nella
-            //stessa schermata, se provi altre volte ti da errore
-            //fix: switch to login manuale da app
-            //fix intelligente: dopo onClick del registerButton fare un intent per andare alla splash
-            //oppure qualcosa tramite manifest idk
+            //capire come mai non salva su db
 
         })
-
     }
 
-    fun action(userName: String, email: String, password: String) {
+    fun action(user: User, email: String, password: String) {
         val firebaseAuthWrapper: FirebaseAuthWrapper = FirebaseAuthWrapper(context)
-        firebaseAuthWrapper.signUp(userName, email, password)
+        firebaseAuthWrapper.signUp(user, email, password)
         //email already used
     }
 }

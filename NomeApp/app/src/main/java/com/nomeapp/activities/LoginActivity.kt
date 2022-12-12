@@ -45,7 +45,6 @@ class LoginActivity : AppCompatActivity() {
 
                 action(email.text.toString(), password.text.toString())
             }
-
         })
 
     }
@@ -55,14 +54,6 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuthWrapper.signIn(email, password)
     }
 
-    /*override fun onStart() {
-        super.onStart()
-
-        if(firebaseAuth.currentUser != null){
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-    }*/ //in teoria cosi lo fa vedere solo se è già almeno il secondo accesso
 }
 
 

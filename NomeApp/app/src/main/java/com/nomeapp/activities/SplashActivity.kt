@@ -1,5 +1,7 @@
 package com.nomeapp.activities
 
+//check quando si mette main
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
