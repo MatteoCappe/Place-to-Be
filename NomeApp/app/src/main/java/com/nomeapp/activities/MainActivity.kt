@@ -9,9 +9,6 @@ import android.widget.CalendarView
 import com.example.nomeapp.R
 
 
-//TODO link alle varie parti dell'app
-
-
 
 // Form validation example: https://www.geeksforgeeks.org/implement-form-validation-error-to-edittext-in-android/
 
@@ -42,11 +39,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
+        //TODO: link alle varie pagine
 
         // Create Fragment on https://developer.android.com/reference/android/widget/CalendarView#setOnDateChangeListener(android.widget.CalendarView.OnDateChangeListener)
-        val fragmentManager = this.getSupportFragmentManager()
-        val context : Context = this
+        //val fragmentManager = this.getSupportFragmentManager()
+        //val context : Context = this
 
 
     }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nomeapp.activities.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+       <EditText
+           android:id="@+id/userName"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_margin="10sp"
+           android:gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/Name"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"/>
+
+            <EditText
+                android:id="@+id/Surname"
+                android:layout_width="168dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/profileEditSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20sp"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

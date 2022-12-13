@@ -9,11 +9,14 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.nomeapp.activities.SplashActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 
 // NOTE: With firebase we have to do a network request --> We need to add the permission in the AndroidManifest.xml
@@ -43,14 +46,12 @@ class FirebaseAuthWrapper(private val context: Context) {
         return auth.currentUser?.uid
     }
 
-    fun signUp(userName: String, email: String, password: String) {
+    fun signUp(user: User, email: String, password: String) {
         this.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Sign in success -> ask for permission
-                val database = Firebase.database.reference
-                val userid = getUid() //?????????
-                writeDbUserName(userName, userid, database)
-                //non penso che queste cose siano molto sensate per salvare lo userName
+                FirebaseDbWrapper(context).writeDbUser(user)
+                logSuccess()
+                //ovviamente non funziona ma non avevo dubbi
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -60,26 +61,6 @@ class FirebaseAuthWrapper(private val context: Context) {
                     Toast.LENGTH_LONG
                 ).show()
             }
-            //codice preso da internet per provare a capire come fare
-            /*if (task.isSuccessful) {
-                FirebaseUser = auth.getCurrentUser() //da qui sto mettendo roba di cui non sono molto sicuro
-                user = FirebaseUser.getUid()
-                //Log.e("id", user);
-                reff.child(user).setValue(Employee)
-                Toast.makeText(this@AddEmployee, "User Created.", Toast.LENGTH_SHORT).show()
-                startActivity(
-                    Intent(
-                        ApplicationProvider.getApplicationContext<Context>(),
-                        AppStartActivity::class.java
-                    )
-                )
-            } else {
-                Toast.makeText(
-                    this@AddEmployee,
-                    "Error ! " + task.exception.getMessage(),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }*/
         }
     }
 
@@ -88,7 +69,8 @@ class FirebaseAuthWrapper(private val context: Context) {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
+                    //Log.d(TAG, "signInWithEmail:success")
+                        //fai funzionare debug
                     logSuccess()
                 } else {
                     // If sign in fails, display a message to the user.
@@ -103,25 +85,100 @@ class FirebaseAuthWrapper(private val context: Context) {
         val intent : Intent = Intent(this.context, SplashActivity::class.java)
         context.startActivity(intent)
     }
+}
 
-    //in toeria dovrebbe mettere lo userName dove lo userid è == user_id ma boh
-    fun writeDbUserName(userName: String, userid: String?, database: DatabaseReference) {  //non penso sia molto sensato
+class FirebaseDbWrapper(private val context: Context) {
+    //private val TAG: String = FirebaseDbWrapper::class.simpleName.toString()
+    private var database =
+        Firebase.database("https://nomeapp-fa2db-default-rtdb.europe-west1.firebasedatabase.app/")
+    val ref = database.reference
+    private val userID = FirebaseAuthWrapper(context).getUid()
 
-        val user_id = database.child("user_id").toString()
-        if (userid == user_id) {
-            database.child("user_id").child("user").setValue(userName)  //ref.child(setValue(userName)) ?????
-        }
-        else {
-            return; //se non succede c'è un qualche tipo di errore
-        }
-
-        //check if userid == $user_id ????
-        // si può controllare usando auth.currentUser e getUid() del prof
-
-        //only where userid == user_id
+    fun writeDbUser(user: User) {
+        ref.child("users").child(userID!!).setValue(user)
     }
 
+    fun writeDbProva(prova: String) {
+        ref.child("users").child(userID!!).setValue(prova)
+    }
+
+    fun readDbData(callback: FirebaseReadCallback) {
+        ref.addValueEventListener(FirebaseReadListener(callback))
+    }
+
+    companion object {
+        class FirebaseReadListener(val callback: FirebaseReadCallback) : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                callback.onDataChangeCallback(snapshot)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback.onCancelledCallback(error)
+            }
+        }
+
+        interface FirebaseReadCallback {
+            fun onDataChangeCallback(snapshot: DataSnapshot)
+            fun onCancelledCallback(error: DatabaseError)
+        }
+    }
 }
+
+
+fun usernameAlreadyExists(context: Context, userName: String): Boolean {
+    val lock = ReentrantLock() //boh capisci bene come funzionino
+    val condition = lock.newCondition()
+    var alreadyexists = false
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object: FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                for (child in snapshot.child("users").children) { //vedi se serve mettere uid
+                    val user: User = child.getValue(User::class.java)!!
+                    if (user.userName == userName) {
+                        alreadyexists = true
+                    }
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    return alreadyexists
+}
+
+/*fun getMyData(context: Context): User {
+    val lock = ReentrantLock() //boh capisci bene come funzionino
+    val condition = lock.newCondition()
+    var user: User? = null
+    val userID = FirebaseAuthWrapper(context).getUid()
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object: FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                if (snapshot.child("users").child(userID!!)) {
+
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    return user
+}*/
+
 
 
 
@@ -176,17 +233,28 @@ class FirebaseDbWrapper(private val context: Context) {
     //mettendo String = "events"
     //events dovrebbe andare sotto users ma non sono troppo sicuro
     //example
-/*"rules": {
-    "users": {
-      //lista userName //non so se vada anche qui il ".read" e il ".write", in teoria email e pw le prende da authentication
-        "favourites": { //lista eventi seguiti
-          "$uid": {
-            ".read": "auth.uid === $uid",
-            ".write": "auth.uid === $uid",
-            }
-          }
-        }
-    },*/
+/*{
+	"rules":
+  {
+		"username":
+        {
+        	"$uid":
+            {
+      				".read": "auth.uid === $uid",
+					".write": "auth.uid === $uid",
+        	}
+      	},
+
+		"favourites":
+        {
+          	"$uid":
+            {
+      				".read": "auth.uid === $uid",
+					".write": "auth.uid === $uid",
+        		}
+				}
+	}
+},*/
 
     private fun getDb() : DatabaseReference? {
         val ref = Firebase.database.getReference(CHILD)
