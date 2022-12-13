@@ -1,6 +1,6 @@
 package com.nomeapp.activities
 
-//TODO: fix splash
+//check quando si mette main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,8 +29,10 @@ class SplashActivity : AppCompatActivity() {
                     return false
                 }
             }
+
             return true
         }
+
         return allPermissionGranted!!
     }
 

@@ -9,14 +9,11 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.nomeapp.activities.SplashActivity
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
 
 
 // NOTE: With firebase we have to do a network request --> We need to add the permission in the AndroidManifest.xml
@@ -47,11 +44,13 @@ class FirebaseAuthWrapper(private val context: Context) {
     }
 
     fun signUp(user: User, email: String, password: String) {
+        //TODO: mettere un controllo sullo userName
         this.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 FirebaseDbWrapper(context).writeDbUser(user)
                 logSuccess()
                 //ovviamente non funziona ma non avevo dubbi
+                //TODO save username on DB ora che abbiamo la schermata per metterlo
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -89,96 +88,26 @@ class FirebaseAuthWrapper(private val context: Context) {
 
 class FirebaseDbWrapper(private val context: Context) {
     //private val TAG: String = FirebaseDbWrapper::class.simpleName.toString()
-    private var database =
-        Firebase.database("https://nomeapp-fa2db-default-rtdb.europe-west1.firebasedatabase.app/")
+    private var database = Firebase.database("https://nomeapp-fa2db-default-rtdb.europe-west1.firebasedatabase.app/")
     val ref = database.reference
     private val userID = FirebaseAuthWrapper(context).getUid()
 
     fun writeDbUser(user: User) {
         ref.child("users").child(userID!!).setValue(user)
+
     }
 
-    fun writeDbProva(prova: String) {
-        ref.child("users").child(userID!!).setValue(prova)
-    }
+    /*fun readDbData(callback : FirebaseReadCallback) {
+        val ref = getDb()
 
-    fun readDbData(callback: FirebaseReadCallback) {
+        if (ref == null) {
+            return;
+        }
+
+        // Read from the database
         ref.addValueEventListener(FirebaseReadListener(callback))
-    }
-
-    companion object {
-        class FirebaseReadListener(val callback: FirebaseReadCallback) : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                callback.onDataChangeCallback(snapshot)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                callback.onCancelledCallback(error)
-            }
-        }
-
-        interface FirebaseReadCallback {
-            fun onDataChangeCallback(snapshot: DataSnapshot)
-            fun onCancelledCallback(error: DatabaseError)
-        }
-    }
+    }*/
 }
-
-
-fun usernameAlreadyExists(context: Context, userName: String): Boolean {
-    val lock = ReentrantLock() //boh capisci bene come funzionino
-    val condition = lock.newCondition()
-    var alreadyexists = false
-
-    GlobalScope.launch {
-        FirebaseDbWrapper(context).readDbData(object: FirebaseDbWrapper.Companion.FirebaseReadCallback {
-            override fun onDataChangeCallback(snapshot: DataSnapshot) {
-                Log.d("onDataChangeCallback", "invoked")
-                for (child in snapshot.child("users").children) { //vedi se serve mettere uid
-                    val user: User = child.getValue(User::class.java)!!
-                    if (user.userName == userName) {
-                        alreadyexists = true
-                    }
-                }
-                lock.withLock {
-                    condition.signal()
-                }
-            }
-
-            override fun onCancelledCallback(error: DatabaseError) {
-                Log.d("onCancelledCallback", "invoked")
-            }
-        })
-    }
-    return alreadyexists
-}
-
-/*fun getMyData(context: Context): User {
-    val lock = ReentrantLock() //boh capisci bene come funzionino
-    val condition = lock.newCondition()
-    var user: User? = null
-    val userID = FirebaseAuthWrapper(context).getUid()
-
-    GlobalScope.launch {
-        FirebaseDbWrapper(context).readDbData(object: FirebaseDbWrapper.Companion.FirebaseReadCallback {
-            override fun onDataChangeCallback(snapshot: DataSnapshot) {
-                Log.d("onDataChangeCallback", "invoked")
-                if (snapshot.child("users").child(userID!!)) {
-
-                }
-                lock.withLock {
-                    condition.signal()
-                }
-            }
-
-            override fun onCancelledCallback(error: DatabaseError) {
-                Log.d("onCancelledCallback", "invoked")
-            }
-        })
-    }
-    return user
-}*/
-
 
 
 
@@ -236,21 +165,21 @@ class FirebaseDbWrapper(private val context: Context) {
 /*{
 	"rules":
   {
-		"username":
+				"username":
         {
-        	"$uid":
+        		"$uid":
             {
-      				".read": "auth.uid === $uid",
-					".write": "auth.uid === $uid",
-        	}
+      					".read": "auth.uid === $uid",
+								".write": "auth.uid === $uid",
+        		}
       	},
 
-		"favourites":
+				"favourites":
         {
           	"$uid":
             {
-      				".read": "auth.uid === $uid",
-					".write": "auth.uid === $uid",
+      						".read": "auth.uid === $uid",
+									".write": "auth.uid === $uid",
         		}
 				}
 	}
