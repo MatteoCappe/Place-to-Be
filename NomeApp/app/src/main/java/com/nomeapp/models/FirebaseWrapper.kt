@@ -9,11 +9,14 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.nomeapp.activities.SplashActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 
 // NOTE: With firebase we have to do a network request --> We need to add the permission in the AndroidManifest.xml
@@ -94,22 +97,90 @@ class FirebaseDbWrapper(private val context: Context) {
 
     fun writeDbUser(user: User) {
         ref.child("users").child(userID!!).setValue(user)
-
     }
 
-    /*fun readDbData(callback : FirebaseReadCallback) {
-        val ref = getDb()
+    fun writeDbProva(prova: String) {
+        ref.child("users").child(userID!!).setValue(prova)
+    }
 
-        if (ref == null) {
-            return;
-        }
-
-        // Read from the database
+    fun readDbData(callback: FirebaseReadCallback) {
         ref.addValueEventListener(FirebaseReadListener(callback))
-    }*/
+    }
+
+    companion object {
+        class FirebaseReadListener(val callback: FirebaseReadCallback) : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                callback.onDataChangeCallback(snapshot)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback.onCancelledCallback(error)
+            }
+        }
+        interface FirebaseReadCallback {
+            fun onDataChangeCallback(snapshot: DataSnapshot)
+            fun onCancelledCallback(error: DatabaseError)
+        }
+    }
 }
 
+fun usernameAlreadyExists(context: Context, userName: String): Boolean {
+    val lock = ReentrantLock() //boh capisci bene come funzionino
+    val condition = lock.newCondition()
+    var alreadyexists = false
+    var prova1: String = "prova1"
+    var prova2: String = "prova2"
 
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object: FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                for (child in snapshot.child("users").children) { //vedi se serve mettere uid
+                    FirebaseDbWrapper(context).writeDbProva(prova1) //xxx
+                    val user: User = child.getValue(User::class.java)!!
+                    if (user.userName == userName) {
+                        FirebaseDbWrapper(context).writeDbProva(prova2) //xxx
+                        alreadyexists = true
+                    }
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    return alreadyexists
+}
+
+/*fun getMyData(context: Context): User {
+    val lock = ReentrantLock() //boh capisci bene come funzionino
+    val condition = lock.newCondition()
+    var user: User? = null
+    val userID = FirebaseAuthWrapper(context).getUid()
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object: FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                if (snapshot.child("users").child(userID!!)) {
+
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    return user
+}*/
 
 /*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
     val lock = ReentrantLock()

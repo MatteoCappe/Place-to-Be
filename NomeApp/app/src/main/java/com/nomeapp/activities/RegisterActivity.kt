@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.nomeapp.models.FirebaseAuthWrapper
 import com.nomeapp.models.FirebaseDbWrapper
 import com.nomeapp.models.User
+import com.nomeapp.models.usernameAlreadyExists
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -51,13 +52,20 @@ class RegisterActivity : AppCompatActivity() {
                     return
                 }
 
-                val user = User(
-                    userName.text.toString(),
-                    Name.text.toString(),
-                    Surname.text.toString()
-                )
+                else if (usernameAlreadyExists(context, userName.text.toString())) {
+                    userName.setError("Username already in use")
+                    //TODO: fix in teoria è un problema del metodo di errore
+                }
 
-                action(user, email.text.toString(), password.text.toString())
+                else {
+                    val user = User(
+                        userName.text.toString(),
+                        Name.text.toString(),
+                        Surname.text.toString()
+                    )
+
+                    action(user, email.text.toString(), password.text.toString())
+                }
 
             }
             //capire come mai non salva su db
