@@ -7,16 +7,23 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.example.nomeapp.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.nomeapp.models.FirebaseAuthWrapper
 import com.nomeapp.models.FirebaseDbWrapper
 import com.nomeapp.models.User
 import com.nomeapp.models.usernameAlreadyExists
+import kotlinx.coroutines.*
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -52,23 +59,22 @@ class RegisterActivity : AppCompatActivity() {
                     return
                 }
 
-                else if (usernameAlreadyExists(context, userName.text.toString())) {
-                    userName.setError("Username already in use")
-                    //TODO: fix in teoria è un problema del metodo di errore
+                if (usernameAlreadyExists(context, userName.text.toString())) {
+                    Log.e("passaggio", usernameAlreadyExists(context, userName.text.toString()).toString())
+                    Toast.makeText(context, "Username already in use.", Toast.LENGTH_SHORT).show()
+                    return
                 }
 
-                else {
-                    val user = User(
-                        userName.text.toString(),
-                        Name.text.toString(),
-                        Surname.text.toString()
-                    )
+                val user = User(
+                    userName.text.toString(),
+                    Name.text.toString(),
+                    Surname.text.toString(),
+                    "null"
+                )
 
-                    action(user, email.text.toString(), password.text.toString())
-                }
+                action(user, email.text.toString(), password.text.toString())
 
             }
-            //capire come mai non salva su db
 
         })
     }

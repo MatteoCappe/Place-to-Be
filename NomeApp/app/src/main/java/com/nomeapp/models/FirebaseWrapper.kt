@@ -12,9 +12,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.nomeapp.activities.LoginActivity
 import com.nomeapp.activities.SplashActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.lang.reflect.Constructor
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -50,10 +52,10 @@ class FirebaseAuthWrapper(private val context: Context) {
         //TODO: mettere un controllo sullo userName
         this.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                user.UserID = FirebaseAuthWrapper(context).getUid().toString()
                 FirebaseDbWrapper(context).writeDbUser(user)
                 logSuccess()
                 //ovviamente non funziona ma non avevo dubbi
-                //TODO save username on DB ora che abbiamo la schermata per metterlo
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -64,6 +66,7 @@ class FirebaseAuthWrapper(private val context: Context) {
                 ).show()
             }
         }
+        //controllo anche su userName
     }
 
     fun signIn(email: String, password: String) {
@@ -80,7 +83,6 @@ class FirebaseAuthWrapper(private val context: Context) {
                     Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }
-        //controllo anche su userName se non si riesce a capire come dare a login solo campi email e pw
     }
 
     private fun logSuccess() {
@@ -99,10 +101,6 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.child("users").child(userID!!).setValue(user)
     }
 
-    fun writeDbProva(prova: String) {
-        ref.child("users").child(userID!!).setValue(prova)
-    }
-
     fun readDbData(callback: FirebaseReadCallback) {
         ref.addValueEventListener(FirebaseReadListener(callback))
     }
@@ -118,29 +116,31 @@ class FirebaseDbWrapper(private val context: Context) {
             }
         }
         interface FirebaseReadCallback {
-            fun onDataChangeCallback(snapshot: DataSnapshot)
-            fun onCancelledCallback(error: DatabaseError)
+            fun onDataChangeCallback(snapshot: DataSnapshot) //success method
+            fun onCancelledCallback(error: DatabaseError) //error method
         }
     }
 }
 
+//TODO: fix usernameAlreadyExists, il problema è in questa funzione
+//non capisco ma sembra che il primo boolean sia sempre vero e il secondo sempre falso
 fun usernameAlreadyExists(context: Context, userName: String): Boolean {
     val lock = ReentrantLock() //boh capisci bene come funzionino
     val condition = lock.newCondition()
-    var alreadyexists = false
-    var prova1: String = "prova1"
-    var prova2: String = "prova2"
+    var alreadyexists: Boolean = false
 
     GlobalScope.launch {
-        FirebaseDbWrapper(context).readDbData(object: FirebaseDbWrapper.Companion.FirebaseReadCallback {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
-                for (child in snapshot.child("users").children) { //vedi se serve mettere uid
-                    FirebaseDbWrapper(context).writeDbProva(prova1) //xxx
-                    val user: User = child.getValue(User::class.java)!!
+                for (users in snapshot.child("users").children) {
+                    val user: User = users.getValue(User::class.java)!!
                     if (user.userName == userName) {
-                        FirebaseDbWrapper(context).writeDbProva(prova2) //xxx
                         alreadyexists = true
+                        Log.e("already primo", alreadyexists.toString())
+                        //TODO: qua lo segna true ma dopo lo segna false
+                        //non capisco perchè sia true anche per username mai esistiti
                     }
                 }
                 lock.withLock {
@@ -152,23 +152,28 @@ fun usernameAlreadyExists(context: Context, userName: String): Boolean {
                 Log.d("onCancelledCallback", "invoked")
             }
         })
-    }
+    }/*
+    lock.withLock { //serve di sicuro ma fa bloccare tutto quindi boh
+        condition.await()
+    }*/
+    Log.e("already secondo", alreadyexists.toString())
     return alreadyexists
+    //ritorna sempre false anche nel caso di username uguali
 }
 
-/*fun getMyData(context: Context): User {
+fun getMyData(context: Context): User {
     val lock = ReentrantLock() //boh capisci bene come funzionino
     val condition = lock.newCondition()
     var user: User? = null
     val userID = FirebaseAuthWrapper(context).getUid()
 
     GlobalScope.launch {
-        FirebaseDbWrapper(context).readDbData(object: FirebaseDbWrapper.Companion.FirebaseReadCallback {
+        FirebaseDbWrapper(context).readDbData(object:
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
-                if (snapshot.child("users").child(userID!!)) {
+                user = snapshot.child("users").child(userID!!).getValue(User::class.java)
 
-                }
                 lock.withLock {
                     condition.signal()
                 }
@@ -179,8 +184,8 @@ fun usernameAlreadyExists(context: Context, userName: String): Boolean {
             }
         })
     }
-    return user
-}*/
+    return user!!
+}
 
 /*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
     val lock = ReentrantLock()

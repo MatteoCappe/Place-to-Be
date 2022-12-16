@@ -13,10 +13,18 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/registerButton"
+            android:id="@+id/MyProfileButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="My profile"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <Button
+            android:id="@+id/AddEventButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add event"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 
