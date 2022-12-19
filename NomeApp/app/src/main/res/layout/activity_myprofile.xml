@@ -4,39 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nomeapp.activities.RegisterActivity">
+    tools:context="com.nomeapp.activities.MyProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-       <EditText
-           android:id="@+id/userName"
+        <!-- immagine profilo -->
+
+       <TextView
+           android:id="@+id/MyProfile_Username"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_margin="10sp"
            android:gravity="center"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:orientation="horizontal">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_margin="10sp"
+           android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/Name"
-                android:layout_width="173dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"/>
+           <TextView
+               android:id="@+id/MyProfile_Name"
+               android:layout_width="173dp"
+               android:layout_height="wrap_content"
+               android:layout_margin="10sp"/>
 
-            <EditText
-                android:id="@+id/Surname"
-                android:layout_width="168dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp" />
+           <TextView
+               android:id="@+id/MyProfile_Surname"
+               android:layout_width="168dp"
+               android:layout_height="wrap_content"
+               android:layout_margin="10sp"/>
 
-        </LinearLayout>
+       </LinearLayout>
 
     </LinearLayout>
 
@@ -46,6 +48,16 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         app:srcCompat="@android:drawable/ic_menu_edit"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|left"
         android:layout_margin="20sp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/AddEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="20sp"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

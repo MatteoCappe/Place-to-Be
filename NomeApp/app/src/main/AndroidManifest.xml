@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.nomeapp.activities.MainActivity" />
+        <activity android:name="com.nomeapp.activities.MyProfileActivity" />
     </application>
 
 </manifest>

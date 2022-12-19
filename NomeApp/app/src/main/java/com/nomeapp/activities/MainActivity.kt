@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.CalendarView
+import android.widget.Button
 import com.example.nomeapp.R
 
 
@@ -34,10 +34,20 @@ import com.example.nomeapp.R
 //        */
 class MainActivity : AppCompatActivity() {
     private val TAG : String? = MainActivity::class.simpleName
+    val context: Context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val MyProfileButton: Button = findViewById<View>(R.id.MyProfileButton) as Button
+
+        MyProfileButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                val intent: Intent = Intent(context, MyProfileActivity::class.java)
+                context.startActivity(intent)
+            }
+        })
 
         //TODO: link alle varie pagine
 

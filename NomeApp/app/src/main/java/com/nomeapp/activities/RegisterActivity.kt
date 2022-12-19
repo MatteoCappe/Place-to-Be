@@ -18,12 +18,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.nomeapp.models.FirebaseAuthWrapper
-import com.nomeapp.models.FirebaseDbWrapper
+import com.nomeapp.models.FirebaseDbWrapperUser
 import com.nomeapp.models.User
 import com.nomeapp.models.usernameAlreadyExists
 import kotlinx.coroutines.*
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -36,6 +34,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val switch: TextView = findViewById<View>(R.id.switchToLogin) as TextView
         val LoginButton: Button = findViewById<View>(R.id.registerButton) as Button
+        var alreadyused: Boolean = false
 
         switch.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -59,24 +58,34 @@ class RegisterActivity : AppCompatActivity() {
                     return
                 }
 
-                if (usernameAlreadyExists(context, userName.text.toString())) {
-                    Log.e("passaggio", usernameAlreadyExists(context, userName.text.toString()).toString())
-                    Toast.makeText(context, "Username already in use.", Toast.LENGTH_SHORT).show()
-                    return
+                else {
+                    CoroutineScope(Dispatchers.Main + Job()).launch {
+                        withContext(Dispatchers.IO) {
+                            alreadyused = usernameAlreadyExists(view!!.context, userName.text.toString())
+                            withContext(Dispatchers.Main) {
+                                if (alreadyused) {
+                                    Log.e("passaggio", alreadyused.toString())
+                                    //Toast.makeText(context, "Username already in use.", Toast.LENGTH_SHORT).show()
+                                    //return
+                                    userName.setError("This username is already in use")
+                                }
+                                else {
+                                    val user = User(
+                                        userName.text.toString(),
+                                        Name.text.toString(),
+                                        Surname.text.toString(),
+                                        "null"
+                                    )
+
+                                    action(user, email.text.toString(), password.text.toString())
+                                }
+                            }
+                        }
+                    }
                 }
-
-                val user = User(
-                    userName.text.toString(),
-                    Name.text.toString(),
-                    Surname.text.toString(),
-                    "null"
-                )
-
-                action(user, email.text.toString(), password.text.toString())
-
             }
-
         })
+
     }
 
     fun action(user: User, email: String, password: String) {
