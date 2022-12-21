@@ -53,7 +53,7 @@ class FirebaseAuthWrapper(private val context: Context) {
         this.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 user.UserID = FirebaseAuthWrapper(context).getUid().toString()
-                FirebaseDbWrapperUser(context).writeDbUser(user)
+                FirebaseDbWrapper(context).writeDbUser(user)
                 logSuccess()
                 //ovviamente non funziona ma non avevo dubbi
             } else {
@@ -66,7 +66,6 @@ class FirebaseAuthWrapper(private val context: Context) {
                 ).show()
             }
         }
-        //controllo anche su userName
     }
 
     fun signIn(email: String, password: String) {
@@ -75,7 +74,6 @@ class FirebaseAuthWrapper(private val context: Context) {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     //Log.d(TAG, "signInWithEmail:success")
-                        //fai funzionare debug
                     logSuccess()
                 } else {
                     // If sign in fails, display a message to the user.
@@ -89,10 +87,13 @@ class FirebaseAuthWrapper(private val context: Context) {
         val intent : Intent = Intent(this.context, SplashActivity::class.java)
         context.startActivity(intent)
     }
+
+    //logOut() {auth.signOut()}
+    //delete?
 }
 
-class FirebaseDbWrapperUser(private val context: Context) {
-    //private val TAG: String = FirebaseDbWrapperUser::class.simpleName.toString()
+class FirebaseDbWrapper(private val context: Context) {
+    //private val TAG: String = FirebaseDbWrapper::class.simpleName.toString()
     private var database = Firebase.database("https://nomeapp-fa2db-default-rtdb.europe-west1.firebasedatabase.app/")
     val ref = database.reference
     private val userID = FirebaseAuthWrapper(context).getUid()
@@ -128,14 +129,13 @@ fun usernameAlreadyExists(context: Context, userName: String): Boolean {
     var alreadyexists: Boolean = false
 
     GlobalScope.launch {
-        FirebaseDbWrapperUser(context).readDbData(object :
-            FirebaseDbWrapperUser.Companion.FirebaseReadCallback {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
                 for (users in snapshot.child("users").children) {
                     if (users.child("userName").getValue(String::class.java)!!.equals(userName)) {
                         alreadyexists = true
-                        Log.e("already primo", alreadyexists.toString())
                         break
                     }
                 }
@@ -152,7 +152,6 @@ fun usernameAlreadyExists(context: Context, userName: String): Boolean {
     lock.withLock {
         condition.await()
     }
-    Log.e("already secondo", alreadyexists.toString())
     return alreadyexists
 }
 
@@ -163,8 +162,8 @@ fun getMyData(context: Context): User {
     val userID = FirebaseAuthWrapper(context).getUid()
 
     GlobalScope.launch {
-        FirebaseDbWrapperUser(context).readDbData(object:
-            FirebaseDbWrapperUser.Companion.FirebaseReadCallback {
+        FirebaseDbWrapper(context).readDbData(object:
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
                 user = snapshot.child("users").child(userID!!).getValue(User::class.java)
@@ -182,29 +181,22 @@ fun getMyData(context: Context): User {
     lock.withLock {
         condition.await()
     }
+    Log.e("return", "si")
     return user!!
-}
-
-//vedi parte commentata per favourites
-
-class FirebaseDbWrapperEvent(private val context: Context) {
-    //private var database = Firebase.database("https://.../")
-    //val ref = database.reference
-    //private val userID = FirebaseAuthWrapper(context).getUid()
 }
 
 /*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
 
-    val mapFirebaseFavourites = HashMap<Long, FirebaseDbWrapperUser.Companion.FirebaseFavourite>()
+    val mapFirebaseFavourites = HashMap<Long, FirebaseDbWrapper.Companion.FirebaseFavourite>()
     GlobalScope.launch{
-        FirebaseDbWrapperUser(context).readDbData(object : FirebaseDbWrapperUser.Companion.FirebaseReadCallback {
+        FirebaseDbWrapper(context).readDbData(object : FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
 
                 for (child in snapshot.children){
-                    val firebaseEvent : FirebaseDbWrapperUser.Companion.FirebaseFavourite = child.getValue(FirebaseDbWrapperUser.Companion.FirebaseFavourite::class.java)!!
+                    val firebaseEvent : FirebaseDbWrapper.Companion.FirebaseFavourite = child.getValue(FirebaseDbWrapper.Companion.FirebaseFavourite::class.java)!!
                     mapFirebaseFavourites.put(firebaseFavourite.id, firebaseFavourite)
                 }
 
@@ -237,8 +229,8 @@ class FirebaseDbWrapperEvent(private val context: Context) {
 // rules: https://firebase.google.com/docs/rules/rules-and-auth?authuser=0
 // doc: https://firebase.google.com/docs/rules/basics?utm_source=studio#realtime-database_5
 
-class FirebaseDbWrapperUser(private val context: Context) {
-    private val TAG: String = FirebaseDbWrapperUser::class.simpleName.toString()
+class FirebaseDbWrapper(private val context: Context) {
+    private val TAG: String = FirebaseDbWrapper::class.simpleName.toString()
     private val CHILD: String = "favourites"
     //possiamo usarlo anche per mettere eventi a cui uno è iscritto
     //mettendo String = "events"

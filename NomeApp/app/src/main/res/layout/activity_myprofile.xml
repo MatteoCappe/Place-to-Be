@@ -12,6 +12,8 @@
         android:orientation="vertical">
 
         <!-- immagine profilo -->
+        <!-- visto che ci mette un po' a caricare metti delle
+        etichette con nome cognome ecc -->
 
        <TextView
            android:id="@+id/MyProfile_Username"
@@ -43,7 +45,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/EditProfileButton"
+        android:id="@+id/MyProfile_EditProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -52,7 +54,7 @@
         android:layout_margin="20sp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/AddEventButton"
+        android:id="@+id/MyProfile_AddEventButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

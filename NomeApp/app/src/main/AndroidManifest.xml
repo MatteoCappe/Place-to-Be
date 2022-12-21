@@ -13,9 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NomeApp">
 
-        <activity android:name="com.nomeapp.activities.LoginActivity"/>
-        <activity android:name="com.nomeapp.activities.RegisterActivity"/>
-        <!-- mettendoli cosi al prossimo avvio dovrebbero esserci i dati salvati -->
+        <activity android:name="com.nomeapp.activities.LoginActivity"
+            android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.RegisterActivity"
+            android:exported="false"/>
         <activity android:name="com.nomeapp.activities.SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -24,8 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.nomeapp.activities.MainActivity" />
-        <activity android:name="com.nomeapp.activities.MyProfileActivity" />
+        <activity android:name="com.nomeapp.activities.MainActivity"
+            android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.MyProfileActivity"
+            android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.AddEventActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

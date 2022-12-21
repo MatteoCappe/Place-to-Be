@@ -21,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        Log.d(TAG, "The SplashActivity is started!")
+        Log.d(TAG, "The SplashActivity has started!")
 
         // Check if user logged or not
         val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(this)
