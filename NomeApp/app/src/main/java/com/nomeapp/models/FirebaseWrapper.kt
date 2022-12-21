@@ -4,14 +4,17 @@ package com.nomeapp.models
 //import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import com.github.dhaval2404.imagepicker.ImagePicker //non riuscivamo a risolvere usando le librerie proposte a causa di errori vari
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.nomeapp.activities.LoginActivity
 import com.nomeapp.activities.SplashActivity
 import kotlinx.coroutines.GlobalScope
@@ -19,7 +22,6 @@ import kotlinx.coroutines.launch
 import java.lang.reflect.Constructor
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
-
 
 // NOTE: With firebase we have to do a network request --> We need to add the permission in the AndroidManifest.xml
 //      -> ref: https://developer.android.com/training/basics/network-ops/connecting
@@ -106,6 +108,8 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.addValueEventListener(FirebaseReadListener(callback))
     }
 
+    //fun readUidByUsername //vedi se in futuro servira
+
     companion object {
         class FirebaseReadListener(val callback: FirebaseReadCallback) : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -121,6 +125,45 @@ class FirebaseDbWrapper(private val context: Context) {
             fun onCancelledCallback(error: DatabaseError) //error method
         }
     }
+}
+
+class FirebaseStorageWrapper (private val context: Context) {
+    private val storage = FirebaseStorage.getInstance()
+    private val storageRef = storage.reference
+    private val userID = FirebaseAuthWrapper(context).getUid()
+
+    fun uploadUserImage (userImage: Uri) {
+        storageRef.child("users/${userID}.jpg").putFile(userImage)
+    }
+
+    /*fun downloadUserImage (userID: String): Uri? {
+        val lock = ReentrantLock()
+        val condition = lock.newCondition()
+        var image: Uri? = null
+        //val userID = FirebaseAuthWrapper(context).getUid() //passaggio per username
+
+        GlobalScope.launch {
+            FirebaseDbWrapper(context).readDbData(object:
+                FirebaseDbWrapper.Companion.FirebaseReadCallback {
+                override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                    Log.d("onDataChangeCallback", "invoked")
+
+
+                    lock.withLock {
+                        condition.signal()
+                    }
+                }
+
+                override fun onCancelledCallback(error: DatabaseError) {
+                    Log.d("onCancelledCallback", "invoked")
+                }
+            })
+        }
+        lock.withLock {
+            condition.await()
+        }
+        return image!!
+    }*/
 }
 
 fun usernameAlreadyExists(context: Context, userName: String): Boolean {
@@ -181,7 +224,39 @@ fun getMyData(context: Context): User {
     lock.withLock {
         condition.await()
     }
-    Log.e("return", "si")
+    return user!!
+}
+
+fun getUserByUsername(context: Context, userName: String): User {
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+    var user: User? = null
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                for (users in snapshot.child("users").children) {
+                    if (users.child("userName").getValue(String::class.java)!!.equals(userName)) {
+                        val userID: String = users.child("userID").getValue(String::class.java).toString()
+                        user = snapshot.child("users").child(userID).getValue(User::class.java)
+                        break
+                    }
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
     return user!!
 }
 

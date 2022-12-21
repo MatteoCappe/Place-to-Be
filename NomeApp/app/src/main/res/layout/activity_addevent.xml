@@ -6,4 +6,60 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.AddEventActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/EventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert title.."
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/City"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert city.."
+            android:layout_margin="10dp"/>
+
+        <!--
+        <EditText
+            android:id="@+id/Date"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:ems="10"
+            android:inputType="text|textMultiLine"
+            android:hint="Insert the description of the event.."
+            android:layout_margin="10dp"/>
+            -->
+
+        <EditText
+            android:id="@+id/Bio"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:ems="10"
+            android:inputType="text|textMultiLine"
+            android:hint="Insert the description of the event.."
+            android:layout_margin="10dp"/>
+
+        <!-- datepicker -->
+        <!-- box grande per bio -->
+
+        <Button
+            android:id="@+id/CreateEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

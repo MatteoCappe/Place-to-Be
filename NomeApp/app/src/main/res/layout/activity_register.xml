@@ -12,6 +12,26 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <Button
+            android:id="@+id/UploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="upload image"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <!--
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/MyProfile_AddEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="20sp"/>
+        magari metti image picker di fab
+        -->
+
         <EditText
             android:id="@+id/Name"
             android:layout_width="match_parent"

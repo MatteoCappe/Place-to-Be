@@ -41,10 +41,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val MyProfileButton: Button = findViewById<View>(R.id.MyProfileButton) as Button
+        val ShowProfileButton: Button = findViewById<View>(R.id.ShowProfileButton) as Button
+
 
         MyProfileButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 val intent: Intent = Intent(context, MyProfileActivity::class.java)
+                context.startActivity(intent)
+            }
+        })
+
+        ShowProfileButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                val intent: Intent = Intent(context, ShowProfileActivity::class.java)
                 context.startActivity(intent)
             }
         })

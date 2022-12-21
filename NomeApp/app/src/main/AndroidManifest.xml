@@ -29,6 +29,8 @@
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.MyProfileActivity"
             android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.ShowProfileActivity"
+            android:exported="false"/>
         <activity android:name="com.nomeapp.activities.AddEventActivity"
             android:exported="false"/>
     </application>
