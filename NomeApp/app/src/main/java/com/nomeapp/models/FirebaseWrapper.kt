@@ -1,13 +1,14 @@
 package com.nomeapp.models
 
 
-//import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
-import com.github.dhaval2404.imagepicker.ImagePicker //non riuscivamo a risolvere usando le librerie proposte a causa di errori vari
+//import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import com.example.nomeapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -17,26 +18,14 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.nomeapp.activities.LoginActivity
 import com.nomeapp.activities.SplashActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import java.lang.reflect.Constructor
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
-
-// NOTE: With firebase we have to do a network request --> We need to add the permission in the AndroidManifest.xml
-//      -> ref: https://developer.android.com/training/basics/network-ops/connecting
-// Firebase auth - https://firebase.google.com/docs/auth/android/start#kotlin+ktx
-// Firebase db - https://firebase.google.com/docs/database/android/start?hl=en
-// 1) Create a new project from https://firebase.google.com/
-// 2) Start with the authenication
-// 2) Create a new database in the project
-//      --> Types of databases: https://firebase.google.com/docs/database/rtdb-vs-firestore?hl=en
-// 3) In Android Studio: Tools > Firebase > Realtime Database > Save and retrieve data
-// 4) Follow the steps!
-
-// Stupid issue: https://stackoverflow.com/questions/56266801/java-net-socketexception-socket-failed-eperm-operation-not-permitted
-//  -> I only have to uninstall the app from the emulator and then it works!
-
 
 class FirebaseAuthWrapper(private val context: Context) {
     private val TAG : String = FirebaseAuthWrapper::class.simpleName.toString()
@@ -74,8 +63,7 @@ class FirebaseAuthWrapper(private val context: Context) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    //Log.d(TAG, "signInWithEmail:success")
+                    Log.d(TAG, "signInWithEmail:success")
                     logSuccess()
                 } else {
                     // If sign in fails, display a message to the user.
@@ -95,7 +83,6 @@ class FirebaseAuthWrapper(private val context: Context) {
 }
 
 class FirebaseDbWrapper(private val context: Context) {
-    //private val TAG: String = FirebaseDbWrapper::class.simpleName.toString()
     private var database = Firebase.database("https://nomeapp-fa2db-default-rtdb.europe-west1.firebasedatabase.app/")
     val ref = database.reference
     private val userID = FirebaseAuthWrapper(context).getUid()
@@ -104,11 +91,13 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.child("users").child(userID!!).setValue(user)
     }
 
+    fun writeDbEvent(event: Event) {
+        ref.child("events").setValue(event)
+    }
+
     fun readDbData(callback: FirebaseReadCallback) {
         ref.addValueEventListener(FirebaseReadListener(callback))
     }
-
-    //fun readUidByUsername //vedi se in futuro servira
 
     companion object {
         class FirebaseReadListener(val callback: FirebaseReadCallback) : ValueEventListener {
@@ -125,45 +114,46 @@ class FirebaseDbWrapper(private val context: Context) {
             fun onCancelledCallback(error: DatabaseError) //error method
         }
     }
+
 }
 
 class FirebaseStorageWrapper (private val context: Context) {
     private val storage = FirebaseStorage.getInstance()
     private val storageRef = storage.reference
-    private val userID = FirebaseAuthWrapper(context).getUid()
+    val userID = FirebaseAuthWrapper(context).getUid().toString()
 
     fun uploadUserImage (userImage: Uri) {
         storageRef.child("users/${userID}.jpg").putFile(userImage)
     }
 
-    /*fun downloadUserImage (userID: String): Uri? {
+    fun downloadUserImage (userID: String): Uri {
         val lock = ReentrantLock()
         val condition = lock.newCondition()
         var image: Uri? = null
-        //val userID = FirebaseAuthWrapper(context).getUid() //passaggio per username
+        val localFile = File.createTempFile("users", "jpg")
 
         GlobalScope.launch {
-            FirebaseDbWrapper(context).readDbData(object:
-                FirebaseDbWrapper.Companion.FirebaseReadCallback {
-                override fun onDataChangeCallback(snapshot: DataSnapshot) {
-                    Log.d("onDataChangeCallback", "invoked")
+            storageRef.child("users/${userID}.jpg").getFile(localFile).addOnSuccessListener {
+                image = Uri.fromFile(localFile)
 
-
-                    lock.withLock {
-                        condition.signal()
-                    }
+                lock.withLock {
+                    condition.signal()
                 }
+            }/*.addOnFailureListener {
+                Toast.makeText(context, "Error: File not found!", Toast.LENGTH_SHORT).show()
 
-                override fun onCancelledCallback(error: DatabaseError) {
-                    Log.d("onCancelledCallback", "invoked")
+                lock.withLock {
+                    condition.signal()
                 }
-            })
+            }*/ //dovrebbe mostrare immagine profilo di default non errore
         }
+
         lock.withLock {
             condition.await()
         }
         return image!!
-    }*/
+    }
+
 }
 
 fun usernameAlreadyExists(context: Context, userName: String): Boolean {
@@ -260,6 +250,7 @@ fun getUserByUsername(context: Context, userName: String): User {
     return user!!
 }
 
+//vedi per favorite, versione vecchissima
 /*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
@@ -286,7 +277,6 @@ fun getUserByUsername(context: Context, userName: String): User {
         })
     }
 
-    // TODO: merge
     lock.withLock {
         condition.await()
     }
@@ -297,74 +287,6 @@ fun getUserByUsername(context: Context, userName: String): User {
     //}
 
 }
-
-// Database
-
-// NB: For security reason update the access rules from firebase console --> an user can access on its data!
-// rules: https://firebase.google.com/docs/rules/rules-and-auth?authuser=0
-// doc: https://firebase.google.com/docs/rules/basics?utm_source=studio#realtime-database_5
-
-class FirebaseDbWrapper(private val context: Context) {
-    private val TAG: String = FirebaseDbWrapper::class.simpleName.toString()
-    private val CHILD: String = "favourites"
-    //possiamo usarlo anche per mettere eventi a cui uno è iscritto
-    //mettendo String = "events"
-    //events dovrebbe andare sotto users ma non sono troppo sicuro
-    //example
-/*{
-	"rules":
-  {
-				"username":
-        {
-        		"$uid":
-            {
-      					".read": "auth.uid === $uid",
-								".write": "auth.uid === $uid",
-        		}
-      	},
-
-				"favourites":
-        {
-          	"$uid":
-            {
-      						".read": "auth.uid === $uid",
-									".write": "auth.uid === $uid",
-        		}
-				}
-	}
-},*/
-
-    private fun getDb() : DatabaseReference? {
-        val ref = Firebase.database.getReference(CHILD)
-
-        val uid = FirebaseAuthWrapper(context).getUid()
-        if (uid == null) {
-            return null;
-        }
-
-        return ref.child(uid)
-    }
-
-    fun writeDbData(firebaseFavourite: FirebaseFavourite) {
-        val ref = getDb()
-
-        if (ref == null) {
-            return;
-        }
-
-        ref.child(firebaseFavourite.id.toString()).setValue(firebaseFavourite)
-    }
-
-    fun readDbData(callback : FirebaseReadCallback) {
-        val ref = getDb()
-
-        if (ref == null) {
-            return;
-        }
-
-        // Read from the database
-        ref.addValueEventListener(FirebaseReadListener(callback))
-    }
 
     companion object {
         class FirebaseFavourite() {
@@ -385,21 +307,4 @@ class FirebaseDbWrapper(private val context: Context) {
 
             }
         }
-
-        class FirebaseReadListener(val callback : FirebaseReadCallback) : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                callback.onDataChangeCallback(snapshot)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                callback.onCancelledCallback(error)
-            }
-        }
-
-        interface FirebaseReadCallback {
-            fun onDataChangeCallback(snapshot: DataSnapshot);
-            fun onCancelledCallback(error: DatabaseError);
-        }
-    }
-
 }*/

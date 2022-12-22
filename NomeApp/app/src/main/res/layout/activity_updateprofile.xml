@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nomeapp.activities.AddEventActivity">
+    tools:context="com.nomeapp.activities.UpdateProfileActivity">
+
+    <!-- crocetta per tornare indietro senza modificare profilo -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,59 +14,68 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <EditText
-            android:id="@+id/EventTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Insert event title.."
-            android:layout_margin="10dp"/>
-
-        <EditText
-            android:id="@+id/City"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Insert city.."
-            android:layout_margin="10dp"/>
-
-        <EditText
-            android:id="@+id/Bio"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:ems="10"
-            android:inputType="text|textMultiLine"
-            android:hint="Insert the description of the event.."
-            android:layout_margin="10dp"/>
-
-        <DatePicker
-            android:id="@+id/Date"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:ems="10"
-            android:datePickerMode="spinner"
-            android:calendarViewShown="false"
-            android:layout_margin="10dp"/>
-        <!-- setta in modo che la data di partemza che mostra sia quella di oggi -->
-
-        <TimePicker
-            android:id="@+id/Time"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:ems="10"
-            android:timePickerMode="spinner"
-            android:layout_margin="10dp"/>
-        <!-- magari metti calendario piccolo e orologio piccolo
-         che poi aprono la vista da cui modificare i dati-->
-
         <Button
-            android:id="@+id/CreateEvent"
+            android:id="@+id/UpdateProfile_UploadImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create event"
+            android:text="upload image"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 
-    </LinearLayout>
+        <EditText
+            android:id="@+id/Update_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert new name.."
+            android:layout_margin="10dp"/>
 
+        <EditText
+            android:id="@+id/Update_Surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert new surname.."
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/Update_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert new username.."
+            android:layout_margin="10dp"/>
+
+        <!-- se si avrà voglia si metterà cambio di email e pw tramite auth
+
+        <EditText
+            android:id="@+id/userEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:hint="Insert email address.."
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/userPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:hint="Insert password.."
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp"/>
+        -->
+
+        <Button
+            android:id="@+id/UpdateProfile_saveChanges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save changes"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+        <!-- ticke anzichè button savechanges? -->
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

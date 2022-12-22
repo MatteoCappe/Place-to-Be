@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.MyProfileActivity">
 
-    <!-- metti scrollview anziche linearlayout -->
+    <!-- metti scrollview anziche linearlayout quando poi verranno inseeriti eventi su profilepage-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- visto che ci mette un po' a caricare metti delle
+        <!--TODO: visto che ci mette un po' a caricare metti delle
         etichette con nome cognome ecc -->
 
         <androidx.cardview.widget.CardView
@@ -31,14 +31,6 @@
                 android:layout_margin="20sp"
                 app:srcCompat="@drawable/empty_profile_picture" />
         </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/MyProfile_UploadImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="upload image"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
 
         <TextView
             android:id="@+id/MyProfile_Username"

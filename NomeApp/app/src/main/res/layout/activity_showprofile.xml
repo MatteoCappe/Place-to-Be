@@ -30,14 +30,6 @@
                 app:srcCompat="@drawable/empty_profile_picture" />
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/ShowProfile_UploadImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="upload image"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
-
         <TextView
             android:id="@+id/ShowProfile_Username"
             android:layout_width="match_parent"
