@@ -23,12 +23,13 @@
             app:cardBackgroundColor="@color/black"
             android:layout_gravity="center"
             android:layout_margin="20sp">
-            <ImageView
-                android:id="@+id/MyProfile_profileImage"
+            <ImageButton
+                android:id="@+id/MyProfile_ProfileImageButton"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_margin="20sp"
+                android:clickable="true"
                 app:srcCompat="@drawable/empty_profile_picture" />
         </androidx.cardview.widget.CardView>
 
@@ -78,5 +79,9 @@
         app:srcCompat="@android:drawable/ic_input_add"
         android:layout_gravity="bottom|right"
         android:layout_margin="20sp"/>
+
+
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

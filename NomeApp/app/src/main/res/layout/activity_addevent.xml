@@ -60,10 +60,10 @@
         <Button
             android:id="@+id/CreateEvent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create event"
+            android:layout_height="48dp"
             android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"
+            android:text="Create event" />
 
     </LinearLayout>
 

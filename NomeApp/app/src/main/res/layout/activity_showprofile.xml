@@ -21,6 +21,7 @@
             app:cardBackgroundColor="@color/black"
             android:layout_gravity="center"
             android:layout_margin="20sp">
+
             <ImageView
                 android:id="@+id/ShowProfile_profileImage"
                 android:layout_width="150dp"
