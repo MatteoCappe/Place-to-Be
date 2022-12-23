@@ -61,6 +61,7 @@ class ShowEventActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.ShowEvent_City).text = City
                     findViewById<TextView>(R.id.ShowEvent_Bio).text = Bio
                     findViewById<TextView>(R.id.ShowEvent_Date).text = dateFormatter.format(event!!.Date)
+
                     /*if (image != null) {
                         findViewById<ImageView>(R.id.ShowEvent_eventImage).setImageURI(image)
                     }*/

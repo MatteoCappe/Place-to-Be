@@ -362,7 +362,7 @@ fun getEventByTitle(context: Context, Title: String): Event {
                 Log.d("onDataChangeCallback", "invoked")
                 for (events in snapshot.child("events").children) {
                     if (events.child("title").getValue(String::class.java)!!.equals(Title)) {
-                        val eventID: String = events.child("eventID").getValue(String::class.java).toString()
+                        val eventID: String = events.child("eventID").getValue(Long::class.java).toString()
                         event = snapshot.child("events").child(eventID).getValue(Event::class.java)
                         break
                     }
