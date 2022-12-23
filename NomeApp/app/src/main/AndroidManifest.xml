@@ -35,6 +35,10 @@
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.AddEventActivity"
             android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.ShowEventActivity"
+            android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.UpdateEventActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

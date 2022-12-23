@@ -18,8 +18,8 @@ import kotlinx.coroutines.*
 import java.util.*
 import java.text.SimpleDateFormat
 
-class AddEventActivity : AppCompatActivity() {
-    val context: Context = this
+class UpdateEventActivity : AppCompatActivity() {
+    /*val context: Context = this
     private lateinit var firebaseAuth: FirebaseAuth
     private var myCalendar : Calendar= Calendar.getInstance()
 
@@ -35,8 +35,6 @@ class AddEventActivity : AppCompatActivity() {
         val Date: EditText = findViewById<View>(R.id.EventDate) as EditText
         val Time: EditText = findViewById<View>(R.id.EventTime) as EditText
         val CreateEvent: Button = findViewById<View>(R.id.CreateEvent) as Button
-
-        var alreadyused: Boolean = false
 
         val DateListener =
             DatePickerDialog.OnDateSetListener { view, year, month, day ->
@@ -94,36 +92,26 @@ class AddEventActivity : AppCompatActivity() {
                             //eventID, parte da 0 a ogni evento creato incrementa di 1
                             val eventID: Long = getEventID(this@AddEventActivity)
 
-                            //momentaneo, quando poi verrà implementata la ricerca gli eventi potranno avere lo
-                            //stesso titolo e se ce ne saranno due o più con titolo uguale mostrerà entrambi
-                            alreadyused = titleAlreadyExists(view!!.context, Title.text.toString())
-
                             withContext(Dispatchers.Main) {
-                                if (alreadyused) {
-                                    Title.setError("This title is already in use")
-                                }
-                                else {
-                                    val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
-                                    val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
+                                val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
+                                val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
 
-                                    val event = Event(
-                                        Title.text.toString(),
-                                        eventID,
-                                        EventDate,
-                                        City.text.toString(),
-                                        Bio.text.toString(),
-                                        user.UserID,
-                                        user.userName
-                                    )
+                                val event = Event(
+                                    Title.text.toString(),
+                                    eventID,
+                                    EventDate,
+                                    City.text.toString(),
+                                    Bio.text.toString(),
+                                    user.UserID,
+                                    user.userName
+                                )
 
-                                    //dopo aver creato eventi aggiungi nel db l'id dell'evento nella lista eventi del relativo creatore
+                                //dopo aver creato eventi aggiungi nel db l'id dell'evento nella lista eventi del relativo creatore
 
-                                    FirebaseDbWrapper(this@AddEventActivity).writeDbEvent(event, eventID)
-                                }
+                                FirebaseDbWrapper(this@AddEventActivity).writeDbEvent(event, eventID)
                             }
                         }
                     }
-
                     //torna alla home page, vedi se si può invece riportare all'activity precedente
                     //siccome a Add Event si può accedere sia da profilo che da home
                     val intent: Intent = Intent(context, MainActivity::class.java)
@@ -131,7 +119,7 @@ class AddEventActivity : AppCompatActivity() {
                 }
             }
         })
-    }
+    }*/
     //upload image disponibile solo dal menu di modifica dell'evento
     //stesso problema del registration, non posso sapere id prima di ottenerlo
     //vedi se magari dopo CreateEvent click mettere un intent che porta ad aggiungere la foto (?)

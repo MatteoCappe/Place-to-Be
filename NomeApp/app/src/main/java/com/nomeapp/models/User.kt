@@ -5,6 +5,7 @@ class User() {
     var Name: String = ""
     var Surname: String = ""
     var UserID: String = ""
+    //var CreatedEvents: MutableList<String>? = mutableListOf()
     //var Favourites: MutableList<String>? = mutableListOf() //lista di EventID
     //var Followers: MutableList<String>? = mutableListOf() //? lista di uid
     //var Following: MutableList<String>? = mutableListOf() //? lista di uid
@@ -14,6 +15,7 @@ class User() {
         Name: String,
         Surname: String,
         UserID: String//,
+        //CreatedEvents: MutableList<String>?,
         //Favourites: MutableList<String>?, //non sono troppo sicuro dei ?
         //Followers: MutableList<String>?,
         //Following: MutableList<String>?
@@ -22,6 +24,7 @@ class User() {
         this.Name = Name
         this.Surname = Surname
         this.UserID = UserID
+        //this.CreatedEvents = CreatedEvents
         //this.Favourites = Favourites
         //this.Followers = Followers
         //this.Following = Following

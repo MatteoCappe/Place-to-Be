@@ -40,15 +40,13 @@ class FirebaseAuthWrapper(private val context: Context) {
     }
 
     fun signUp(user: User, email: String, password: String) {
-        //TODO: mettere un controllo sullo userName
         this.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 user.UserID = FirebaseAuthWrapper(context).getUid().toString()
                 FirebaseDbWrapper(context).writeDbUser(user)
                 logSuccess()
-                //ovviamente non funziona ma non avevo dubbi
             } else {
-                // If sign in fails, display a message to the user.
+                // If sign up fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)
                 Toast.makeText(
                     context,
@@ -78,7 +76,8 @@ class FirebaseAuthWrapper(private val context: Context) {
         context.startActivity(intent)
     }
 
-    //logOut() {auth.signOut()}
+    //logOut() {auth.signOut()}, vedi (comodo magari per eviaer di disinstallare e reinstallare ogni volta)
+
     //delete?
 }
 
@@ -91,8 +90,9 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.child("users").child(userID!!).setValue(user)
     }
 
-    fun writeDbEvent(event: Event) {
-        ref.child("events").setValue(event)
+    fun writeDbEvent(event: Event, eventID: Long) {
+        Log.e("entrata db", "si")
+        ref.child("events").child(eventID.toString()).setValue(event)
     }
 
     fun readDbData(callback: FirebaseReadCallback) {
@@ -126,6 +126,10 @@ class FirebaseStorageWrapper (private val context: Context) {
         storageRef.child("users/${userID}.jpg").putFile(userImage)
     }
 
+    fun uploadEventImage (eventImage: Uri, eventID: String) {
+        storageRef.child("events/${eventID}.jpg").putFile(eventImage)
+    }
+
     fun downloadUserImage (userID: String): Uri {
         val lock = ReentrantLock()
         val condition = lock.newCondition()
@@ -134,6 +138,34 @@ class FirebaseStorageWrapper (private val context: Context) {
 
         GlobalScope.launch {
             storageRef.child("users/${userID}.jpg").getFile(localFile).addOnSuccessListener {
+                image = Uri.fromFile(localFile)
+
+                lock.withLock {
+                    condition.signal()
+                }
+            }/*.addOnFailureListener {
+                Toast.makeText(context, "Error: File not found!", Toast.LENGTH_SHORT).show()
+
+                lock.withLock {
+                    condition.signal()
+                }
+            }*/ //dovrebbe mostrare immagine profilo di default non errore
+        }
+
+        lock.withLock {
+            condition.await()
+        }
+        return image!!
+    }
+
+    fun downloadEventImage (eventID: String): Uri {
+        val lock = ReentrantLock()
+        val condition = lock.newCondition()
+        var image: Uri? = null
+        val localFile = File.createTempFile("events", "jpg")
+
+        GlobalScope.launch {
+            storageRef.child("events/${eventID}.jpg").getFile(localFile).addOnSuccessListener {
                 image = Uri.fromFile(localFile)
 
                 lock.withLock {
@@ -248,6 +280,107 @@ fun getUserByUsername(context: Context, userName: String): User {
         condition.await()
     }
     return user!!
+}
+
+fun titleAlreadyExists(context: Context, Title: String): Boolean {
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+    var alreadyexists: Boolean = false
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                for (users in snapshot.child("events").children) {
+                    if (users.child("title").getValue(String::class.java)!!.equals(Title)) {
+                        alreadyexists = true
+                        break
+                    }
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
+    return alreadyexists
+}
+
+fun getEventID(context: Context): Long {
+    Log.e("entrata", "si")
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+    var eventID: Long = 0
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                val events = snapshot.child("events").children
+                for (id in events) {
+                    if (id.key!!.toLong() > eventID) {
+                        eventID = id.key!!.toLong()
+                    }
+                }
+
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
+    Log.e("eventID db", eventID.toString())
+    eventID++
+    return eventID!!
+}
+
+fun getEventByTitle(context: Context, Title: String): Event {
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+    var event: Event? = null
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                for (events in snapshot.child("events").children) {
+                    if (events.child("title").getValue(String::class.java)!!.equals(Title)) {
+                        val eventID: String = events.child("eventID").getValue(String::class.java).toString()
+                        event = snapshot.child("events").child(eventID).getValue(Event::class.java)
+                        break
+                    }
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
+    return event!!
 }
 
 //vedi per favorite, versione vecchissima
