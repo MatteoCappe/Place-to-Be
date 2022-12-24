@@ -33,7 +33,7 @@ class Event() {
         //this.Partecipanti = Partecipanti
     }
 
-    private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US) //vedi cosa cambia con Locale.ITALY
+    private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
 
     val formattedDate: String?
     get(): String? {

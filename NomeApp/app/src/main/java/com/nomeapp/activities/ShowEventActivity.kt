@@ -1,8 +1,6 @@
 package com.nomeapp.activities
 
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -14,14 +12,17 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.example.nomeapp.R
 import com.google.firebase.auth.FirebaseAuth
+import com.nomeapp.fragments.ShowMyEventFragment
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
 import java.util.*
 import java.text.SimpleDateFormat
 
-class ShowEventActivity : AppCompatActivity() {
+class ShowEventActivity() : AppCompatActivity() {
     private var event: Event? = null
     val context: Context = this //vedi se serve
     var image: Uri? = null
@@ -35,6 +36,7 @@ class ShowEventActivity : AppCompatActivity() {
         var Title: String
         var City: String
         var Bio: String
+        var userID: String
         //date e time?
 
         val ShowCreatorButton: Button = findViewById<View>(R.id.ShowCreatorButton) as Button
@@ -53,18 +55,28 @@ class ShowEventActivity : AppCompatActivity() {
                     Title = event!!.Title
                     City = event!!.City
                     Bio = event!!.Bio
+                    userID = event!!.userID
 
                     val dateFormatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
+
+                    val fragmentManager = supportFragmentManager
 
                     //si potrebbe evitare di inizializzare variabili e cambiare direttamente la view
                     findViewById<TextView>(R.id.ShowEvent_Title).text = Title
                     findViewById<TextView>(R.id.ShowEvent_City).text = City
                     findViewById<TextView>(R.id.ShowEvent_Bio).text = Bio
                     findViewById<TextView>(R.id.ShowEvent_Date).text = dateFormatter.format(event!!.Date)
-
                     /*if (image != null) {
                         findViewById<ImageView>(R.id.ShowEvent_eventImage).setImageURI(image)
                     }*/
+
+                    if (userID == FirebaseAuthWrapper(context).getUid()) {
+                        fragmentManager.commit {
+                            setReorderingAllowed(true)
+                            val frag: Fragment = ShowMyEventFragment()
+                            this.replace(R.id.showMyEventFragment, frag)
+                        }
+                    }
 
                     //questo al momento rimanderà al profilo prova, ma verrà poi inizializzato
                     //in modo da rimandare al profilo di chi ha creato l'evento

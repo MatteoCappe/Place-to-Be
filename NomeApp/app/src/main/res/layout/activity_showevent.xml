@@ -66,6 +66,11 @@
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/showMyEventFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

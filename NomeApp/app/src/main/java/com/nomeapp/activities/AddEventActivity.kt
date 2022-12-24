@@ -46,7 +46,7 @@ class AddEventActivity : AppCompatActivity() {
 
                 //TODO: mettere un check in modo che la data inserita per l'evento sia maggiore di quella attuale
 
-                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US) //vedi formato data migliore e Locale.ITALY
+                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US) //vedi se il fomrato della data va bene in caso di ricerca
                 Date.setText(dateFormat.format(this.myCalendar.time)) //?? vedi
             }
 

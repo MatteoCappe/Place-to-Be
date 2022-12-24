@@ -19,7 +19,7 @@ import com.nomeapp.models.User
 import com.nomeapp.models.getUserByUsername
 import kotlinx.coroutines.*
 
-class ShowProfileActivity: AppCompatActivity() {
+class ShowProfileActivity(): AppCompatActivity() {
     private var user: User? = null
     val context: Context = this //vedi se serve
     var image: Uri? = null
