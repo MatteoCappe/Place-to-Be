@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nomeapp.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
@@ -26,8 +27,6 @@ class AddEventActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addevent)
-
-        //mettere casetta per toranare alla home e uscire dalla schermata di creazione dell'evento
 
         val Title: EditText = findViewById<View>(R.id.EventTitle) as EditText
         val City: EditText = findViewById<View>(R.id.City) as EditText

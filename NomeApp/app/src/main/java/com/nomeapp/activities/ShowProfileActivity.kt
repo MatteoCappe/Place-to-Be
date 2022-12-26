@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.nomeapp.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nomeapp.models.FirebaseStorageWrapper
@@ -33,6 +34,7 @@ class ShowProfileActivity(): AppCompatActivity() {
         var Username: String
         var Name: String
         var Surname: String
+        var isStored: Boolean = false
 
         val searched: String = "Prova" //questo dovrà essere inizializzato con una stringa
                                        //derivante dalla funzione "ricerca"
@@ -41,7 +43,10 @@ class ShowProfileActivity(): AppCompatActivity() {
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 user = getUserByUsername(this@ShowProfileActivity, searched)
-                image = FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
+                /*isStored = FirebaseStorageWrapper(context).isSavedInStorage("users", user!!.UserID)
+                if (isStored) {*/
+                    image = FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
+                //}
 
                 withContext(Dispatchers.Main) {
                     //TODO: immagine nello storage

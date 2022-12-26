@@ -91,7 +91,6 @@ class FirebaseDbWrapper(private val context: Context) {
     }
 
     fun writeDbEvent(event: Event, eventID: Long) {
-        Log.e("entrata db", "si")
         ref.child("events").child(eventID.toString()).setValue(event)
     }
 
@@ -149,7 +148,7 @@ class FirebaseStorageWrapper (private val context: Context) {
                 lock.withLock {
                     condition.signal()
                 }
-            }*/ //dovrebbe mostrare immagine profilo di default non errore
+            }*/
         }
 
         lock.withLock {
@@ -171,19 +170,29 @@ class FirebaseStorageWrapper (private val context: Context) {
                 lock.withLock {
                     condition.signal()
                 }
-            }/*.addOnFailureListener {
+            }.addOnFailureListener {
                 Toast.makeText(context, "Error: File not found!", Toast.LENGTH_SHORT).show()
 
                 lock.withLock {
                     condition.signal()
                 }
-            }*/ //dovrebbe mostrare immagine profilo di default non errore
+            }
         }
 
         lock.withLock {
             condition.await()
         }
         return image!!
+    }
+
+    fun isSavedInStorage(dir: String, ID: String): Boolean {
+        var isStored: Boolean = false
+        storageRef.child("${dir}/${ID}.jpg").downloadUrl.addOnSuccessListener {
+            isStored = true
+        }.addOnFailureListener {
+            isStored = false
+        }
+        return isStored
     }
 
 }
@@ -315,7 +324,6 @@ fun titleAlreadyExists(context: Context, Title: String): Boolean {
 }
 
 fun getEventID(context: Context): Long {
-    Log.e("entrata", "si")
     val lock = ReentrantLock()
     val condition = lock.newCondition()
     var eventID: Long = 0
@@ -345,7 +353,6 @@ fun getEventID(context: Context): Long {
     lock.withLock {
         condition.await()
     }
-    Log.e("eventID db", eventID.toString())
     eventID++
     return eventID!!
 }

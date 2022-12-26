@@ -37,7 +37,7 @@
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.ShowEventActivity"
             android:exported="false"/>
-        <activity android:name="com.nomeapp.activities.UpdateEventActivity"
+        <activity android:name="com.nomeapp.activities.UpdateMyEventActivity"
             android:exported="false"/>
     </application>
 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nomeapp.activities.UpdateMyEventActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/UpdateEvent_UploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="upload image"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <EditText
+            android:id="@+id/UpdateEvent_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert new event title.."
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/UpdateEvent_City"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert new city.."
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/UpdateEvent_Bio"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:ems="10"
+            android:inputType="text|textMultiLine"
+            android:hint="Insert new description of the event.."
+            android:layout_margin="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="132dp"
+            android:gravity="center">
+
+            <!-- setta in modo che la data di partemza che mostra sia quella di oggi -->
+
+            <EditText
+                android:id="@+id/UpdateEvent_Date"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Insert new event date..." />
+
+            <EditText
+                android:id="@+id/UpdateEvent_Time"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Insert new event time..." />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/UpdateEvent_SaveChanges"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp"
+            android:text="Create event" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

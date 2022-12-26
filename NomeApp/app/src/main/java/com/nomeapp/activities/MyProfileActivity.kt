@@ -1,5 +1,7 @@
 package com.nomeapp.activities
 
+//potrebbe essere unito a ShowProfileActivity con l'uso di un fragment
+
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -9,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.nomeapp.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nomeapp.models.FirebaseStorageWrapper
@@ -18,7 +21,6 @@ import kotlinx.coroutines.*
 
 class MyProfileActivity: AppCompatActivity() {
     //mettere casetta che rimanda alla home page (vdi fab)
-    //var profileImage: ImageView? = null
     private var user: User? = null
     var image: Uri? = null
 
@@ -27,8 +29,10 @@ class MyProfileActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_myprofile)
+
         val context: Context = this
 
+        var isStored: Boolean = false
 
         var Username: String
         var Name: String
@@ -36,11 +40,13 @@ class MyProfileActivity: AppCompatActivity() {
         var userID: String
 
         //read user data
-        //metti fun per dire che se firebasestorage nome image == uid false -> carica omino vuoto??, non dovrebbe servire
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 user = getMyData(this@MyProfileActivity)
-                image = FirebaseStorageWrapper(this@MyProfileActivity).downloadUserImage(user!!.UserID)
+                /*isStored = FirebaseStorageWrapper(context).isSavedInStorage("users", user!!.UserID)
+                if (isStored) {*/
+                    image = FirebaseStorageWrapper(this@MyProfileActivity).downloadUserImage(user!!.UserID)
+                //}
 
                 withContext(Dispatchers.Main) {
                     Username = user!!.userName
@@ -52,16 +58,17 @@ class MyProfileActivity: AppCompatActivity() {
                     findViewById<TextView>(R.id.MyProfile_Name).text = Name
                     findViewById<TextView>(R.id.MyProfile_Surname).text = Surname
                     if (image != null) {
-                        findViewById<ImageView>(R.id.MyProfile_ProfileImageButton).setImageURI(image)
+                        findViewById<ImageView>(R.id.MyProfile_ProfileImage).setImageURI(image)
                     }
-                    //else -> omino profilo vuoto?, non credo servirà
+                    else {
+                        findViewById<ImageView>(R.id.MyProfile_ProfileImage).setImageDrawable(resources.getDrawable(R.drawable.empty_profile_picture))
+                    }
                 }
             }
         }
 
         val EditProfileButton: FloatingActionButton = findViewById<View>(R.id.MyProfile_EditProfileButton) as FloatingActionButton
         val AddEventButton: FloatingActionButton = findViewById<View>(R.id.MyProfile_AddEventButton) as FloatingActionButton
-        val ProfileImageButton: ImageButton = findViewById<View>(R.id.MyProfile_ProfileImageButton) as ImageButton
 
         EditProfileButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
@@ -77,12 +84,6 @@ class MyProfileActivity: AppCompatActivity() {
             }
         })
 
-        ProfileImageButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                val addEvent: Intent = Intent(context, AddEventActivity::class.java)
-                context.startActivity(addEvent)
-            }
-        })
     }
 
 }

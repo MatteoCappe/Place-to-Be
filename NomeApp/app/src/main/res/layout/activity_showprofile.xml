@@ -11,6 +11,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!--
+        capisci come mettere casetta per tornare alla homepage
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/ShowProfile_HomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:layout_margin="20sp"
+            android:background="@color/white"
+            android:clickable="true"
+            app:srcCompat="@drawable/homepage_button" />
+-->
         <!-- visto che ci mette un po' a caricare metti delle
         etichette con nome cognome ecc -->
 

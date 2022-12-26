@@ -12,9 +12,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.nomeapp.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.nomeapp.fragments.ShowMyEventFragment
 import com.nomeapp.models.*
@@ -31,13 +34,13 @@ class ShowEventActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showevent)
 
-        //mettere casetta per toranare alla home e uscire dalla schermata di creazione dell'evento
+        //mettere casetta per tornare alla home e uscire dalla schermata di creazione dell'evento
 
         var Title: String
         var City: String
         var Bio: String
         var userID: String
-        //date e time?
+        var isStored: Boolean = false
 
         val ShowCreatorButton: Button = findViewById<View>(R.id.ShowCreatorButton) as Button
 
@@ -48,10 +51,12 @@ class ShowEventActivity() : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 event = getEventByTitle(this@ShowEventActivity, searched)
-                //image = FirebaseStorageWrapper(this@ShowEventActivity).downloadEventImage(event!!.eventID.toString())
-
+                /*isStored = FirebaseStorageWrapper(context).isSavedInStorage("events", event!!.eventID.toString())
+                if (isStored) {*/
+                    image = FirebaseStorageWrapper(this@ShowEventActivity).downloadUserImage(event!!.eventID.toString())
+                //}
                 withContext(Dispatchers.Main) {
-                    //TODO: immagine nello storage
+
                     Title = event!!.Title
                     City = event!!.City
                     Bio = event!!.Bio
@@ -66,15 +71,15 @@ class ShowEventActivity() : AppCompatActivity() {
                     findViewById<TextView>(R.id.ShowEvent_City).text = City
                     findViewById<TextView>(R.id.ShowEvent_Bio).text = Bio
                     findViewById<TextView>(R.id.ShowEvent_Date).text = dateFormatter.format(event!!.Date)
-                    /*if (image != null) {
+                    if (image != null) {
                         findViewById<ImageView>(R.id.ShowEvent_eventImage).setImageURI(image)
-                    }*/
+                    }
 
                     if (userID == FirebaseAuthWrapper(context).getUid()) {
                         fragmentManager.commit {
                             setReorderingAllowed(true)
-                            val frag: Fragment = ShowMyEventFragment()
-                            this.replace(R.id.showMyEventFragment, frag)
+                            val frag: Fragment = ShowMyEventFragment.newInstance(event!!.eventID)
+                            this.add(R.id.showMyEventFragment, frag) //vedi se add è giusto o se ci va replace
                         }
                     }
 
@@ -86,6 +91,7 @@ class ShowEventActivity() : AppCompatActivity() {
                             context.startActivity(intent)
                         }
                     })
+
                 }
             }
         }
