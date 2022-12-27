@@ -5,23 +5,23 @@ import java.util.*
 
 class Event() {
     var Title: String = ""
-    var eventID: Long = 0 //int?,  pensavo di mettere un n++ ad ogni evento creato
-    var Date: Date = Date() //data e ora insieme
+    var eventID: Long = 0
+    var Date: Date = Date()
     var City: String = ""
     var Bio: String = ""
     var userID: String = "" //id creatore
-    var userName: String = "" //username creatore, non credo serva
+    var userName: String = "" //username creatore, se serve
     //var Partecipanti: MutableList<String>? = mutableListOf() //dopo follow
 
     constructor(
         Title: String,
-        eventID: Long, //int?, pensavo di mettere un n++ ad ogni evento creato
+        eventID: Long,
         Date: Date,
         City: String,
         Bio: String,
         userID: String,
         userName: String
-        //Partecipanti: MutableList<String>? //vedi per ?
+        //Partecipanti: MutableList<String>?
     ) : this() {
         this.Title = Title
         this.eventID = eventID

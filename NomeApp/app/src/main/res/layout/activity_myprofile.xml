@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.MyProfileActivity">
 
-    <!-- metti scrollview anziche linearlayout quando poi verranno inseeriti eventi su profilepage-->
+    <!-- metti scrollview anziche linearlayout quando poi verranno inseriti eventi su profilepage-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,8 +27,7 @@
             app:srcCompat="@drawable/homepage_button" />
         -->
 
-        <!--TODO: visto che ci mette un po' a caricare metti delle
-        etichette con nome cognome ecc -->
+        <!--TODO: visto che ci mette un po' a caricare metti delle etichette con nome cognome ecc -->
 
         <androidx.cardview.widget.CardView
             android:layout_width="150dp"

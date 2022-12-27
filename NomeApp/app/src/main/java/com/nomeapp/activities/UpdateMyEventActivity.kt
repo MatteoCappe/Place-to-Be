@@ -20,7 +20,7 @@ import java.util.*
 
 
 class UpdateMyEventActivity: AppCompatActivity() {
-    val context: Context = this //vedi se serve
+    val context: Context = this
     var image: Uri? = null
     var event: Event? = null
     var user: User? = null
@@ -30,8 +30,6 @@ class UpdateMyEventActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_updateevent)
-
-        Log.e("funziona?", "si")
 
         eventID = intent.getLongExtra("eventID", 0)
 
@@ -66,8 +64,8 @@ class UpdateMyEventActivity: AppCompatActivity() {
 
                 //TODO: mettere un check in modo che la data inserita per l'evento sia maggiore di quella attuale
 
-                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US) //vedi se il fomrato della data va bene in caso di ricerca
-                Date.setText(dateFormat.format(myCalendar.time)) //?? vedi
+                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US) //vedi se il formato della data va bene quando si fa la ricerca
+                Date.setText(dateFormat.format(myCalendar.time))
             }
 
         Date.setOnClickListener(object:View.OnClickListener{
@@ -100,16 +98,13 @@ class UpdateMyEventActivity: AppCompatActivity() {
         SaveChanges.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
 
-                //TODO: if campo = vuoto, rimettere info di prima, oppure
-                //TODO: mettere a schermo le info vecchie e poi modificarle
-                //al momento bisogna modificare tutto quanto obbligatoriamente
+                //TODO: if campo = vuoto, rimettere info di prima, oppure mettere a schermo le info vecchie e poi modificarle
                 if (Title.text.isEmpty() || City.text.isEmpty() || Bio.text.isEmpty()) {
                     Title.setError("This is required")
                     City.setError("This is required")
                     Bio.setError("This is required")
                     return
                 }
-                //controlli su data e ora?
 
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
@@ -117,11 +112,10 @@ class UpdateMyEventActivity: AppCompatActivity() {
                             //momentaneo, poi si potranno avere più eventi con lo stesso nome
                             alreadyused = titleAlreadyExists(view!!.context, Title.text.toString())
                             user = getMyData(this@UpdateMyEventActivity)
-                            //getEventID
 
                             withContext(Dispatchers.Main) {
                                 if (alreadyused) {
-                                    Title.setError("This username is already in use")
+                                    Title.setError("This title is already in use")
                                 }
                                 else {
                                     val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
@@ -138,8 +132,6 @@ class UpdateMyEventActivity: AppCompatActivity() {
                                     )
 
                                     FirebaseDbWrapper(this@UpdateMyEventActivity).writeDbEvent(event, eventID!!)
-
-                                    Log.e("funziona!!!!", "yeeee")
 
                                     val returnToProfile: Intent = Intent(context, MyProfileActivity::class.java)
                                     context.startActivity(returnToProfile)

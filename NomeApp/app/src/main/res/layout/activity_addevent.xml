@@ -42,8 +42,6 @@
             android:layout_height="132dp"
             android:gravity="center">
 
-            <!-- setta in modo che la data di partemza che mostra sia quella di oggi -->
-
             <EditText
                 android:id="@+id/EventDate"
                 android:layout_width="173dp"

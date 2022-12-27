@@ -26,8 +26,7 @@ class MyProfileActivity: AppCompatActivity() {
     private var user: User? = null
     var image: Uri? = null
 
-    //TODO: vedi se esiste un modo per velocizzare lettura
-    //TODO: colore e posizione info
+    //TODO: vedi se esiste un modo per velocizzare lettura, etichette per le varie info
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_myprofile)

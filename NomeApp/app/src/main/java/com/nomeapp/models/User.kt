@@ -16,7 +16,7 @@ class User() {
         Surname: String,
         UserID: String//,
         //CreatedEvents: MutableList<String>?,
-        //Favourites: MutableList<String>?, //non sono troppo sicuro dei ?
+        //Favourites: MutableList<String>?,
         //Followers: MutableList<String>?,
         //Following: MutableList<String>?
     ) : this() {

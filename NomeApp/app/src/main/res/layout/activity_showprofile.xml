@@ -24,8 +24,7 @@
             android:clickable="true"
             app:srcCompat="@drawable/homepage_button" />
 -->
-        <!-- visto che ci mette un po' a caricare metti delle
-        etichette con nome cognome ecc -->
+        <!-- TODO: visto che ci mette un po' a caricare metti delle etichette con nome cognome ecc -->
 
         <androidx.cardview.widget.CardView
             android:layout_width="150dp"

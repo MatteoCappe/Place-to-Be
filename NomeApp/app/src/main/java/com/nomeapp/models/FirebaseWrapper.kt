@@ -5,25 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
-//import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import com.example.nomeapp.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.nomeapp.activities.LoginActivity
 import com.nomeapp.activities.SplashActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
-import java.lang.reflect.Constructor
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -76,7 +68,7 @@ class FirebaseAuthWrapper(private val context: Context) {
         context.startActivity(intent)
     }
 
-    //logOut() {auth.signOut()}, vedi (comodo magari per eviaer di disinstallare e reinstallare ogni volta)
+    //logOut() {auth.signOut()}, vedi (comodo magari per evitare di disinstallare e reinstallare ogni volta)
 
     //delete?
 }
@@ -279,6 +271,7 @@ fun getUserByUsername(context: Context, userName: String): User {
     return user!!
 }
 
+//momentaneo??
 fun titleAlreadyExists(context: Context, Title: String): Boolean {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
@@ -378,7 +371,7 @@ fun getEventByTitle(context: Context, Title: String): Event {
     return event!!
 }
 
-//vedi per favorite, versione vecchissima
+//vedi per favorite, versione vecchissima probabilmente sbagliata
 /*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
     val lock = ReentrantLock()
     val condition = lock.newCondition()

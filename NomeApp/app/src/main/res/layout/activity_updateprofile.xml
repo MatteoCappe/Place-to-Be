@@ -46,7 +46,7 @@
             android:hint="Insert new username.."
             android:layout_margin="10dp"/>
 
-        <!-- se si avrà voglia si metterà cambio di email e pw tramite auth
+        <!-- se abbiamo tempo mettere cambio di email e pw tramite FirebaseAuth
 
         <EditText
             android:id="@+id/userEmail"

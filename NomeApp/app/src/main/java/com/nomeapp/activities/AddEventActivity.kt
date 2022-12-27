@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat
 
 class AddEventActivity : AppCompatActivity() {
     val context: Context = this
-    private lateinit var firebaseAuth: FirebaseAuth
     private var myCalendar : Calendar= Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,8 +44,8 @@ class AddEventActivity : AppCompatActivity() {
 
                 //TODO: mettere un check in modo che la data inserita per l'evento sia maggiore di quella attuale
 
-                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US) //vedi se il fomrato della data va bene in caso di ricerca
-                Date.setText(dateFormat.format(this.myCalendar.time)) //?? vedi
+                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US) //vedi se il formato della data va bene quando si aggiungerà ricerca
+                Date.setText(dateFormat.format(this.myCalendar.time))
             }
 
         Date.setOnClickListener(object:View.OnClickListener{
@@ -78,7 +77,7 @@ class AddEventActivity : AppCompatActivity() {
 
         CreateEvent.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //check su data e ora
+                //check su data e ora?
                 if (Title.text.isEmpty() || City.text.isEmpty() || Bio.text.isEmpty()) {
                     Title.setError("This is required")
                     City.setError("This is required")
@@ -115,7 +114,7 @@ class AddEventActivity : AppCompatActivity() {
                                         user.userName
                                     )
 
-                                    //dopo aver creato eventi aggiungi nel db l'id dell'evento nella lista eventi del relativo creatore
+                                    //quando mostreremo eventi nel profilo dell'utente aggiungi nel db l'id dell'evento nella lista eventi del relativo creatore
 
                                     FirebaseDbWrapper(this@AddEventActivity).writeDbEvent(event, eventID)
                                 }
@@ -133,6 +132,6 @@ class AddEventActivity : AppCompatActivity() {
     }
     //upload image disponibile solo dal menu di modifica dell'evento
     //stesso problema del registration, non posso sapere id prima di ottenerlo
-    //vedi se magari dopo CreateEvent click mettere un intent che porta ad aggiungere la foto (?)
+    //vedi se magari dopo CreateEvent dopo click mettere un intent che porta ad aggiungere la foto (?)
     //oppure se si possa mettere la ImageView e fare in modo di leggerla e caricarla dopo averla inserita nel solito modo
 }

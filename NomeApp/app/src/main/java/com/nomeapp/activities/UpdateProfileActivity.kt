@@ -16,7 +16,7 @@ import com.nomeapp.models.*
 import kotlinx.coroutines.*
 
 class UpdateProfileActivity: AppCompatActivity() {
-    val context: Context = this //vedi se serve
+    val context: Context = this
     var image: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

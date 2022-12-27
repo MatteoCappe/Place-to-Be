@@ -38,7 +38,7 @@ class ShowMyEventFragment(): Fragment() {
 
         /*DeleteEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //delete event where eventID == id
+                //delete event where eventID == id da FirebaseDbWrapper
             }
         })*/
 

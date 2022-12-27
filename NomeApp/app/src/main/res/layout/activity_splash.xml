@@ -24,6 +24,8 @@
             android:layout_height="wrap_content"
             android:text="@string/grantPermission" />
 
+        <!-- teniamolo se mai servirà chiedere dei permessi in futuro -->
+
     </LinearLayout>
 
 
