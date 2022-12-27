@@ -101,7 +101,6 @@ class UpdateProfileActivity: AppCompatActivity() {
         if(image != null) {
             FirebaseStorageWrapper(this@UpdateProfileActivity).uploadUserImage(image!!)
         }
-        //else profileImage == null, metti omino vuoto, in teoria
     }
 
 }

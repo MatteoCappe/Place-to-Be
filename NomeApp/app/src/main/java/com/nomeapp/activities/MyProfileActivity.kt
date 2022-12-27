@@ -14,10 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.nomeapp.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.nomeapp.models.FirebaseAuthWrapper
 import com.nomeapp.models.FirebaseStorageWrapper
 import com.nomeapp.models.User
 import com.nomeapp.models.getMyData
 import kotlinx.coroutines.*
+import java.io.File
 
 class MyProfileActivity: AppCompatActivity() {
     //mettere casetta che rimanda alla home page (vdi fab)
@@ -32,36 +34,28 @@ class MyProfileActivity: AppCompatActivity() {
 
         val context: Context = this
 
-        var isStored: Boolean = false
+        val userID = FirebaseAuthWrapper(context).getUid()
 
         var Username: String
         var Name: String
         var Surname: String
-        var userID: String
 
         //read user data
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 user = getMyData(this@MyProfileActivity)
-                /*isStored = FirebaseStorageWrapper(context).isSavedInStorage("users", user!!.UserID)
-                if (isStored) {*/
-                    image = FirebaseStorageWrapper(this@MyProfileActivity).downloadUserImage(user!!.UserID)
-                //}
+                image = FirebaseStorageWrapper(this@MyProfileActivity).downloadUserImage(userID!!)
 
                 withContext(Dispatchers.Main) {
                     Username = user!!.userName
                     Name = user!!.Name
                     Surname = user!!.Surname
-                    userID = user!!.UserID
 
                     findViewById<TextView>(R.id.MyProfile_Username).text = Username
                     findViewById<TextView>(R.id.MyProfile_Name).text = Name
                     findViewById<TextView>(R.id.MyProfile_Surname).text = Surname
                     if (image != null) {
                         findViewById<ImageView>(R.id.MyProfile_ProfileImage).setImageURI(image)
-                    }
-                    else {
-                        findViewById<ImageView>(R.id.MyProfile_ProfileImage).setImageDrawable(resources.getDrawable(R.drawable.empty_profile_picture))
                     }
                 }
             }

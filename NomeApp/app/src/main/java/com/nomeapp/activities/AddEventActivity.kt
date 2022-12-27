@@ -78,7 +78,7 @@ class AddEventActivity : AppCompatActivity() {
 
         CreateEvent.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //guardare come fare check su data e ora
+                //check su data e ora
                 if (Title.text.isEmpty() || City.text.isEmpty() || Bio.text.isEmpty()) {
                     Title.setError("This is required")
                     City.setError("This is required")

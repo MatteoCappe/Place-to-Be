@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.nomeapp.fragments.ShowMyEventFragment
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
+import java.io.File
 import java.util.*
 import java.text.SimpleDateFormat
 
@@ -40,7 +41,6 @@ class ShowEventActivity() : AppCompatActivity() {
         var City: String
         var Bio: String
         var userID: String
-        var isStored: Boolean = false
 
         val ShowCreatorButton: Button = findViewById<View>(R.id.ShowCreatorButton) as Button
 
@@ -51,10 +51,8 @@ class ShowEventActivity() : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 event = getEventByTitle(this@ShowEventActivity, searched)
-                /*isStored = FirebaseStorageWrapper(context).isSavedInStorage("events", event!!.eventID.toString())
-                if (isStored) {*/
-                    image = FirebaseStorageWrapper(this@ShowEventActivity).downloadUserImage(event!!.eventID.toString())
-                //}
+                image = FirebaseStorageWrapper(this@ShowEventActivity).downloadEventImage(event!!.eventID.toString())
+
                 withContext(Dispatchers.Main) {
 
                     Title = event!!.Title

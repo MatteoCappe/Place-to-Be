@@ -129,7 +129,7 @@ class FirebaseStorageWrapper (private val context: Context) {
         storageRef.child("events/${eventID}.jpg").putFile(eventImage)
     }
 
-    fun downloadUserImage (userID: String): Uri {
+    fun downloadUserImage (userID: String): Uri? {
         val lock = ReentrantLock()
         val condition = lock.newCondition()
         var image: Uri? = null
@@ -142,22 +142,21 @@ class FirebaseStorageWrapper (private val context: Context) {
                 lock.withLock {
                     condition.signal()
                 }
-            }/*.addOnFailureListener {
-                Toast.makeText(context, "Error: File not found!", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
 
                 lock.withLock {
                     condition.signal()
                 }
-            }*/
+            }
         }
 
         lock.withLock {
             condition.await()
         }
-        return image!!
+        return image
     }
 
-    fun downloadEventImage (eventID: String): Uri {
+    fun downloadEventImage (eventID: String): Uri? {
         val lock = ReentrantLock()
         val condition = lock.newCondition()
         var image: Uri? = null
@@ -171,7 +170,6 @@ class FirebaseStorageWrapper (private val context: Context) {
                     condition.signal()
                 }
             }.addOnFailureListener {
-                Toast.makeText(context, "Error: File not found!", Toast.LENGTH_SHORT).show()
 
                 lock.withLock {
                     condition.signal()
@@ -182,17 +180,7 @@ class FirebaseStorageWrapper (private val context: Context) {
         lock.withLock {
             condition.await()
         }
-        return image!!
-    }
-
-    fun isSavedInStorage(dir: String, ID: String): Boolean {
-        var isStored: Boolean = false
-        storageRef.child("${dir}/${ID}.jpg").downloadUrl.addOnSuccessListener {
-            isStored = true
-        }.addOnFailureListener {
-            isStored = false
-        }
-        return isStored
+        return image
     }
 
 }
