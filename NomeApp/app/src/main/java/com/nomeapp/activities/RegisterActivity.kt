@@ -65,11 +65,19 @@ class RegisterActivity : AppCompatActivity() {
                                     userName.setError("This username is already in use")
                                 }
                                 else {
+                                    //initialize mutable list of created events
+                                    var Events: MutableList<String>? = mutableListOf()
+                                    var Followers: MutableList<String>? = mutableListOf()
+                                    var Following: MutableList<String>? = mutableListOf()
+
                                     val user = User(
                                         userName.text.toString(),
                                         Name.text.toString(),
                                         Surname.text.toString(),
-                                        "null"
+                                        "null",
+                                        Events,
+                                        Followers,
+                                        Following
                                     )
 
                                     action(user, email.text.toString(), password.text.toString())

@@ -5,28 +5,28 @@ class User() {
     var Name: String = ""
     var Surname: String = ""
     var UserID: String = ""
-    //var CreatedEvents: MutableList<String>? = mutableListOf()
+    var Events: MutableList<String>? = mutableListOf()
     //var Favourites: MutableList<String>? = mutableListOf() //lista di EventID
-    //var Followers: MutableList<String>? = mutableListOf() //? lista di uid
-    //var Following: MutableList<String>? = mutableListOf() //? lista di uid
+    var Followers: MutableList<String>? = mutableListOf() //? lista di uid
+    var Following: MutableList<String>? = mutableListOf() //? lista di uid
 
     constructor(
         userName: String,
         Name: String,
         Surname: String,
-        UserID: String//,
-        //CreatedEvents: MutableList<String>?,
+        UserID: String,
+        Events: MutableList<String>?,
         //Favourites: MutableList<String>?,
-        //Followers: MutableList<String>?,
-        //Following: MutableList<String>?
+        Followers: MutableList<String>?,
+        Following: MutableList<String>?
     ) : this() {
         this.userName = userName
         this.Name = Name
         this.Surname = Surname
         this.UserID = UserID
-        //this.CreatedEvents = CreatedEvents
+        this.Events = Events
         //this.Favourites = Favourites
-        //this.Followers = Followers
-        //this.Following = Following
+        this.Followers = Followers
+        this.Following = Following
     }
 }

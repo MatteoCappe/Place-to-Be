@@ -114,6 +114,10 @@ class AddEventActivity : AppCompatActivity() {
                                         user.userName
                                     )
 
+                                    //add evento a mutable list
+                                    user.Events!!.add(eventID.toString())
+                                    FirebaseDbWrapper(this@AddEventActivity).writeDbUser(user)
+
                                     //quando mostreremo eventi nel profilo dell'utente aggiungi nel db l'id dell'evento nella lista eventi del relativo creatore
 
                                     FirebaseDbWrapper(this@AddEventActivity).writeDbEvent(event, eventID)

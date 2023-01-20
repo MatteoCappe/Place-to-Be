@@ -21,14 +21,6 @@
             android:layout_marginTop="0dp" />
 
         <Button
-            android:id="@+id/ShowProfileButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Profilo 'Prova'"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
-
-        <Button
             android:id="@+id/AddEventButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,6 +33,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Evento 'Prova'"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <Button
+            android:id="@+id/SearchUserButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ricerca Utente"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 

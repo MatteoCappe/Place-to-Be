@@ -43,12 +43,24 @@
                 app:srcCompat="@drawable/empty_profile_picture" />
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/ShowProfile_Follow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Follow"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <!-- after follow -> fragment bottone grigio -->
+
         <TextView
             android:id="@+id/ShowProfile_Username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="20sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,6 +79,11 @@
                 android:layout_width="168dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/unfollowFragment"
+                android:layout_width="match_parent"
+                android:layout_eigth="match_parent" />
 
         </LinearLayout>
 

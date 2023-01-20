@@ -77,7 +77,7 @@ class ShowEventActivity() : AppCompatActivity() {
                         fragmentManager.commit {
                             setReorderingAllowed(true)
                             val frag: Fragment = ShowMyEventFragment.newInstance(event!!.eventID)
-                            this.add(R.id.showMyEventFragment, frag) //vedi se add è giusto o se ci va replace
+                            this.add(R.id.showMyEventFragment, frag)
                         }
                     }
 
@@ -85,8 +85,15 @@ class ShowEventActivity() : AppCompatActivity() {
                     //in modo da rimandare al profilo di chi ha creato l'evento
                     ShowCreatorButton.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(view: View?) {
-                            val intent: Intent = Intent(context, ShowProfileActivity::class.java)
-                            context.startActivity(intent)
+                            if (userID == FirebaseAuthWrapper(context).getUid()) {
+                                val intent: Intent = Intent(context, MyProfileActivity::class.java)
+                                context.startActivity(intent)
+                            }
+
+                            else {
+                                val intent: Intent = Intent(context, ShowProfileActivity::class.java)
+                                context.startActivity(intent)
+                            }
                         }
                     })
 

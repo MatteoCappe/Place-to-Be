@@ -18,6 +18,7 @@ import kotlinx.coroutines.*
 class UpdateProfileActivity: AppCompatActivity() {
     val context: Context = this
     var image: Uri? = null
+    var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,20 +61,21 @@ class UpdateProfileActivity: AppCompatActivity() {
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
                         withContext(Dispatchers.IO) {
+                            //TODO: i dati che vengono da getMyData verranno poi usati per mostrarli a schermo
+                            //TODO: prima di modificare le info del profilo
+                            user = getMyData(this@UpdateProfileActivity)
                             alreadyused = usernameAlreadyExists(view!!.context, userName.text.toString())
+
                             withContext(Dispatchers.Main) {
                                 if (alreadyused) {
                                     userName.setError("This username is already in use")
                                 }
                                 else {
-                                    val user = User(
-                                        userName.text.toString(),
-                                        Name.text.toString(),
-                                        Surname.text.toString(),
-                                        userID.toString()
-                                    )
+                                    user!!.userName = userName.text.toString()
+                                    user!!.Name = Name.text.toString()
+                                    user!!.Surname = Surname.text.toString()
 
-                                    FirebaseDbWrapper(this@UpdateProfileActivity).writeDbUser(user)
+                                    FirebaseDbWrapper(this@UpdateProfileActivity).writeDbUser(user!!)
                                     val returnToProfile: Intent = Intent(context, MyProfileActivity::class.java)
                                     context.startActivity(returnToProfile)
                                 }

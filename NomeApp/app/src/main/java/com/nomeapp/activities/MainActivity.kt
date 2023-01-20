@@ -17,20 +17,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val MyProfileButton: Button = findViewById<View>(R.id.MyProfileButton) as Button
-        val ShowProfileButton: Button = findViewById<View>(R.id.ShowProfileButton) as Button
         val AddEventButton: Button = findViewById<View>(R.id.AddEventButton) as Button
         val ShowEventButton: Button = findViewById<View>(R.id.ShowEventButton) as Button
+        val SearchUserButton: Button = findViewById<View>(R.id.SearchUserButton) as Button
 
         MyProfileButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 val intent: Intent = Intent(context, MyProfileActivity::class.java)
-                context.startActivity(intent)
-            }
-        })
-
-        ShowProfileButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                val intent: Intent = Intent(context, ShowProfileActivity::class.java)
                 context.startActivity(intent)
             }
         })
@@ -45,6 +38,13 @@ class MainActivity : AppCompatActivity() {
         ShowEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 val intent: Intent = Intent(context, ShowEventActivity::class.java)
+                context.startActivity(intent)
+            }
+        })
+
+        SearchUserButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                val intent: Intent = Intent(context, SearchUserActivity::class.java)
                 context.startActivity(intent)
             }
         })

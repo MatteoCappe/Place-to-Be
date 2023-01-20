@@ -22,8 +22,6 @@ class ShowMyEventFragment(): Fragment() {
             eventID = it
         }
 
-        Log.e("fragment?", eventID.toString())
-
         val EditEventButton: FloatingActionButton = view.findViewById(R.id.EventFragment_EditEventButton)
         //val DeleteEventButton: FloatingActionButton = view.findViewById(R.id.EventFragment_DeleteEventButton)
         //TODO: quando verrà aggiunto il modo di visualizzare più eventi dare la possibilità di eliminarli

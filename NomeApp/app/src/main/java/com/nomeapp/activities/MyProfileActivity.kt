@@ -60,8 +60,16 @@ class MyProfileActivity: AppCompatActivity() {
             }
         }
 
+        val LogoutButton: Button = findViewById<View>(R.id.LogoutButton) as Button
         val EditProfileButton: FloatingActionButton = findViewById<View>(R.id.MyProfile_EditProfileButton) as FloatingActionButton
         val AddEventButton: FloatingActionButton = findViewById<View>(R.id.MyProfile_AddEventButton) as FloatingActionButton
+
+        LogoutButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                val update: Intent = Intent(context, LoginActivity::class.java)
+                context.startActivity(update)
+            }
+        })
 
         EditProfileButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {

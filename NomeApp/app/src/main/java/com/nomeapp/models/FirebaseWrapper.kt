@@ -371,6 +371,42 @@ fun getEventByTitle(context: Context, Title: String): Event {
     return event!!
 }
 
+fun getUsersByUsernameStart (context: Context, userName: String): MutableList<User> {
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+    var userList: MutableList<User> = ArrayList()
+
+    //check per non cercare se stessi?? (troppo uguale a quello di yasso)
+    val uid = FirebaseAuthWrapper(context).getUid()
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                for (users in snapshot.child("users").children) {
+                    val user = users.getValue(User::class.java)
+                    if (user!!.userName.startsWith(userName, true) && user!!.UserID != uid) {
+                        userList.add(user!!)
+                    }
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
+    return userList
+
+}
+
 //vedi per favorite, versione vecchissima probabilmente sbagliata
 /*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
     val lock = ReentrantLock()
