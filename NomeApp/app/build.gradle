@@ -16,7 +16,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        multiDexEnabled true //check
+        //multiDexEnabled true //check
     }
 
     buildTypes {

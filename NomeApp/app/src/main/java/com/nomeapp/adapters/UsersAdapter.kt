@@ -14,8 +14,8 @@ import com.nomeapp.models.FirebaseStorageWrapper
 import com.nomeapp.models.User
 import kotlinx.coroutines.*
 
-class UsersAdapter (context: Context, val users: List<User>):
-    ArrayAdapter<User>(context, R.layout.user_infobox, users) {
+class UsersAdapter (context: Context, val resource: Int, val users: List<User>):
+    ArrayAdapter<User>(context, resource, users) {
 
     //potrebbe servire per follower etc
     /*override fun getCount(): Int {
@@ -24,40 +24,51 @@ class UsersAdapter (context: Context, val users: List<User>):
     }*/
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        //val view: View? = convertView
+        //val user: User = users[position]
+        var view: View? = convertView
 
-        //if view == null {inflater}??????
-        val user: User = users[position]
-        Log.d("users[position]", user.userName)
+        Log.d("users check", "gianni")
 
-        val inflater: LayoutInflater = LayoutInflater.from(context)
-        var view: View = inflater.inflate(R.layout.user_infobox, parent, false)
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.user_infobox, parent, false)
+        }
 
-        Log.d("users position", position.toString())
+        var count: Int = 0
 
-        val UserBoxPhoto: ImageView = view.findViewById(R.id.UserBox_Photo)
-        val UserBoxUsername: TextView = view.findViewById(R.id.UserBox_Username)
-        val UserBoxName: TextView = view.findViewById(R.id.UserBox_Name)
-        val UserBoxSurname: TextView = view.findViewById(R.id.UserBox_Surname)
+        for (user in users) {
 
-        UserBoxUsername.text = users[position].userName
-        UserBoxName.text = users[position].Name
-        UserBoxSurname.text = users[position].Surname
 
-        CoroutineScope(Dispatchers.Main + Job()).launch {
-            withContext(Dispatchers.IO) {
-                val image = FirebaseStorageWrapper(context).downloadUserImage(users[position].UserID)
 
-                withContext(Dispatchers.Main) {
-                    if (image != null) {
-                        UserBoxPhoto.setImageURI(image)
+            Log.d("users array", user.userName + " " + count.toString() )
+
+            val UserBoxUsername: TextView = view!!.findViewById(R.id.UserBox_Username)
+            val UserBoxName: TextView = view.findViewById(R.id.UserBox_Name)
+            val UserBoxSurname: TextView = view.findViewById(R.id.UserBox_Surname)
+            val UserBoxPhoto: ImageView = view.findViewById(R.id.UserBox_Photo)
+
+            UserBoxUsername.text = user.userName
+            UserBoxName.text = user.Name
+            UserBoxSurname.text = user.Surname
+
+            CoroutineScope(Dispatchers.Main + Job()).launch {
+                withContext(Dispatchers.IO) {
+                    val image = FirebaseStorageWrapper(context).downloadUserImage(user.UserID)
+
+                    withContext(Dispatchers.Main) {
+                        if (image != null) {
+                            UserBoxPhoto.setImageURI(image)
+                        }
                     }
                 }
             }
+
+            count += 1
         }
 
+        Log.d("users check view", view.toString())
+
         //non sono sicuro del return
-        return view
+        return view!!
     }
 
 }

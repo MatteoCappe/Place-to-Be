@@ -44,12 +44,12 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/ShowProfile_Follow"
+            android:id="@+id/ShowProfile_FollowUnfollowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Follow"
             android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"/>
 
         <!-- after follow -> fragment bottone grigio -->
 
@@ -79,11 +79,6 @@
                 android:layout_width="168dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"/>
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/unfollowFragment"
-                android:layout_width="match_parent"
-                android:layout_eigth="match_parent" />
 
         </LinearLayout>
 

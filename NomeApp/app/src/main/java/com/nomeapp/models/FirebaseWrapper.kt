@@ -82,6 +82,10 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.child("users").child(userID!!).setValue(user)
     }
 
+    fun writeDbShownUser(user: User) {
+        ref.child("users").child(user.UserID).setValue(user)
+    }
+
     fun writeDbEvent(event: Event, eventID: Long) {
         ref.child("events").child(eventID.toString()).setValue(event)
     }

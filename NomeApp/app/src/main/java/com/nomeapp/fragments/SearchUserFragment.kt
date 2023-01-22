@@ -13,9 +13,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.nomeapp.R
-import com.example.nomeapp.databinding.FragmentSearchuserBinding
 import com.nomeapp.activities.ShowProfileActivity
-import com.nomeapp.activities.UpdateMyEventActivity
 import com.nomeapp.adapters.UsersAdapter
 import com.nomeapp.models.User
 import com.nomeapp.models.getUsersByUsernameStart
@@ -41,7 +39,7 @@ class SearchUserFragment(): Fragment() {
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
-                val userList: MutableList<User> = getUsersByUsernameStart(this@SearchUserFragment.requireContext(), userName!!)
+                val userList = getUsersByUsernameStart(this@SearchUserFragment.requireContext(), userName!!)
 
                 //TEST
                 var i: Int = 0
@@ -64,7 +62,7 @@ class SearchUserFragment(): Fragment() {
 
                     else {
                         //TODO: fix errore che fa vedere solo un utente alla volta
-                        val adapter: ListAdapter = UsersAdapter(this@SearchUserFragment.requireContext(), userList) //check
+                        val adapter = UsersAdapter(requireActivity(), 0, userList) //check
                         ListOfUsers.adapter = adapter
                         ListOfUsers.onItemClickListener =
                             AdapterView.OnItemClickListener { position, view, parent, id ->
