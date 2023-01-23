@@ -31,6 +31,8 @@ class ShowEventActivity() : AppCompatActivity() {
     val context: Context = this //vedi se serve
     var image: Uri? = null
 
+    //TODO: aggiungi visualizzazione della via
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showevent)
@@ -42,15 +44,18 @@ class ShowEventActivity() : AppCompatActivity() {
         var Bio: String
         var userID: String
 
-        val ShowCreatorButton: Button = findViewById<View>(R.id.ShowCreatorButton) as Button
+        val searched = intent.getLongExtra("EventBoxID", 0)
 
-        val searched: String = "Prova" //questo dovrà essere inizializzato con una stringa
+        val ShowCreatorButton: Button = findViewById<View>(R.id.ShowCreatorButton) as Button
+        //TODO: metti user_infobox al posto del bottone
+
+        //val searched: String = "Prova" //questo dovrà essere inizializzato con una stringa
                                        //derivante dalla funzione "ricerca"
                                        //momentaneamente è inizializzato a "Prova" per far vedere come funzionerebbe
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
-                event = getEventByTitle(this@ShowEventActivity, searched)
+                event = getEventByID(this@ShowEventActivity, searched)
                 image = FirebaseStorageWrapper(this@ShowEventActivity).downloadEventImage(event!!.eventID.toString())
 
                 withContext(Dispatchers.Main) {

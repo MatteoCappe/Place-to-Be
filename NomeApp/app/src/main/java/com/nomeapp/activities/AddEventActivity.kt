@@ -94,13 +94,14 @@ class AddEventActivity : AppCompatActivity() {
 
                             //momentaneo, quando poi verrà implementata la ricerca gli eventi potranno avere lo
                             //stesso titolo e se ce ne saranno due o più con titolo uguale mostrerà entrambi
-                            alreadyused = titleAlreadyExists(view!!.context, Title.text.toString())
+                            //alreadyused = titleAlreadyExists(view!!.context, Title.text.toString())
+                            //TODO: rimuovi
 
                             withContext(Dispatchers.Main) {
-                                if (alreadyused) {
+                                /*if (alreadyused) {
                                     Title.setError("This title is already in use")
-                                }
-                                else {
+                                }*/
+                                //else {
                                     val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
                                     val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
 
@@ -121,8 +122,8 @@ class AddEventActivity : AppCompatActivity() {
                                     //quando mostreremo eventi nel profilo dell'utente aggiungi nel db l'id dell'evento nella lista eventi del relativo creatore
 
                                     FirebaseDbWrapper(this@AddEventActivity).writeDbEvent(event, eventID)
-                                }
                             }
+                            //}
                         }
                     }
 

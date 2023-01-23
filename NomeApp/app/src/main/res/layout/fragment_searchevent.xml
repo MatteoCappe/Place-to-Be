@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nomeapp.fragments.SearchUserFragment"> <!-- o SearchUSerActivity? -->
+    tools:context="com.nomeapp.fragments.SearchEventFragment"> <!-- o SearchUSerActivity? -->
 
     <ListView
-        android:id="@+id/SearchUserList"
+        android:id="@+id/SearchEventList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/user_infobox"/>
+        tools:listitem="@layout/event_infobox"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

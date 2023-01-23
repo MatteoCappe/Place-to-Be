@@ -39,38 +39,29 @@ class SearchUserFragment(): Fragment() {
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
-                val userList = getUsersByUsernameStart(this@SearchUserFragment.requireContext(), userName!!)
 
-                //TEST
-                var i: Int = 0
-                for (users in userList) {
-                    i += 1
-                    val test = users.userName
-                    Log.d("users cazzo", test + " " + i.toString())
-                }
-                //li prende entrambi, controlla il metodo di display perchè stampa solo il primo
-                //TEST
+                if (userName != null) {
+                    val userList = getUsersByUsernameStart(this@SearchUserFragment.requireContext(), userName!!)
 
-                withContext(Dispatchers.Main) {
-                    if (userList.isEmpty()) {
-                        fragmentManager.commit {
-                            setReorderingAllowed(true)
-                            val frag: Fragment = UsernameNotFoundFragment()
-                            this.replace(R.id.SearchUserFragment, frag)
-                        }
-                    }
-
-                    else {
-                        //TODO: fix errore che fa vedere solo un utente alla volta
-                        val adapter = UsersAdapter(requireActivity(), 0, userList) //check
-                        ListOfUsers.adapter = adapter
-                        ListOfUsers.onItemClickListener =
-                            AdapterView.OnItemClickListener { position, view, parent, id ->
-                                val UsernameFromUserBox = view.findViewById<TextView>(R.id.UserBox_Username)
-                                val intent: Intent = Intent(context, ShowProfileActivity::class.java)
-                                intent.putExtra("UserBoxUsername", UsernameFromUserBox.text.toString())
-                                startActivity(intent)
+                    withContext(Dispatchers.Main) {
+                        if (userList.isEmpty()) {
+                            fragmentManager.commit {
+                                setReorderingAllowed(true)
+                                val frag: Fragment = UsernameNotFoundFragment()
+                                this.replace(R.id.SearchUserFragment, frag)
                             }
+                        }
+                        else {
+                            val adapter = UsersAdapter(requireActivity(), userList)
+                            ListOfUsers.adapter = adapter
+                            ListOfUsers.onItemClickListener =
+                                AdapterView.OnItemClickListener { position, view, parent, id ->
+                                    val UsernameFromUserBox = view.findViewById<TextView>(R.id.UserBox_Username)
+                                    val intent: Intent = Intent(context, ShowProfileActivity::class.java)
+                                    intent.putExtra("UserBoxUsername", UsernameFromUserBox.text.toString())
+                                    startActivity(intent)
+                                }
+                        }
                     }
                 }
             }

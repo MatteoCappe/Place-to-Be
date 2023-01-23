@@ -36,6 +36,8 @@
             android:hint="Insert new city.."
             android:layout_margin="10dp"/>
 
+        <!-- aggiungi via -->
+
         <EditText
             android:id="@+id/UpdateEvent_Bio"
             android:layout_width="match_parent"

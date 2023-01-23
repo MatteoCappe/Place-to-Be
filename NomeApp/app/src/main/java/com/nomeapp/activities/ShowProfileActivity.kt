@@ -11,8 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nomeapp.R
-//import com.nomeapp.fragments.FollowUnfollowFragment
-//TODO: fix problema su fragment
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
 

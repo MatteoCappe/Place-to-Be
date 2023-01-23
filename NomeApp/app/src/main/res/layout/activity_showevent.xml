@@ -57,6 +57,8 @@
             android:ems="10"
             android:layout_margin="10dp"/>
 
+        <!-- aggiungi via -->
+
         <TextView
             android:id="@+id/ShowEvent_Bio"
             android:layout_width="match_parent"

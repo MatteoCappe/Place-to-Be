@@ -9,30 +9,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.nomeapp.R
-import com.nomeapp.fragments.SearchUserFragment
+import com.nomeapp.fragments.SearchEventFragment
 
-class SearchUserActivity: AppCompatActivity() {
+class SearchEventActivity: AppCompatActivity() {
     val fragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_searchuser)
+        setContentView(R.layout.activity_searchevent)
 
-        val SearchUserButton: Button = findViewById<View>(R.id.SearchUserButton) as Button
+        val SearchEventButton: Button = findViewById<View>(R.id.SearchEventButton) as Button
+        //TODO: search by città e data!!!!
 
-        SearchUserButton.setOnClickListener(object : View.OnClickListener {
+        SearchEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                var userName: EditText = findViewById<View>(R.id.searchUserName) as EditText
+                var Title: EditText = findViewById<View>(R.id.searchTitle) as EditText
 
-                if (userName.text.isEmpty()) {
-                    userName.setError("This is required")
+                if (Title.text.isEmpty()) {
+                    Title.setError("This is required")
                 }
 
                 else {
                     fragmentManager.commit {
                         setReorderingAllowed(true)
-                        val frag: Fragment = SearchUserFragment.newInstance(userName.text.toString())
-                        replace(R.id.SearchUserFragment, frag)
+                        val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString())
+                        replace(R.id.SearchEventFragment, frag)
                     }
                 }
             }

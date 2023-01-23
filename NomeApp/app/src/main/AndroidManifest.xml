@@ -41,6 +41,8 @@
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.SearchUserActivity"
             android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.SearchEventActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

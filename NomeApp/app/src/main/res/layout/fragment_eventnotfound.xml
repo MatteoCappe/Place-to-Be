@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nomeapp.fragments.UsernameNotFoundFragment">
+    tools:context="com.nomeapp.fragments.EventNotFoundFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:hint="404 Username not found!! Check your input!"
+            android:hint="404 Event not found!! Check your input!"
             android:gravity="center"
             android:layout_margin="10dp"/>
     </LinearLayout>
