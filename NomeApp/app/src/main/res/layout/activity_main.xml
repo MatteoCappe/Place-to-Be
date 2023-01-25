@@ -44,5 +44,13 @@
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 
+        <Button
+            android:id="@+id/FavouritesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eventi Seguiti"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

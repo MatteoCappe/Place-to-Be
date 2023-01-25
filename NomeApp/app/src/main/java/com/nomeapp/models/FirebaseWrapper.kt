@@ -122,7 +122,7 @@ class FirebaseStorageWrapper (private val context: Context) {
     }
 
     fun uploadEventImage (eventImage: Uri, eventID: String) {
-        storageRef.child("events/${eventID}.jpg").putFile(eventImage)
+        storageRef.child("events/${eventID}.jpg").putFile(eventImage) //TODO: check
     }
 
     fun downloadUserImage (userID: String): Uri? {
@@ -275,20 +275,19 @@ fun getUserByUsername(context: Context, userName: String): User {
     return user!!
 }
 
-//momentaneo??
-/*fun titleAlreadyExists(context: Context, Title: String): Boolean {
+fun getUserByID(context: Context, userID: String): User {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
-    var alreadyexists: Boolean = false
+    var user: User? = null
 
     GlobalScope.launch {
         FirebaseDbWrapper(context).readDbData(object :
             FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
-                for (users in snapshot.child("events").children) {
-                    if (users.child("title").getValue(String::class.java)!!.equals(Title)) {
-                        alreadyexists = true
+                for (users in snapshot.child("users").children) {
+                    if (users.child("userID").getValue(String::class.java)!!.equals(userID)) {
+                        user = snapshot.child("users").child(userID).getValue(User::class.java)
                         break
                     }
                 }
@@ -305,8 +304,9 @@ fun getUserByUsername(context: Context, userName: String): User {
     lock.withLock {
         condition.await()
     }
-    return alreadyexists
-}*/
+    Log.d("followers", "boh empty")
+    return user!!
+}
 
 fun getEventID(context: Context): Long {
     val lock = ReentrantLock()
@@ -379,7 +379,7 @@ fun getUsersByUsernameStart (context: Context, userName: String): MutableList<Us
     val condition = lock.newCondition()
     var userList: MutableList<User> = ArrayList()
 
-    //check per non cercare se stessi?? (troppo uguale a quello di yasso)
+    //check per non cercare se stessi?? (troppo uguale a quello di yasso) //TODO: eeehhhh nascondi le prove
     val uid = FirebaseAuthWrapper(context).getUid()
 
     GlobalScope.launch {

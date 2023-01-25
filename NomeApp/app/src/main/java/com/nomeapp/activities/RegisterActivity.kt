@@ -66,9 +66,10 @@ class RegisterActivity : AppCompatActivity() {
                                 }
                                 else {
                                     //initialize mutable list of created events
-                                    var Events: MutableList<String>? = mutableListOf()
+                                    var Events: MutableList<Long>? = mutableListOf()
                                     var Followers: MutableList<String>? = mutableListOf()
                                     var Following: MutableList<String>? = mutableListOf()
+                                    var Favourites: MutableList<Long>? = mutableListOf()
 
                                     val user = User(
                                         userName.text.toString(),
@@ -77,7 +78,8 @@ class RegisterActivity : AppCompatActivity() {
                                         "null",
                                         Events,
                                         Followers,
-                                        Following
+                                        Following,
+                                        Favourites
                                     )
 
                                     action(user, email.text.toString(), password.text.toString())

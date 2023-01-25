@@ -38,31 +38,27 @@ class SearchEventFragment(): Fragment() {
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
+                val eventList = getEventsByTitleStart(this@SearchEventFragment.requireContext(), Title!!)
 
-                if (Title != null) {
-                    val eventList = getEventsByTitleStart(this@SearchEventFragment.requireContext(), Title!!)
-
-                    withContext(Dispatchers.Main) {
-                        if (eventList.isEmpty()) {
-                            fragmentManager.commit {
-                                setReorderingAllowed(true)
-                                val frag: Fragment = EventNotFoundFragment()
-                                this.replace(R.id.SearchEventFragment, frag)
+                withContext(Dispatchers.Main) {
+                    if (eventList.isEmpty()) {
+                        fragmentManager.commit {
+                            setReorderingAllowed(true)
+                            val frag: Fragment = EventNotFoundFragment()
+                            this.replace(R.id.SearchEventFragment, frag)
+                        }
+                    }
+                    else {
+                        val adapter = EventsAdapter(requireActivity(), eventList)
+                        ListOfEvents.adapter = adapter
+                        ListOfEvents.onItemClickListener =
+                            AdapterView.OnItemClickListener { position, view, parent, id ->
+                                val EventIDFromBox: Long =
+                                    view.findViewById<TextView>(R.id.EventBox_ID).text.toString().toLong()
+                                val intent: Intent = Intent(context, ShowEventActivity::class.java)
+                                intent.putExtra("EventBoxID", EventIDFromBox)
+                                startActivity(intent)
                             }
-                        }
-                        else {
-                            val adapter = EventsAdapter(requireActivity(), eventList)
-                            ListOfEvents.adapter = adapter
-                            ListOfEvents.onItemClickListener =
-                                AdapterView.OnItemClickListener { position, view, parent, id ->
-                                    val EventIDFromBox: Long =
-                                        view.findViewById<TextView>(R.id.EventBox_ID).text.toString().toLong()
-                                    Log.d("eventid", EventIDFromBox.toString())
-                                    val intent: Intent = Intent(context, ShowEventActivity::class.java)
-                                    intent.putExtra("EventBoxID", EventIDFromBox)
-                                    startActivity(intent)
-                                }
-                        }
                     }
                 }
             }

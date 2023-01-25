@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         val AddEventButton: Button = findViewById<View>(R.id.AddEventButton) as Button
         val SearchUserButton: Button = findViewById<View>(R.id.SearchUserButton) as Button
         val SearchEventButton: Button = findViewById<View>(R.id.SearchEventButton) as Button
+        val FavouritesButton: Button = findViewById<View>(R.id.FavouritesButton) as Button
 
         MyProfileButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
@@ -48,6 +49,13 @@ class MainActivity : AppCompatActivity() {
                 context.startActivity(intent)
             }
         })
+
+        /*FavouritesButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                val intent: Intent = Intent(context, FavouritesActivity::class.java)
+                context.startActivity(intent)
+            }
+        })*/
 
     }
 

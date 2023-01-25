@@ -43,6 +43,14 @@
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.SearchEventActivity"
             android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.FollowersActivity"
+            android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.FollowingActivity"
+            android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.FollowersNotFoundActivity"
+            android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.FollowingNotFoundActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

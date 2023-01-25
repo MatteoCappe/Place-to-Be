@@ -43,6 +43,14 @@
                 app:srcCompat="@drawable/empty_event_picture" />
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/ShowEvent_FollowUnfollowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Follow"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp"/>
+
         <TextView
             android:id="@+id/ShowEvent_Title"
             android:layout_width="match_parent"

@@ -39,29 +39,26 @@ class SearchUserFragment(): Fragment() {
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
+                val userList = getUsersByUsernameStart(this@SearchUserFragment.requireContext(), userName!!)
 
-                if (userName != null) {
-                    val userList = getUsersByUsernameStart(this@SearchUserFragment.requireContext(), userName!!)
-
-                    withContext(Dispatchers.Main) {
-                        if (userList.isEmpty()) {
-                            fragmentManager.commit {
-                                setReorderingAllowed(true)
-                                val frag: Fragment = UsernameNotFoundFragment()
-                                this.replace(R.id.SearchUserFragment, frag)
+                withContext(Dispatchers.Main) {
+                    if (userList.isEmpty()) {
+                        fragmentManager.commit {
+                            setReorderingAllowed(true)
+                            val frag: Fragment = UsernameNotFoundFragment()
+                            this.replace(R.id.SearchUserFragment, frag)
+                        }
+                    }
+                    else {
+                        val adapter = UsersAdapter(requireActivity(), userList)
+                        ListOfUsers.adapter = adapter
+                        ListOfUsers.onItemClickListener =
+                            AdapterView.OnItemClickListener { position, view, parent, id ->
+                                val UsernameFromUserBox = view.findViewById<TextView>(R.id.UserBox_Username)
+                                val intent: Intent = Intent(context, ShowProfileActivity::class.java)
+                                intent.putExtra("UserBoxUsername", UsernameFromUserBox.text.toString())
+                                startActivity(intent)
                             }
-                        }
-                        else {
-                            val adapter = UsersAdapter(requireActivity(), userList)
-                            ListOfUsers.adapter = adapter
-                            ListOfUsers.onItemClickListener =
-                                AdapterView.OnItemClickListener { position, view, parent, id ->
-                                    val UsernameFromUserBox = view.findViewById<TextView>(R.id.UserBox_Username)
-                                    val intent: Intent = Intent(context, ShowProfileActivity::class.java)
-                                    intent.putExtra("UserBoxUsername", UsernameFromUserBox.text.toString())
-                                    startActivity(intent)
-                                }
-                        }
                     }
                 }
             }
