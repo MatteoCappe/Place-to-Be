@@ -11,7 +11,7 @@ class Event() {
     var Bio: String = ""
     var userID: String = "" //id creatore
     var userName: String = "" //username creatore, se serve
-    //var Partecipanti: MutableList<String>? = mutableListOf() //dopo follow
+    //var Partecipanti: MutableList<String>? = mutableListOf() //dopo follow //TODO: rimuovi
 
     constructor(
         Title: String,

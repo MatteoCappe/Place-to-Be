@@ -51,6 +51,8 @@
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FollowingNotFoundActivity"
             android:exported="false"/>
+        <activity android:name="com.nomeapp.activities.FavouritesActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

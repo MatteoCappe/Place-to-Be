@@ -117,6 +117,10 @@ class ShowProfileActivity(): AppCompatActivity() {
                         }
                     })
 
+                    //TODO: check perche se cerca -> apri profilo -> follow/unfollow
+                    //TODO: poi da problemi appena o riapro profilo o provo ad  aprirne un altro
+                    //TODO: guarda se si risolve con fragment
+
                     FollowUnfollow.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(view: View?) {
                             if (FollowUnfollow.text == getString(R.string.unfollow)) {

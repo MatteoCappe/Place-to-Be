@@ -50,12 +50,12 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        /*FavouritesButton.setOnClickListener(object : View.OnClickListener {
+        FavouritesButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 val intent: Intent = Intent(context, FavouritesActivity::class.java)
                 context.startActivity(intent)
             }
-        })*/
+        })
 
     }
 

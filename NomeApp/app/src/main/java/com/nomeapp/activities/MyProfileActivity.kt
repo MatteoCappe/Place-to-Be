@@ -90,12 +90,10 @@ class MyProfileActivity: AppCompatActivity() {
                     Followers.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(view: View?) {
                             if (user!!.Followers!!.size == 0) {
-                                val intent: Intent =
-                                    Intent(context, FollowersNotFoundActivity::class.java)
+                                val intent: Intent = Intent(context, FollowersNotFoundActivity::class.java)
                                 context.startActivity(intent)
                             } else {
-                                val intent: Intent =
-                                    Intent(context, FollowersActivity::class.java)
+                                val intent: Intent = Intent(context, FollowersActivity::class.java)
                                 intent.putStringArrayListExtra("Followers", ArrayListFollowers)
                                 context.startActivity(intent)
                             }
@@ -105,12 +103,10 @@ class MyProfileActivity: AppCompatActivity() {
                     Following.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(view: View?) {
                             if (user!!.Following!!.size == 0) {
-                                val intent: Intent =
-                                    Intent(context, FollowingNotFoundActivity::class.java)
+                                val intent: Intent = Intent(context, FollowingNotFoundActivity::class.java)
                                 context.startActivity(intent)
                             } else {
-                                val intent: Intent =
-                                    Intent(context, FollowingActivity::class.java)
+                                val intent: Intent = Intent(context, FollowingActivity::class.java)
                                 intent.putExtra("Following", ArrayListFollowing)
                                 context.startActivity(intent)
                             }
