@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nomeapp.activities.UpdateProfileActivity">
+
+    <!-- crocetta per tornare indietro senza modificare profilo -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/UpdateProfile_UploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="upload image"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <EditText
+            android:id="@+id/Update_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert new name.."
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/Update_Surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert new surname.."
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/Update_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Insert new username.."
+            android:layout_margin="10dp"/>
+
+        <!-- se abbiamo tempo mettere cambio di email e pw tramite FirebaseAuth
+
+        <EditText
+            android:id="@+id/userEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:hint="Insert email address.."
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/userPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:hint="Insert password.."
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp"/>
+        -->
+
+        <Button
+            android:id="@+id/UpdateProfile_saveChanges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save changes"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+        <!-- ticke anzichè button savechanges? -->
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
