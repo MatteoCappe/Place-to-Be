@@ -30,10 +30,10 @@ class FavouritesActivity: AppCompatActivity() {
             withContext(Dispatchers.IO) {
                 user = getMyData(this@FavouritesActivity)
 
-                if (user!!.Favourites!!.size == 0) {
+                /*if (user!!.Favourites!!.size == 0) {
                     val intent: Intent = Intent(context, FavouritesNotFoundActivity::class.java)
                     context.startActivity(intent)
-                } //TODO: check
+                }*/ //TODO: check
 
                 for (id in user!!.Favourites!!) { //boh vedi per !!
                     event = getEventByID(this@FavouritesActivity, id)
