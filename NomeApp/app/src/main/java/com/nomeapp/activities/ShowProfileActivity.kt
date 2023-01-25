@@ -1,22 +1,17 @@
 package com.nomeapp.activities
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import com.example.nomeapp.R
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.nomeapp.fragments.SearchUserFragment
-//import com.nomeapp.fragments.UnfollowFragment
+//import com.nomeapp.fragments.FollowUnfollowFragment
 //TODO: fix problema su fragment
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
@@ -26,7 +21,6 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var currentUser: User? = null
     val context: Context = this
     var image: Uri? = null
-    val fragmentManager = supportFragmentManager
 
     //TODO: vedi se esiste un modo per velocizzare lettura, etichette per le varie informazioni
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,24 +30,25 @@ class ShowProfileActivity(): AppCompatActivity() {
         val userID: String? = FirebaseAuthWrapper(this@ShowProfileActivity).getUid()
         val searched = intent.getStringExtra("UserBoxUsername")!!
 
-        //val searched: String = "Prova" //questo dovrà essere inizializzato con una stringa
-                                       //derivante dalla funzione "ricerca"
-                                       //momentaneamente è inizializzato a "Prova" per far vedere come funzionerebbe
+        var FollowUnfollow: Button = findViewById<View>(R.id.ShowProfile_FollowUnfollowButton) as Button
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 user = getUserByUsername(this@ShowProfileActivity, searched)
                 currentUser = getMyData(this@ShowProfileActivity)
+                image =
+                    FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
 
                 //TODO: check che funzioni davvero quando si fa lista follower
                 if (user!!.UserID == userID!!) {
                     val intent: Intent = Intent(context, MyProfileActivity::class.java)
                     startActivity(intent)
                 }
-                //potrebbe servire se si mettono i follower
-                //per evitare che si rompa ogni volta che ci si clicca sopra
 
-                image = FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
+                if (currentUser!!.Following!!.contains(user!!.UserID)) {
+                    FollowUnfollow.text = getString(R.string.unfollow)
+                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080")) //vedi
+                }
 
                 withContext(Dispatchers.Main) {
                     findViewById<TextView>(R.id.ShowProfile_Username).text = user!!.userName
@@ -62,31 +57,45 @@ class ShowProfileActivity(): AppCompatActivity() {
                     if (image != null) {
                         findViewById<ImageView>(R.id.ShowProfile_profileImage).setImageURI(image)
                     }
+
+                    FollowUnfollow.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(view: View?) {
+                            if (FollowUnfollow.text == getString(R.string.unfollow)) {
+                                currentUser!!.Following!!.remove(user!!.UserID)
+                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
+
+                                user!!.Followers!!.remove(userID!!)
+                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
+
+                                FollowUnfollow.text = getString(R.string.follow)
+                                FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE")) //vedi
+                            }
+                            else {
+                                //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
+                                //per rendere il tutto più leggibile
+                                if (!currentUser!!.Following!!.contains(user!!.UserID)) {
+                                    currentUser!!.Following!!.add(user!!.UserID)
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
+
+                                    FollowUnfollow.text = getString(R.string.unfollow)
+                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080")) //vedi
+                                }
+
+                                if (!user!!.Followers!!.contains(userID!!)) {
+                                    user!!.Followers!!.add(userID!!)
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
+
+                                    FollowUnfollow.text = getString(R.string.unfollow)
+                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080")) //vedi
+                                    //tecnicamente inutile ripeterlo due volte ma vbb
+                                }
+                            }
+
+                        }
+                    })
                 }
             }
         }
-
-        //chek se funziona per davvero
-
-        //follow user
-        val Follow: Button = findViewById<View>(R.id.ShowProfile_Follow) as Button
-
-        Follow.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                currentUser!!.Following!!.add(user!!.UserID)
-                user!!.Followers!!.add(userID!!)
-
-                /*fragmentManager.commit {
-                    setReorderingAllowed(true)
-                    val frag: Fragment = UnfollowFragment.newInstance(user!!.UserID)
-                    this.replace(R.id.SearchUserFragment, frag)
-                }*/
-                //TODO: fragment bottone grigio, copia da Ruggia
-            }
-        })
-
-        //unfollow?
-
     }
 
 }

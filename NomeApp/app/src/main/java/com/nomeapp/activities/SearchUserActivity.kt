@@ -33,6 +33,7 @@ class SearchUserActivity: AppCompatActivity() {
                     fragmentManager.commit {
                         setReorderingAllowed(true)
                         val frag: Fragment = SearchUserFragment.newInstance(userName.text.toString())
+                        Log.d("users", "vaffanculo")
                         replace(R.id.SearchUserFragment, frag)
                     }
                 }
