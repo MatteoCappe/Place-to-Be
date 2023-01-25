@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nomeapp.activities.SearchEventActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="top">
+
+        <EditText
+            android:id="@+id/searchTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:layout_margin="30dp"
+            android:hint="Insert the event to search.."/>
+
+        <Button
+            android:id="@+id/SearchEventButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:layout_margin="5dp"
+            android:layout_marginTop="0dp" />
+        <!-- magari mettere fab carino della lente di ingrandimento -->
+
+        <!-- TODO: ricerca tramite città e data!!!, tutto insieme a title, possibilità di campi vuoti -->
+
+        <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/SearchUser_Name"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Name"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/SearchUser_Surname"
+                android:layout_width="168dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Surname"
+                android:inputType="text" />
+
+        </LinearLayout>
+
+
+
+        -->
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/SearchEventFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"/> <!-- vedi per bottom -->
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

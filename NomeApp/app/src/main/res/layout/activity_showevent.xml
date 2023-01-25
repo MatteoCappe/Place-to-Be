@@ -43,6 +43,14 @@
                 app:srcCompat="@drawable/empty_event_picture" />
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/ShowEvent_FollowUnfollowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Follow"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp"/>
+
         <TextView
             android:id="@+id/ShowEvent_Title"
             android:layout_width="match_parent"
@@ -56,6 +64,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:layout_margin="10dp"/>
+
+        <!-- aggiungi via -->
 
         <TextView
             android:id="@+id/ShowEvent_Bio"
@@ -71,19 +81,88 @@
             android:layout_height="wrap_content"
             android:ems="10" />
 
-        <Button
-            android:id="@+id/ShowCreatorButton"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/ShowEvent_UserBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Profilo 'Prova'"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
+            app:cardBackgroundColor="@color/cardview_shadow_start_color"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="63dp"
+                tools:layout_editor_absoluteY="0dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="20sp"
+                    app:cardBackgroundColor="@color/black"
+                    app:cardCornerRadius="60dp">
+
+                    <ImageView
+                        android:id="@+id/ShowEvent_UserBox_Photo"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/empty_profile_picture" />
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="250dp"
+                    android:layout_height="127dp"
+                    android:layout_margin="10sp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ShowEvent_UserBox_Username"
+                        android:layout_width="240dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10sp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <!-- magari sistema in modo da poter mettere wrap_content nelle width-->
+
+                        <TextView
+                            android:id="@+id/ShowEvent_UserBox_Name"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/ShowEvent_UserBox_Surname"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/showMyEventFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"/>
+            android:layout_height="80dp"
+            android:layout_gravity="bottom" />
+
+        <!-- TODO: per mettere fragment in fondo a schermo, mettere fragment dentro nuovo linear layout e settare quello con bottom -->
 
     </LinearLayout>
 

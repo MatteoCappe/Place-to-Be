@@ -41,16 +41,6 @@ class SearchUserFragment(): Fragment() {
             withContext(Dispatchers.IO) {
                 val userList = getUsersByUsernameStart(this@SearchUserFragment.requireContext(), userName!!)
 
-                //TEST
-                var i: Int = 0
-                for (users in userList) {
-                    i += 1
-                    val test = users.userName
-                    Log.d("users cazzo", test + " " + i.toString())
-                }
-                //li prende entrambi, controlla il metodo di display perchè stampa solo il primo
-                //TEST
-
                 withContext(Dispatchers.Main) {
                     if (userList.isEmpty()) {
                         fragmentManager.commit {
@@ -59,10 +49,8 @@ class SearchUserFragment(): Fragment() {
                             this.replace(R.id.SearchUserFragment, frag)
                         }
                     }
-
                     else {
-                        //TODO: fix errore che fa vedere solo un utente alla volta
-                        val adapter = UsersAdapter(requireActivity(), 0, userList) //check
+                        val adapter = UsersAdapter(requireActivity(), userList)
                         ListOfUsers.adapter = adapter
                         ListOfUsers.onItemClickListener =
                             AdapterView.OnItemClickListener { position, view, parent, id ->

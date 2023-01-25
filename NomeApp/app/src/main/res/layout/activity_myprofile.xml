@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.MyProfileActivity">
 
-    <!-- metti scrollview anziche linearlayout quando poi verranno inseriti eventi su profilepage-->
+    <!-- TODO: vedi perchè scrollano solo eventi, ricorda che view iniziale aveva Linear -> Scroll -> Linear ma non funzionava comunque -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,14 +47,6 @@
                 app:srcCompat="@drawable/empty_profile_picture" />
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/LogoutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
-
         <TextView
             android:id="@+id/MyProfile_Username"
             android:layout_width="match_parent"
@@ -83,6 +75,78 @@
                 android:layout_margin="10sp"/>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/LogoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_margin="10sp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/MyProfile_ViewFollowers"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/MyProfile_Followers"
+                    android:layout_width="173dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="Followers"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/MyProfile_ViewFollowing"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/MyProfile_Following"
+                    android:layout_width="173dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="Seguiti"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/MyProfile_EventList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/event_infobox" />
 
     </LinearLayout>
 

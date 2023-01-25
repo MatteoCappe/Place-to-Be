@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NomeApp</string>
+    <string name="app_name">Place To Be</string>
     <string name="permissionMessage">Concedi permessi</string>
     <string name="grantPermission">GRANT PERMISSION</string>
     <string name="hello_blank_fragment">Questo è un testo vuoto</string>

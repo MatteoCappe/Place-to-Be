@@ -27,6 +27,8 @@ class UpdateMyEventActivity: AppCompatActivity() {
     var eventID: Long? = null
     private var myCalendar : Calendar= Calendar.getInstance()
 
+    //TODO: aggiungi visualizzazione via
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_updateevent)
@@ -110,7 +112,7 @@ class UpdateMyEventActivity: AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
                         withContext(Dispatchers.IO) {
                             //momentaneo, poi si potranno avere più eventi con lo stesso nome
-                            alreadyused = titleAlreadyExists(view!!.context, Title.text.toString())
+                            //alreadyused = titleAlreadyExists(view!!.context, Title.text.toString())
                             user = getMyData(this@UpdateMyEventActivity)
 
                             withContext(Dispatchers.Main) {

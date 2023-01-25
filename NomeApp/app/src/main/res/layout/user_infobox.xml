@@ -5,9 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- vedi se gravity top da problemi -->
-    <!-- onClick UserBox -->
-
     <androidx.cardview.widget.CardView
         android:id="@+id/UserBox"
         android:layout_width="match_parent"
@@ -17,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="top"
             android:orientation="horizontal"
             tools:layout_editor_absoluteX="63dp"
@@ -34,10 +31,7 @@
                     android:id="@+id/UserBox_Photo"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/empty_profile_picture"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:src="@drawable/empty_profile_picture"/>
             </androidx.cardview.widget.CardView>
 
             <LinearLayout

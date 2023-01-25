@@ -29,18 +29,26 @@
             android:layout_marginTop="0dp" />
 
         <Button
-            android:id="@+id/ShowEventButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Evento 'Prova'"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
-
-        <Button
             android:id="@+id/SearchUserButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ricerca Utente"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <Button
+            android:id="@+id/SearchEventButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ricerca Evento"
+            android:layout_margin="10dp"
+            android:layout_marginTop="0dp" />
+
+        <Button
+            android:id="@+id/FavouritesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eventi Seguiti"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 

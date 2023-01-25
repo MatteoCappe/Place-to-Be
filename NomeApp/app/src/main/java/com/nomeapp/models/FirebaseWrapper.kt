@@ -122,7 +122,7 @@ class FirebaseStorageWrapper (private val context: Context) {
     }
 
     fun uploadEventImage (eventImage: Uri, eventID: String) {
-        storageRef.child("events/${eventID}.jpg").putFile(eventImage)
+        storageRef.child("events/${eventID}.jpg").putFile(eventImage) //TODO: check
     }
 
     fun downloadUserImage (userID: String): Uri? {
@@ -275,20 +275,19 @@ fun getUserByUsername(context: Context, userName: String): User {
     return user!!
 }
 
-//momentaneo??
-fun titleAlreadyExists(context: Context, Title: String): Boolean {
+fun getUserByID(context: Context, userID: String): User {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
-    var alreadyexists: Boolean = false
+    var user: User? = null
 
     GlobalScope.launch {
         FirebaseDbWrapper(context).readDbData(object :
             FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
-                for (users in snapshot.child("events").children) {
-                    if (users.child("title").getValue(String::class.java)!!.equals(Title)) {
-                        alreadyexists = true
+                for (users in snapshot.child("users").children) {
+                    if (users.child("userID").getValue(String::class.java)!!.equals(userID)) {
+                        user = snapshot.child("users").child(userID).getValue(User::class.java)
                         break
                     }
                 }
@@ -305,7 +304,8 @@ fun titleAlreadyExists(context: Context, Title: String): Boolean {
     lock.withLock {
         condition.await()
     }
-    return alreadyexists
+    Log.d("followers", "boh empty")
+    return user!!
 }
 
 fun getEventID(context: Context): Long {
@@ -342,7 +342,7 @@ fun getEventID(context: Context): Long {
     return eventID!!
 }
 
-fun getEventByTitle(context: Context, Title: String): Event {
+fun getEventByID(context: Context, EventID: Long): Event {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
     var event: Event? = null
@@ -353,9 +353,8 @@ fun getEventByTitle(context: Context, Title: String): Event {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
                 for (events in snapshot.child("events").children) {
-                    if (events.child("title").getValue(String::class.java)!!.equals(Title)) {
-                        val eventID: String = events.child("eventID").getValue(Long::class.java).toString()
-                        event = snapshot.child("events").child(eventID).getValue(Event::class.java)
+                    if (events.child("eventID").getValue(Long::class.java)!!.equals(EventID)) {
+                        event = snapshot.child("events").child(EventID.toString()).getValue(Event::class.java)
                         break
                     }
                 }
@@ -380,7 +379,7 @@ fun getUsersByUsernameStart (context: Context, userName: String): MutableList<Us
     val condition = lock.newCondition()
     var userList: MutableList<User> = ArrayList()
 
-    //check per non cercare se stessi?? (troppo uguale a quello di yasso)
+    //check per non cercare se stessi?? (troppo uguale a quello di yasso) //TODO: eeehhhh nascondi le prove
     val uid = FirebaseAuthWrapper(context).getUid()
 
     GlobalScope.launch {
@@ -408,6 +407,39 @@ fun getUsersByUsernameStart (context: Context, userName: String): MutableList<Us
         condition.await()
     }
     return userList
+
+}
+
+fun getEventsByTitleStart (context: Context, Title: String): MutableList<Event> {
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+    var eventList: MutableList<Event> = ArrayList()
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+                for (events in snapshot.child("events").children) {
+                    val event = events.getValue(Event::class.java)
+                    if (event!!.Title.startsWith(Title, true)) {
+                        eventList.add(event!!)
+                    }
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
+    return eventList
 
 }
 

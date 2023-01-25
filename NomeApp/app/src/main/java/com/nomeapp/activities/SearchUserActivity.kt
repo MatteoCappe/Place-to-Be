@@ -19,7 +19,6 @@ class SearchUserActivity: AppCompatActivity() {
         setContentView(R.layout.activity_searchuser)
 
         val SearchUserButton: Button = findViewById<View>(R.id.SearchUserButton) as Button
-        //TODO: search by nome e cognome, non se li metti nella cardview
 
         SearchUserButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -33,7 +32,6 @@ class SearchUserActivity: AppCompatActivity() {
                     fragmentManager.commit {
                         setReorderingAllowed(true)
                         val frag: Fragment = SearchUserFragment.newInstance(userName.text.toString())
-                        Log.d("users", "vaffanculo")
                         replace(R.id.SearchUserFragment, frag)
                     }
                 }
@@ -41,7 +39,5 @@ class SearchUserActivity: AppCompatActivity() {
         })
 
     }
-
-    //ricerca solo per username, magari si può mettere pure per nome e cognome idk
 
 }

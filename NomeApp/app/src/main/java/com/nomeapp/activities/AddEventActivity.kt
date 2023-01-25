@@ -34,8 +34,6 @@ class AddEventActivity : AppCompatActivity() {
         val Time: EditText = findViewById<View>(R.id.EventTime) as EditText
         val CreateEvent: Button = findViewById<View>(R.id.CreateEvent) as Button
 
-        var alreadyused: Boolean = false
-
         val DateListener =
             DatePickerDialog.OnDateSetListener { view, year, month, day ->
                 myCalendar.set(Calendar.YEAR, year)
@@ -77,7 +75,7 @@ class AddEventActivity : AppCompatActivity() {
 
         CreateEvent.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //check su data e ora?
+                //TODO: check su data e ora?
                 if (Title.text.isEmpty() || City.text.isEmpty() || Bio.text.isEmpty()) {
                     Title.setError("This is required")
                     City.setError("This is required")
@@ -92,36 +90,25 @@ class AddEventActivity : AppCompatActivity() {
                             //eventID, parte da 0 a ogni evento creato incrementa di 1
                             val eventID: Long = getEventID(this@AddEventActivity)
 
-                            //momentaneo, quando poi verrà implementata la ricerca gli eventi potranno avere lo
-                            //stesso titolo e se ce ne saranno due o più con titolo uguale mostrerà entrambi
-                            alreadyused = titleAlreadyExists(view!!.context, Title.text.toString())
-
                             withContext(Dispatchers.Main) {
-                                if (alreadyused) {
-                                    Title.setError("This title is already in use")
-                                }
-                                else {
-                                    val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
-                                    val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
+                                val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
+                                val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
 
-                                    val event = Event(
-                                        Title.text.toString(),
-                                        eventID,
-                                        EventDate,
-                                        City.text.toString(),
-                                        Bio.text.toString(),
-                                        user.UserID,
-                                        user.userName
-                                    )
+                                val event = Event(
+                                    Title.text.toString(),
+                                    eventID,
+                                    EventDate,
+                                    City.text.toString(),
+                                    Bio.text.toString(),
+                                    user.UserID,
+                                    user.userName
+                                )
 
-                                    //add evento a mutable list
-                                    user.Events!!.add(eventID.toString())
-                                    FirebaseDbWrapper(this@AddEventActivity).writeDbUser(user)
+                                //add evento a mutable list
+                                user.Events!!.add(eventID)
+                                FirebaseDbWrapper(this@AddEventActivity).writeDbUser(user)
 
-                                    //quando mostreremo eventi nel profilo dell'utente aggiungi nel db l'id dell'evento nella lista eventi del relativo creatore
-
-                                    FirebaseDbWrapper(this@AddEventActivity).writeDbEvent(event, eventID)
-                                }
+                                FirebaseDbWrapper(this@AddEventActivity).writeDbEvent(event, eventID)
                             }
                         }
                     }

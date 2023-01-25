@@ -3,6 +3,7 @@ package com.nomeapp.activities
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -28,8 +30,13 @@ import java.text.SimpleDateFormat
 
 class ShowEventActivity() : AppCompatActivity() {
     private var event: Event? = null
+    private var currentUser: User? = null
+    private var user: User? = null
     val context: Context = this //vedi se serve
     var image: Uri? = null
+    var userImage: Uri? = null
+
+    //TODO: aggiungi visualizzazione della via
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,16 +49,27 @@ class ShowEventActivity() : AppCompatActivity() {
         var Bio: String
         var userID: String
 
-        val ShowCreatorButton: Button = findViewById<View>(R.id.ShowCreatorButton) as Button
+        val searched = intent.getLongExtra("EventBoxID", 0)
 
-        val searched: String = "Prova" //questo dovrà essere inizializzato con una stringa
+        val FollowUnfollow: Button = findViewById<View>(R.id.ShowEvent_FollowUnfollowButton) as Button
+        val UserBox: CardView = findViewById<View>(R.id.ShowEvent_UserBox) as CardView
+
+        //val searched: String = "Prova" //questo dovrà essere inizializzato con una stringa
                                        //derivante dalla funzione "ricerca"
                                        //momentaneamente è inizializzato a "Prova" per far vedere come funzionerebbe
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
-                event = getEventByTitle(this@ShowEventActivity, searched)
+                event = getEventByID(this@ShowEventActivity, searched)
                 image = FirebaseStorageWrapper(this@ShowEventActivity).downloadEventImage(event!!.eventID.toString())
+                currentUser = getMyData(this@ShowEventActivity)
+                user = getUserByID(this@ShowEventActivity, event!!.userID)
+                userImage = FirebaseStorageWrapper(this@ShowEventActivity).downloadUserImage(event!!.userID)
+
+                if (currentUser!!.Favourites!!.contains(event!!.eventID)) {
+                    FollowUnfollow.text = getString(R.string.unfollow)
+                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
+                }
 
                 withContext(Dispatchers.Main) {
 
@@ -73,7 +91,17 @@ class ShowEventActivity() : AppCompatActivity() {
                         findViewById<ImageView>(R.id.ShowEvent_eventImage).setImageURI(image)
                     }
 
+                    //set user info in box
+                    findViewById<TextView>(R.id.ShowEvent_UserBox_Username).text = user!!.userName
+                    findViewById<TextView>(R.id.ShowEvent_UserBox_Name).text = user!!.Name
+                    findViewById<TextView>(R.id.ShowEvent_UserBox_Surname).text = user!!.Surname
+                    if (userImage != null) {
+                        findViewById<ImageView>(R.id.ShowEvent_UserBox_Photo).setImageURI(userImage)
+                    }
+
                     if (userID == FirebaseAuthWrapper(context).getUid()) {
+                        FollowUnfollow.setVisibility(View.GONE)
+                        UserBox.setVisibility(View.GONE)
                         fragmentManager.commit {
                             setReorderingAllowed(true)
                             val frag: Fragment = ShowMyEventFragment.newInstance(event!!.eventID)
@@ -81,19 +109,36 @@ class ShowEventActivity() : AppCompatActivity() {
                         }
                     }
 
-                    //questo al momento rimanderà al profilo prova, ma verrà poi inizializzato
-                    //in modo da rimandare al profilo di chi ha creato l'evento
-                    ShowCreatorButton.setOnClickListener(object : View.OnClickListener {
+                    UserBox.setOnClickListener(object: View.OnClickListener{
                         override fun onClick(view: View?) {
-                            if (userID == FirebaseAuthWrapper(context).getUid()) {
-                                val intent: Intent = Intent(context, MyProfileActivity::class.java)
-                                context.startActivity(intent)
+                            val UsernameFromUserBox = findViewById<TextView>(R.id.ShowEvent_UserBox_Username)
+                            val intent: Intent = Intent(context, ShowProfileActivity::class.java)
+                            intent.putExtra("UserBoxUsername", UsernameFromUserBox.text.toString())
+                            startActivity(intent)
+                        }
+                    })
+
+                    FollowUnfollow.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(view: View?) {
+                            if (FollowUnfollow.text == getString(R.string.unfollow)) {
+                                currentUser!!.Favourites!!.remove(searched)
+                                FirebaseDbWrapper(this@ShowEventActivity).writeDbUser(currentUser!!)
+
+                                FollowUnfollow.text = getString(R.string.follow)
+                                FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
+                            }
+                            else {
+                                //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
+                                //per rendere il tutto più leggibile
+                                if (!currentUser!!.Favourites!!.contains(searched)) {
+                                    currentUser!!.Favourites!!.add(searched)
+                                    FirebaseDbWrapper(this@ShowEventActivity).writeDbUser(currentUser!!)
+
+                                    FollowUnfollow.text = getString(R.string.unfollow)
+                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
+                                }
                             }
 
-                            else {
-                                val intent: Intent = Intent(context, ShowProfileActivity::class.java)
-                                context.startActivity(intent)
-                            }
                         }
                     })
 
