@@ -29,6 +29,19 @@ class UpdateProfileActivity: AppCompatActivity() {
         val UploadImage: Button = findViewById<View>(R.id.UpdateProfile_UploadImage) as Button
         val SaveChanges: Button = findViewById<View>(R.id.UpdateProfile_saveChanges) as Button
 
+        CoroutineScope(Dispatchers.Main + Job()).launch {
+            withContext(Dispatchers.IO) {
+                user = getMyData(this@UpdateProfileActivity)
+
+                withContext(Dispatchers.Main) {
+                    findViewById<EditText>(R.id.Update_userName).setText(user!!.userName)
+                    findViewById<EditText>(R.id.Update_Name).setText(user!!.Name)
+                    findViewById<EditText>(R.id.Update_Surname).setText(user!!.Surname)
+
+                }
+            }
+        }
+
         UploadImage.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 //TODO: immagine quadrata obbligatoria per profilo
@@ -47,10 +60,7 @@ class UpdateProfileActivity: AppCompatActivity() {
                 val Name: EditText = findViewById<View>(R.id.Update_Name) as EditText
                 val Surname: EditText = findViewById<View>(R.id.Update_Surname) as EditText
                 val userName: EditText = findViewById<View>(R.id.Update_userName) as EditText
-                var userID: String? = FirebaseAuthWrapper(this@UpdateProfileActivity).getUid()
 
-                //TODO: if campovuoto, rimettere info di prima, oppure
-                //TODO: mettere a schermo le info vecchie e poi modificarle
                 if (Name.text.isEmpty() || Surname.text.isEmpty() || userName.text.isEmpty()) {
                     Name.setError("This is required")
                     Surname.setError("This is required")
@@ -61,8 +71,6 @@ class UpdateProfileActivity: AppCompatActivity() {
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
                         withContext(Dispatchers.IO) {
-                            //TODO: i dati che vengono da getMyData verranno poi usati per mostrarli a schermo
-                            //TODO: prima di modificare le info del profilo
                             user = getMyData(this@UpdateProfileActivity)
                             alreadyused = usernameAlreadyExists(view!!.context, userName.text.toString())
 

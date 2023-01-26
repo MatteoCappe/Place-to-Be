@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert event title.."
+            android:hint="Inserisci il titolo dell'evento.."
             android:layout_margin="10dp"/>
 
         <EditText
@@ -25,7 +25,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert city.."
+            android:hint="Inserisci la città.."
+            android:inputType="textPostalAddress"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Inserisci l'indirizzo.."
+            android:inputType="textPostalAddress"
             android:layout_margin="10dp"/>
 
         <EditText
@@ -34,7 +44,7 @@
             android:layout_height="130dp"
             android:ems="10"
             android:inputType="text|textMultiLine"
-            android:hint="Insert the description of the event.."
+            android:hint="Inserisci la descrizione dell'evento.."
             android:layout_margin="10dp"/>
 
         <LinearLayout
@@ -52,7 +62,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="Insert event date..." />
+                android:hint="Inserisci la data..." />
 
             <EditText
                 android:id="@+id/EventTime"
@@ -64,7 +74,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="Insert event time..." />
+                android:hint="Insert l'ora..." />
 
         </LinearLayout>
 
@@ -74,7 +84,7 @@
             android:layout_height="48dp"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp"
-            android:text="Create event" />
+            android:text="Crea evento" />
 
     </LinearLayout>
 

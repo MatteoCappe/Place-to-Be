@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:hint="404 Event not found!! Start following some!"
+            android:hint="BRUH! Inizia a seguire degli eventi"
             android:gravity="center"
             android:layout_margin="10dp"/>
     </LinearLayout>

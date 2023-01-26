@@ -47,7 +47,7 @@
             android:id="@+id/ShowEvent_FollowUnfollowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Follow"
+            android:text="@string/follow"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp"/>
 
@@ -65,7 +65,12 @@
             android:ems="10"
             android:layout_margin="10dp"/>
 
-        <!-- aggiungi via -->
+        <EditText
+            android:id="@+id/ShowEvent_Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/ShowEvent_Bio"
@@ -167,8 +172,6 @@
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <!-- profilo che ha creato l'evento -->
 
         <!--
         <LinearLayout

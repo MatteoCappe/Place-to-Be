@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nomeapp.fragments.FollowingNotFoundFragment">
+    tools:context="com.nomeapp.activities.FollowingNotFoundActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:hint="BRUH, start following people!"
+            android:hint="BRUH! Inizia a seguire qualcuno!"
             android:gravity="center"
             android:layout_margin="10dp"/>
     </LinearLayout>

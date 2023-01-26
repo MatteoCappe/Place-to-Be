@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert name.."
+            android:hint="Inserisci nome.."
             android:layout_margin="10dp"/>
 
         <EditText
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert surname.."
+            android:hint="Inserisci cognome.."
             android:layout_margin="10dp"/>
 
         <EditText
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert username.."
+            android:hint="Inserisci uno username.."
             android:layout_margin="10dp"/>
 
         <EditText
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textEmailAddress"
-            android:hint="Insert email address.."
+            android:hint="Inserisci l'indirizzo email.."
             android:layout_margin="10dp"/>
 
         <EditText
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
-            android:hint="Insert password.."
+            android:hint="Inserisci password.."
             android:layout_margin="10dp"
             android:layout_marginTop="0dp"/>
 
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="Switch to Login"
+            android:text="Sei già registrato? Passa al Login"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -71,7 +71,7 @@
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
+            android:text="Registrati"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 

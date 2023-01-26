@@ -16,7 +16,7 @@
             android:id="@+id/UpdateEvent_UploadImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="upload image"
+            android:text="Carica una immagine"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert new event title.."
+            android:hint="Inserisci il nuovo titolo.."
             android:layout_margin="10dp"/>
 
         <EditText
@@ -33,10 +33,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert new city.."
+            android:hint="Inserisci la nuova città.."
+            android:inputType="textPostalAddress"
             android:layout_margin="10dp"/>
 
-        <!-- aggiungi via -->
+        <EditText
+            android:id="@+id/UpdateEvent_Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Inserisci il nuovo indirizzo.."
+            android:inputType="textPostalAddress"
+            android:layout_margin="10dp"/>
 
         <EditText
             android:id="@+id/UpdateEvent_Bio"
@@ -44,7 +52,7 @@
             android:layout_height="130dp"
             android:ems="10"
             android:inputType="text|textMultiLine"
-            android:hint="Insert new description of the event.."
+            android:hint="Inserisci la nuova descrizione dell'evento.."
             android:layout_margin="10dp"/>
 
         <LinearLayout
@@ -62,7 +70,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="Insert new event date..." />
+                android:hint="Inserisci la nuova data..." />
 
             <EditText
                 android:id="@+id/UpdateEvent_Time"
@@ -74,7 +82,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="Insert new event time..." />
+                android:hint="Inserisci il nuovo orario..." />
 
         </LinearLayout>
 
@@ -84,7 +92,7 @@
             android:layout_height="48dp"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp"
-            android:text="Update event" />
+            android:text="Aggiorna" />
 
     </LinearLayout>
 

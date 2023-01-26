@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.nomeapp.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.nomeapp.activities.MainActivity
 import com.nomeapp.activities.UpdateMyEventActivity
+import com.nomeapp.models.DeleteEvent
 
 class ShowMyEventFragment(): Fragment() {
     var eventID: Long? = null
@@ -24,7 +26,6 @@ class ShowMyEventFragment(): Fragment() {
 
         val EditEventButton: FloatingActionButton = view.findViewById(R.id.EventFragment_EditEventButton)
         val DeleteEventButton: FloatingActionButton = view.findViewById(R.id.EventFragment_DeleteEventButton)
-        //TODO: quando verrà aggiunto il modo di visualizzare più eventi dare la possibilità di eliminarli
 
         EditEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
@@ -34,11 +35,14 @@ class ShowMyEventFragment(): Fragment() {
             }
         })
 
-        /*DeleteEventButton.setOnClickListener(object : View.OnClickListener {
+        DeleteEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //delete event where eventID == id da FirebaseDbWrapper
+                DeleteEvent(this@ShowMyEventFragment.requireContext(), eventID!!)
+                val intent: Intent = Intent(context, MainActivity::class.java)
+                startActivity(intent)
+                //TODO: magari metti un toast che dice che è statp cancellato
             }
-        })*/
+        })
 
         return view
     }

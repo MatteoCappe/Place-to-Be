@@ -39,11 +39,27 @@ class UpdateMyEventActivity: AppCompatActivity() {
 
         val Title: EditText = findViewById<View>(R.id.UpdateEvent_Title) as EditText
         val City: EditText = findViewById<View>(R.id.UpdateEvent_City) as EditText
+        val Address: EditText = findViewById<View>(R.id.UpdateEvent_Address) as EditText
         val Bio: EditText = findViewById<View>(R.id.UpdateEvent_Bio) as EditText
         val Date: EditText = findViewById<View>(R.id.UpdateEvent_Date) as EditText
         val Time: EditText = findViewById<View>(R.id.UpdateEvent_Time) as EditText
         val UploadImage: Button = findViewById<View>(R.id.UpdateEvent_UploadImage) as Button
         val SaveChanges: Button = findViewById<View>(R.id.UpdateEvent_SaveChanges) as Button
+
+        CoroutineScope(Dispatchers.Main + Job()).launch {
+            withContext(Dispatchers.IO) {
+                event = getEventByID(this@UpdateMyEventActivity, eventID!!)
+
+                withContext(Dispatchers.Main) {
+                    Title.setText(event!!.Title)
+                    City.setText(event!!.City)
+                    Address.setText(event!!.Address)
+                    Bio.setText(event!!.Bio)
+                    Date.setText(event!!.formattedDate) //TODO: separa uno in  daa e uno in orae
+
+                }
+            }
+        }
 
         UploadImage.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
@@ -100,10 +116,10 @@ class UpdateMyEventActivity: AppCompatActivity() {
         SaveChanges.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
 
-                //TODO: if campo = vuoto, rimettere info di prima, oppure mettere a schermo le info vecchie e poi modificarle
                 if (Title.text.isEmpty() || City.text.isEmpty() || Bio.text.isEmpty()) {
                     Title.setError("This is required")
                     City.setError("This is required")
+                    Address.setError("This is required")
                     Bio.setError("This is required")
                     return
                 }
@@ -111,8 +127,6 @@ class UpdateMyEventActivity: AppCompatActivity() {
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
                         withContext(Dispatchers.IO) {
-                            //momentaneo, poi si potranno avere più eventi con lo stesso nome
-                            //alreadyused = titleAlreadyExists(view!!.context, Title.text.toString())
                             user = getMyData(this@UpdateMyEventActivity)
 
                             withContext(Dispatchers.Main) {
@@ -128,6 +142,7 @@ class UpdateMyEventActivity: AppCompatActivity() {
                                         eventID!!,
                                         EventDate,
                                         City.text.toString(),
+                                        Address.text.toString(),
                                         Bio.text.toString(),
                                         user!!.UserID,
                                         user!!.userName

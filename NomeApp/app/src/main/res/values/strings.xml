@@ -3,8 +3,8 @@
     <string name="permissionMessage">Concedi permessi</string>
     <string name="grantPermission">GRANT PERMISSION</string>
     <string name="hello_blank_fragment">Questo è un testo vuoto</string>
-    <string name="follow">Follow</string>
-    <string name="unfollow">Unfollow</string>
+    <string name="follow">Segui</string>
+    <string name="unfollow">Non seguire più</string>
     <!--
     <string name="MyProfile_UserName">placeholder</string>
     <string name="MyProfile_Name">placeholder</string>

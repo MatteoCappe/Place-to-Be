@@ -8,6 +8,7 @@ class Event() {
     var eventID: Long = 0
     var Date: Date = Date()
     var City: String = ""
+    var Address: String = ""
     var Bio: String = ""
     var userID: String = "" //id creatore
     var userName: String = "" //username creatore, se serve
@@ -18,6 +19,7 @@ class Event() {
         eventID: Long,
         Date: Date,
         City: String,
+        Address: String,
         Bio: String,
         userID: String,
         userName: String
@@ -27,6 +29,7 @@ class Event() {
         this.eventID = eventID
         this.Date = Date
         this.City = City
+        this.Address = Address
         this.Bio = Bio
         this.userID = userID
         this.userName = userName

@@ -18,7 +18,7 @@
             android:id="@+id/UpdateProfile_UploadImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="upload image"
+            android:text="Carica una immagine"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert new name.."
+            android:hint="Inserisci il nuovo nome.."
             android:layout_margin="10dp"/>
 
         <EditText
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert new surname.."
+            android:hint="Inserisci il nuovo cognome.."
             android:layout_margin="10dp"/>
 
         <EditText
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Insert new username.."
+            android:hint="Inserisci il nuovo username.."
             android:layout_margin="10dp"/>
 
         <!-- se abbiamo tempo mettere cambio di email e pw tramite FirebaseAuth
@@ -72,7 +72,7 @@
             android:id="@+id/UpdateProfile_saveChanges"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save changes"
+            android:text="Aggiorna il tuo profilo"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
         <!-- ticke anzichè button savechanges? -->

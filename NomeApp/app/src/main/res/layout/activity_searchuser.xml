@@ -19,13 +19,13 @@
             android:ems="10"
             android:inputType="text"
             android:layout_margin="30dp"
-            android:hint="Insert the username to search.."/>
+            android:hint="Inserisci lo username da cercare.."/>
 
         <Button
             android:id="@+id/SearchUserButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="Cerca"
             android:layout_margin="5dp"
             android:layout_marginTop="0dp" />
         <!-- magari mettere fab carino della lente di ingrandimento -->

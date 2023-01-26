@@ -443,6 +443,41 @@ fun getEventsByTitleStart (context: Context, Title: String): MutableList<Event> 
 
 }
 
+fun DeleteEvent (context: Context, EventID: Long) {
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                snapshot.child("events").child(EventID.toString()).ref.removeValue()
+
+                Log.d("onDataChangeCallback", "invoked")
+                for (users in snapshot.child("users").children) {
+                    val user = users.getValue(User::class.java)
+                    if (user!!.Events!!.contains(EventID)) {
+                        user!!.Events!!.remove(EventID)
+                    }
+                    if (user!!.Favourites!!.contains(EventID)) {
+                        user!!.Favourites!!.remove(EventID)
+                    }
+                }
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
+}
+
 //vedi per favorite, versione vecchissima probabilmente sbagliata
 /*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
     val lock = ReentrantLock()

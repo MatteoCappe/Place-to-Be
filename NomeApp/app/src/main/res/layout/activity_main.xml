@@ -16,7 +16,7 @@
             android:id="@+id/MyProfileButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My profile"
+            android:text="Il mio Profilo"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 
@@ -24,7 +24,7 @@
             android:id="@+id/AddEventButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add event"
+            android:text="Crea nuovo Evento"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
 

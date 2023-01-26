@@ -130,6 +130,9 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 user!!.Followers!!.remove(userID!!)
                                 FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
 
+                                //update numerino
+                                findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
+
                                 FollowUnfollow.text = getString(R.string.follow)
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
@@ -139,6 +142,9 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {
                                     currentUser!!.Following!!.add(user!!.UserID)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
+
+                                    //update numerino
+                                    findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
 
                                     FollowUnfollow.text = getString(R.string.unfollow)
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))

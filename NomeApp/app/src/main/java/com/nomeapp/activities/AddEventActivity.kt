@@ -29,6 +29,7 @@ class AddEventActivity : AppCompatActivity() {
 
         val Title: EditText = findViewById<View>(R.id.EventTitle) as EditText
         val City: EditText = findViewById<View>(R.id.City) as EditText
+        val Address: EditText = findViewById<View>(R.id.Address) as EditText
         val Bio: EditText = findViewById<View>(R.id.Bio) as EditText
         val Date: EditText = findViewById<View>(R.id.EventDate) as EditText
         val Time: EditText = findViewById<View>(R.id.EventTime) as EditText
@@ -99,6 +100,7 @@ class AddEventActivity : AppCompatActivity() {
                                     eventID,
                                     EventDate,
                                     City.text.toString(),
+                                    Address.text.toString(),
                                     Bio.text.toString(),
                                     user.UserID,
                                     user.userName

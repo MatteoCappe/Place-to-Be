@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:hint="404 Username not found!! Check your input!"
+            android:hint="404 Error, Username non trovato!! Controlla l'input!"
             android:gravity="center"
             android:layout_margin="10dp"/>
     </LinearLayout>

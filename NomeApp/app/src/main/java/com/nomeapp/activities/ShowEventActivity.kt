@@ -46,6 +46,7 @@ class ShowEventActivity() : AppCompatActivity() {
 
         var Title: String
         var City: String
+        var Address: String
         var Bio: String
         var userID: String
 
@@ -75,6 +76,7 @@ class ShowEventActivity() : AppCompatActivity() {
 
                     Title = event!!.Title
                     City = event!!.City
+                    Address = event!!.Address
                     Bio = event!!.Bio
                     userID = event!!.userID
 
@@ -85,6 +87,7 @@ class ShowEventActivity() : AppCompatActivity() {
                     //si potrebbe evitare di inizializzare variabili e cambiare direttamente la view
                     findViewById<TextView>(R.id.ShowEvent_Title).text = Title
                     findViewById<TextView>(R.id.ShowEvent_City).text = City
+                    findViewById<TextView>(R.id.ShowEvent_Address).text = Address
                     findViewById<TextView>(R.id.ShowEvent_Bio).text = Bio
                     findViewById<TextView>(R.id.ShowEvent_Date).text = dateFormatter.format(event!!.Date)
                     if (image != null) {
@@ -102,6 +105,7 @@ class ShowEventActivity() : AppCompatActivity() {
                     if (userID == FirebaseAuthWrapper(context).getUid()) {
                         FollowUnfollow.setVisibility(View.GONE)
                         UserBox.setVisibility(View.GONE)
+                        //TODO: quando metti mappa, toglia pulsante se mio
                         fragmentManager.commit {
                             setReorderingAllowed(true)
                             val frag: Fragment = ShowMyEventFragment.newInstance(event!!.eventID)
