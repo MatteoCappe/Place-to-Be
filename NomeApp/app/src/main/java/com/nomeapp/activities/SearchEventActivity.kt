@@ -68,6 +68,9 @@ class SearchEventActivity: AppCompatActivity() {
 
         //risolto issue che faceva crashare app dopo una determinata serie di comandi
         if (queryTitle != null || queryCity != null  || queryDate != null ) {
+            Log.d("gianni titolo", queryTitle!!)
+            Log.d("gianni città", queryCity!!)
+            Log.d("gianni data", queryDate!!)
             fragmentManager.commit {
                 setReorderingAllowed(true)
                 val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())

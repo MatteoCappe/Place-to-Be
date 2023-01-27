@@ -64,14 +64,12 @@ class UpdateMyEventActivity: AppCompatActivity() {
 
         UploadImage.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //TODO: immagine rettangolare obbligatoria per evento?
-                UploadImage.setOnClickListener {
-                    ImagePicker.with(this@UpdateMyEventActivity)
-                        .crop()
-                        .compress(1024)
-                        .maxResultSize(1080, 1080)
-                        .start()
-                }
+                //TODO: check doppio click
+                ImagePicker.with(this@UpdateMyEventActivity)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start()
             }
         })
 
@@ -115,6 +113,10 @@ class UpdateMyEventActivity: AppCompatActivity() {
         SaveChanges.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
 
+                val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                val convertedDate = DBDate.parse(event!!.formattedDate!!)
+                val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)
+
                 if (Title.text.isEmpty() || Address.text.isEmpty() || City.text.isEmpty()
                     || Bio.text.isEmpty() || Date.text.isEmpty() || Time.text.isEmpty()) {
                     Title.setError(getString(R.string.emptyError))
@@ -126,7 +128,8 @@ class UpdateMyEventActivity: AppCompatActivity() {
                     return
                 }
 
-                else if (myCalendar.timeInMillis < System.currentTimeMillis()) {
+                else if (myCalendar.timeInMillis < System.currentTimeMillis() &&
+                        !Date.text.toString().equals(formattedDate)) { //TODO: check
                     Date.setError("Non puoi scegliere un giorno già passato!")
                 }
 

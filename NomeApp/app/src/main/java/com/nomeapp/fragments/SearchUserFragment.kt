@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.nomeapp.R
-import com.nomeapp.activities.SearchUserActivity
 import com.nomeapp.activities.ShowProfileActivity
 import com.nomeapp.adapters.UsersAdapter
 import com.nomeapp.models.getUsersByUsernameStart

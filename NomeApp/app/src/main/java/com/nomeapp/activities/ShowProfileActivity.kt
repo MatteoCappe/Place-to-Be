@@ -44,6 +44,8 @@ class ShowProfileActivity(): AppCompatActivity() {
                     FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
 
                 val ArrayListEvents: ArrayList<Long> = ArrayList(user!!.Events!!)
+                val ArrayListFollowers: ArrayList<String> = ArrayList(user!!.Followers!!)
+                val ArrayListFollowing: ArrayList<String> = ArrayList(user!!.Following!!)
 
                 if (user!!.Events!!.size != 0) {
                     for (id in ArrayListEvents) {
@@ -69,9 +71,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                     findViewById<TextView>(R.id.ShowProfile_Followers).text = user!!.Followers!!.size.toString()
                     findViewById<TextView>(R.id.ShowProfile_Following).text = user!!.Following!!.size.toString()
 
-                    val ArrayListFollowers: ArrayList<String> = ArrayList(user!!.Followers!!)
-                    val ArrayListFollowing: ArrayList<String> = ArrayList(user!!.Following!!)
-
                     if (image != null) {
                         findViewById<ImageView>(R.id.ShowProfile_profileImage).setImageURI(image)
                     }
@@ -86,6 +85,52 @@ class ShowProfileActivity(): AppCompatActivity() {
                             intent.putExtra("EventBoxID", EventIDFromBox)
                             startActivity(intent)
                         }
+
+                    FollowUnfollow.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(view: View?) {
+                            if (FollowUnfollow.text == getString(R.string.unfollow)) {
+                                currentUser!!.Following!!.remove(user!!.UserID)
+                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
+
+                                user!!.Followers!!.remove(userID!!)
+                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
+
+                                //update numerino
+                                findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
+
+                                ArrayListFollowers.remove(userID!!)
+
+                                FollowUnfollow.text = getString(R.string.follow)
+                                FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
+                            }
+                            else {
+                                //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
+                                //per rendere il tutto più leggibile
+                                if (!currentUser!!.Following!!.contains(user!!.UserID)) {
+                                    currentUser!!.Following!!.add(user!!.UserID)
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
+
+                                    FollowUnfollow.text = getString(R.string.unfollow)
+                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
+                                }
+
+                                if (!user!!.Followers!!.contains(userID!!)) {
+                                    user!!.Followers!!.add(userID!!)
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
+
+                                    //update numerino
+                                    findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
+
+                                    ArrayListFollowers.add(userID!!)
+
+                                    FollowUnfollow.text = getString(R.string.unfollow)
+                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080")) //vedi
+                                    //tecnicamente inutile ripeterlo due volte ma vbb
+                                }
+                            }
+
+                        }
+                    })
 
                     Followers.setOnClickListener(object: View.OnClickListener {
                         override fun onClick(view: View?) {
@@ -112,52 +157,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 intent.putExtra("Following", ArrayListFollowing)
                                 context.startActivity(intent)
                             }
-                        }
-                    })
-
-                    //TODO: check perche se cerca -> apri profilo -> follow/unfollow
-                    //TODO: poi da problemi appena o riapro profilo o provo ad  aprirne un altro
-                    //TODO: guarda se si risolve con fragment
-
-                    FollowUnfollow.setOnClickListener(object : View.OnClickListener {
-                        override fun onClick(view: View?) {
-                            if (FollowUnfollow.text == getString(R.string.unfollow)) {
-                                currentUser!!.Following!!.remove(user!!.UserID)
-                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
-
-                                user!!.Followers!!.remove(userID!!)
-                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
-
-                                //update numerino
-                                findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
-
-                                FollowUnfollow.text = getString(R.string.follow)
-                                FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
-                            }
-                            else {
-                                //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
-                                //per rendere il tutto più leggibile
-                                if (!currentUser!!.Following!!.contains(user!!.UserID)) {
-                                    currentUser!!.Following!!.add(user!!.UserID)
-                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
-
-                                    FollowUnfollow.text = getString(R.string.unfollow)
-                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
-                                }
-
-                                if (!user!!.Followers!!.contains(userID!!)) {
-                                    user!!.Followers!!.add(userID!!)
-                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
-
-                                    //update numerino
-                                    findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
-
-                                    FollowUnfollow.text = getString(R.string.unfollow)
-                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080")) //vedi
-                                    //tecnicamente inutile ripeterlo due volte ma vbb
-                                }
-                            }
-
                         }
                     })
                 }

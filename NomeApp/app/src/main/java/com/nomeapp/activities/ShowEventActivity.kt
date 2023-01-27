@@ -75,7 +75,6 @@ class ShowEventActivity() : AppCompatActivity() {
                 }
 
                 withContext(Dispatchers.Main) {
-
                     Title = event!!.Title
                     City = event!!.City
                     Address = event!!.Address
@@ -83,8 +82,6 @@ class ShowEventActivity() : AppCompatActivity() {
                     userID = event!!.userID
 
                     val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
-
-                    Log.d("gianni", event!!.formattedDate!!)
 
                     val fragmentManager = supportFragmentManager
 
@@ -158,7 +155,7 @@ class ShowEventActivity() : AppCompatActivity() {
         queryTitle = intent.getStringExtra("queryTitle")
         queryCity = intent.getStringExtra("queryCity")
         queryDate = intent.getStringExtra("queryDate")
-        val intent: Intent = Intent(context, SearchUserActivity::class.java)
+        val intent: Intent = Intent(context, SearchEventActivity::class.java)
         intent.putExtra("queryTitle", queryTitle)
         intent.putExtra("queryCity", queryCity)
         intent.putExtra("queryDate", queryDate)

@@ -44,14 +44,12 @@ class UpdateProfileActivity: AppCompatActivity() {
 
         UploadImage.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //TODO: immagine quadrata obbligatoria per profilo
-                UploadImage.setOnClickListener {
-                    ImagePicker.with(this@UpdateProfileActivity)
-                        .crop()
-                        .compress(1024)
-                        .maxResultSize(1080, 1080)
-                        .start()
-                }
+                //TODO: check doppio click
+                ImagePicker.with(this@UpdateProfileActivity)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start()
             }
         })
 
@@ -75,7 +73,7 @@ class UpdateProfileActivity: AppCompatActivity() {
                             alreadyused = usernameAlreadyExists(view!!.context, userName.text.toString())
 
                             withContext(Dispatchers.Main) {
-                                if (alreadyused) {
+                                if (alreadyused && userName.text.toString() != user!!.userName) {
                                     userName.setError(getString(R.string.usernameError))
                                 }
                                 else {
@@ -108,7 +106,7 @@ class UpdateProfileActivity: AppCompatActivity() {
                 Toast.makeText(this, "Task cancelled", Toast.LENGTH_SHORT).show()
             }
         }
-        if(image != null) {
+        if (image != null) {
             FirebaseStorageWrapper(this@UpdateProfileActivity).uploadUserImage(image!!)
         }
     }

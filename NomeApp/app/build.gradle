@@ -54,8 +54,8 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
 
     //image picker
-    implementation 'androidx.activity:activity-ktx:1.6.1' //forse si possono togliere
-    implementation 'androidx.fragment:fragment-ktx:1.5.5' //forse si possono togliere
+    implementation 'androidx.activity:activity-ktx:1.6.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.5'
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     // implementation 'androidx.work:work-runtime:2.4.0'
@@ -76,4 +76,7 @@ dependencies {
 
     //Firebase storage
     implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
+
+    //debug
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
 }

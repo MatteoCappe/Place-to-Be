@@ -5,7 +5,7 @@
     <string name="hello_blank_fragment">Questo è un testo vuoto</string>
     <string name="follow">Segui</string>
     <string name="unfollow">Non seguire più</string>
-    <string name="emptyError">Questo campo deve essere compilato!</string>
+    <string name="emptyError">Tutti i campi devono essere compilati!</string>
     <string name="eventSearchError">Compila almeno uno di questi campi!</string>
     <string name="usernameError">Questo username è già in uso</string>
     <!--
