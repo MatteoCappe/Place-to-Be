@@ -2,6 +2,7 @@ package com.nomeapp.activities
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -28,6 +29,10 @@ class SearchEventActivity: AppCompatActivity() {
         val ClearDate: Button = findViewById<View>(R.id.ClearDate) as Button
         //TODO: search by città e data!!!!
         //TODO: fix problme come fatto per cerca user
+
+        val queryTitle = intent.getStringExtra("queryTitle")
+        val queryCity = intent.getStringExtra("queryCity")
+        val queryDate = intent.getStringExtra("queryDate")
 
         val Title: EditText = findViewById<View>(R.id.searchTitle) as EditText
         val City: EditText = findViewById<View>(R.id.searchCity) as EditText
@@ -61,6 +66,34 @@ class SearchEventActivity: AppCompatActivity() {
             }
         })
 
+        //risolto issue che faceva crashare app dopo una determinata serie di comandi
+        if (queryTitle != null || queryCity != null  || queryDate != null ) {
+            fragmentManager.commit {
+                setReorderingAllowed(true)
+                val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())
+                replace(R.id.SearchEventFragment, frag)
+            }
+            //copiato codice da sotto, proprio per risolvere l'errore
+            SearchEventButton.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+
+                    if (Title.text.isEmpty() && City.text.isEmpty() && Date.text.isEmpty()) {
+                        Title.setError(getString(R.string.eventSearchError))
+                        City.setError(getString(R.string.eventSearchError))
+                        Date.setError(getString(R.string.eventSearchError))
+                    }
+
+                    else {
+                        fragmentManager.commit {
+                            setReorderingAllowed(true)
+                            val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())
+                            replace(R.id.SearchEventFragment, frag)
+                        }
+                    }
+                }
+            })
+        }
+
         SearchEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
@@ -71,9 +104,6 @@ class SearchEventActivity: AppCompatActivity() {
                 }
 
                 else {
-                    Log.d("gianni", Title.text.toString())
-                    Log.d("gianni", City.text.toString())
-                    Log.d("gianni", Date.text.toString())
                     fragmentManager.commit {
                         setReorderingAllowed(true)
                         val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())
@@ -82,7 +112,11 @@ class SearchEventActivity: AppCompatActivity() {
                 }
             }
         })
+    }
 
+    override fun onBackPressed() {
+        val intent: Intent = Intent(this@SearchEventActivity, MainActivity::class.java)
+        startActivity(intent)
     }
 
 }

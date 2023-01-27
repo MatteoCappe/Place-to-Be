@@ -32,8 +32,6 @@ class SearchUserFragment(): Fragment() {
     override fun onCreateView (inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        //TODO: quando si torna indietro da visualizzazion profilo fai una nuova ricerca
-
         val view: View = inflater.inflate(R.layout.fragment_searchuser, container, false)
         val fragmentManager = requireActivity().supportFragmentManager
 
