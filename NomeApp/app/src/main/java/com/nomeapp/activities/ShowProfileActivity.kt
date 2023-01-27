@@ -52,7 +52,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                     }
                 }
 
-                //TODO: check che funzioni davvero quando si fa lista follower
                 if (user!!.UserID == userID!!) {
                     val intent: Intent = Intent(context, MyProfileActivity::class.java)
                     startActivity(intent)
