@@ -378,8 +378,6 @@ fun getUsersByUsernameStart (context: Context, userName: String): MutableList<Us
     val lock = ReentrantLock()
     val condition = lock.newCondition()
     var userList: MutableList<User> = ArrayList()
-
-    //check per non cercare se stessi?? (troppo uguale a quello di yasso) //TODO: eeehhhh nascondi le prove
     val uid = FirebaseAuthWrapper(context).getUid()
 
     GlobalScope.launch {
@@ -458,9 +456,11 @@ fun DeleteEvent (context: Context, EventID: Long) {
                     val user = users.getValue(User::class.java)
                     if (user!!.Events!!.contains(EventID)) {
                         user!!.Events!!.remove(EventID)
+                        FirebaseDbWrapper(context).writeDbUser(user)
                     }
                     if (user!!.Favourites!!.contains(EventID)) {
                         user!!.Favourites!!.remove(EventID)
+                        FirebaseDbWrapper(context).writeDbShownUser(user)
                     }
                 }
                 lock.withLock {
@@ -477,62 +477,3 @@ fun DeleteEvent (context: Context, EventID: Long) {
         condition.await()
     }
 }
-
-//vedi per favorite, versione vecchissima probabilmente sbagliata
-/*fun mergeMyFavouritesWithFirebaseInfo (context: Context, favourites: List<MyFavourites>) {
-    val lock = ReentrantLock()
-    val condition = lock.newCondition()
-
-    val mapFirebaseFavourites = HashMap<Long, FirebaseDbWrapper.Companion.FirebaseFavourite>()
-    GlobalScope.launch{
-        FirebaseDbWrapper(context).readDbData(object : FirebaseDbWrapper.Companion.FirebaseReadCallback {
-            override fun onDataChangeCallback(snapshot: DataSnapshot) {
-                Log.d("onDataChangeCallback", "invoked")
-
-                for (child in snapshot.children){
-                    val firebaseEvent : FirebaseDbWrapper.Companion.FirebaseFavourite = child.getValue(FirebaseDbWrapper.Companion.FirebaseFavourite::class.java)!!
-                    mapFirebaseFavourites.put(firebaseFavourite.id, firebaseFavourite)
-                }
-
-                lock.withLock {
-                    condition.signal()
-                }
-            }
-
-            override fun onCancelledCallback(error: DatabaseError) {
-                Log.d("onCancelledCallback", "invoked")
-            }
-        })
-    }
-
-    lock.withLock {
-        condition.await()
-    }
-
-    //for (myEvent : MyEvent in events) {
-        //myEvent.isWeather = mapFirebaseEvents[myEvent.id]?.weather ?: myEvent.isWeather
-        //myEvent.location = mapFirebaseEvents[myEvent.id]?.location ?: myEvent.location
-    //}
-
-}
-
-    companion object {
-        class FirebaseFavourite() {
-            var id : Long = -1 //?
-            var luogo: String = ""
-            var data: ...
-            var descrizione: String = ""
-            var IdProfile: ...
-            //lista Id dei partrecipanti ??
-
-            constructor(id: Long, weather: Boolean, location: String) : this() {
-                this.id = id
-                this.luogo = location
-                this.descrizione = descrizione
-                this.IdProfile = IdProfile
-                this.data = data
-                //lista Id dei partrecipanti ??
-
-            }
-        }
-}*/

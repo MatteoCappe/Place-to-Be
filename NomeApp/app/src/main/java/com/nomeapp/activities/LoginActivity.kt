@@ -18,7 +18,6 @@ import com.nomeapp.models.FirebaseAuthWrapper
 
 class LoginActivity : AppCompatActivity() {
     val context : Context = this
-    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +37,8 @@ class LoginActivity : AppCompatActivity() {
                 val password: EditText = findViewById<View>(R.id.userPassword) as EditText
 
                 if (email.text.isEmpty() || password.text.isEmpty()) {
-                    email.setError("This is required")
-                    password.setError("This is required")
+                    email.setError(getString(R.string.emptyError))
+                    password.setError(getString(R.string.emptyError))
                     return
                 }
 

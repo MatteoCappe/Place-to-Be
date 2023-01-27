@@ -43,7 +43,7 @@ class AddEventActivity : AppCompatActivity() {
 
                 //TODO: mettere un check in modo che la data inserita per l'evento sia maggiore di quella attuale
 
-                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US) //vedi se il formato della data va bene quando si aggiungerà ricerca
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US) //vedi se il formato della data va bene quando si aggiungerà ricerca
                 Date.setText(dateFormat.format(this.myCalendar.time))
             }
 
@@ -76,13 +76,19 @@ class AddEventActivity : AppCompatActivity() {
 
         CreateEvent.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //TODO: check su data e ora?
-                if (Title.text.isEmpty() || City.text.isEmpty() || Bio.text.isEmpty()) {
-                    Title.setError("This is required")
-                    City.setError("This is required")
-                    Bio.setError("This is required")
+                if (Title.text.isEmpty() || City.text.isEmpty() || Address.text.isEmpty()
+                    || Bio.text.isEmpty() || Date.text.isEmpty() || Time.text.isEmpty()) {
+                    Title.setError(getString(R.string.emptyError))
+                    City.setError(getString(R.string.emptyError))
+                    Address.setError(getString(R.string.emptyError))
+                    Bio.setError(getString(R.string.emptyError))
+                    Date.setError(getString(R.string.emptyError))
+                    Time.setError(getString(R.string.emptyError))
                     return
                 }
+                else if (myCalendar.timeInMillis < System.currentTimeMillis()) {
+                    Date.setError("Non puoi scegliere un giorno già passato!")
+                } //TODO: check bene
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
                         withContext(Dispatchers.IO) {
@@ -92,7 +98,7 @@ class AddEventActivity : AppCompatActivity() {
                             val eventID: Long = getEventID(this@AddEventActivity)
 
                             withContext(Dispatchers.Main) {
-                                val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
+                                val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
                                 val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
 
                                 val event = Event(
@@ -106,7 +112,6 @@ class AddEventActivity : AppCompatActivity() {
                                     user.userName
                                 )
 
-                                //add evento a mutable list
                                 user.Events!!.add(eventID)
                                 FirebaseDbWrapper(this@AddEventActivity).writeDbUser(user)
 

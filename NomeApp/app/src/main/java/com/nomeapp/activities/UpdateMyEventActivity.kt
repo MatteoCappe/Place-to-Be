@@ -27,15 +27,11 @@ class UpdateMyEventActivity: AppCompatActivity() {
     var eventID: Long? = null
     private var myCalendar : Calendar= Calendar.getInstance()
 
-    //TODO: aggiungi visualizzazione via
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_updateevent)
 
         eventID = intent.getLongExtra("eventID", 0)
-
-        var alreadyused: Boolean = false
 
         val Title: EditText = findViewById<View>(R.id.UpdateEvent_Title) as EditText
         val City: EditText = findViewById<View>(R.id.UpdateEvent_City) as EditText
@@ -50,13 +46,18 @@ class UpdateMyEventActivity: AppCompatActivity() {
             withContext(Dispatchers.IO) {
                 event = getEventByID(this@UpdateMyEventActivity, eventID!!)
 
+                val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                val convertedDate = DBDate.parse(event!!.formattedDate!!)
+                val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)
+                val formattedTime = SimpleDateFormat("HH:mm").format(convertedDate)
+
                 withContext(Dispatchers.Main) {
                     Title.setText(event!!.Title)
                     City.setText(event!!.City)
                     Address.setText(event!!.Address)
                     Bio.setText(event!!.Bio)
-                    Date.setText(event!!.formattedDate) //TODO: separa uno in  daa e uno in orae
-
+                    Date.setText(formattedDate)
+                    Time.setText(formattedTime)
                 }
             }
         }
@@ -80,9 +81,7 @@ class UpdateMyEventActivity: AppCompatActivity() {
                 myCalendar.set(Calendar.MONTH, month)
                 myCalendar.set(Calendar.DAY_OF_MONTH, day)
 
-                //TODO: mettere un check in modo che la data inserita per l'evento sia maggiore di quella attuale
-
-                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US) //vedi se il formato della data va bene quando si fa la ricerca
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
                 Date.setText(dateFormat.format(myCalendar.time))
             }
 
@@ -116,13 +115,20 @@ class UpdateMyEventActivity: AppCompatActivity() {
         SaveChanges.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
 
-                if (Title.text.isEmpty() || City.text.isEmpty() || Bio.text.isEmpty()) {
-                    Title.setError("This is required")
-                    City.setError("This is required")
-                    Address.setError("This is required")
-                    Bio.setError("This is required")
+                if (Title.text.isEmpty() || Address.text.isEmpty() || City.text.isEmpty()
+                    || Bio.text.isEmpty() || Date.text.isEmpty() || Time.text.isEmpty()) {
+                    Title.setError(getString(R.string.emptyError))
+                    City.setError(getString(R.string.emptyError))
+                    Address.setError(getString(R.string.emptyError))
+                    Bio.setError(getString(R.string.emptyError))
+                    Date.setError(getString(R.string.emptyError))
+                    Time.setError(getString(R.string.emptyError))
                     return
                 }
+
+                else if (myCalendar.timeInMillis < System.currentTimeMillis()) {
+                    Date.setError("Non puoi scegliere un giorno già passato!")
+                } //TODO: check bene
 
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
@@ -130,29 +136,24 @@ class UpdateMyEventActivity: AppCompatActivity() {
                             user = getMyData(this@UpdateMyEventActivity)
 
                             withContext(Dispatchers.Main) {
-                                if (alreadyused) {
-                                    Title.setError("This title is already in use")
-                                }
-                                else {
-                                    val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
-                                    val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
+                                val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                                val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
 
-                                    val event = Event(
-                                        Title.text.toString(),
-                                        eventID!!,
-                                        EventDate,
-                                        City.text.toString(),
-                                        Address.text.toString(),
-                                        Bio.text.toString(),
-                                        user!!.UserID,
-                                        user!!.userName
-                                    )
+                                val event = Event(
+                                    Title.text.toString(),
+                                    eventID!!,
+                                    EventDate!!,
+                                    City.text.toString(),
+                                    Address.text.toString(),
+                                    Bio.text.toString(),
+                                    user!!.UserID,
+                                    user!!.userName
+                                )
 
-                                    FirebaseDbWrapper(this@UpdateMyEventActivity).writeDbEvent(event, eventID!!)
+                                FirebaseDbWrapper(this@UpdateMyEventActivity).writeDbEvent(event, eventID!!)
 
-                                    val returnToProfile: Intent = Intent(context, MyProfileActivity::class.java)
-                                    context.startActivity(returnToProfile)
-                                }
+                                val returnToProfile: Intent = Intent(context, MyProfileActivity::class.java)
+                                context.startActivity(returnToProfile)
                             }
                         }
                     }
@@ -174,7 +175,7 @@ class UpdateMyEventActivity: AppCompatActivity() {
                 Toast.makeText(this, "Task cancelled", Toast.LENGTH_SHORT).show()
             }
         }
-        if(image != null) {
+        if (image != null) {
             FirebaseStorageWrapper(this@UpdateMyEventActivity).uploadEventImage(image!!, eventID!!.toString())
         }
     }

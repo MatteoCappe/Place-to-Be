@@ -65,7 +65,7 @@
             android:ems="10"
             android:layout_margin="10dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/ShowEvent_Address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/showMyEventFragment"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom" />
 
         <!-- TODO: per mettere fragment in fondo a schermo, mettere fragment dentro nuovo linear layout e settare quello con bottom -->

@@ -4,7 +4,6 @@ package com.nomeapp.activities
 //no possibilità di caricare foto al momento della registrazione siccome queste vengono salvate per userID (per comodità)
 //che al momento della registrazione risulta ancora sconosciuto, si può caricare solo da updateProfileActivity
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,18 +11,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.core.app.ActivityCompat
 import com.example.nomeapp.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
 
 
 class RegisterActivity : AppCompatActivity() {
     val context: Context = this
-    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +42,11 @@ class RegisterActivity : AppCompatActivity() {
                 val password: EditText = findViewById<View>(R.id.userPassword) as EditText
 
                 if (Name.text.isEmpty() || Surname.text.isEmpty() || userName.text.isEmpty() || email.text.isEmpty() || password.text.isEmpty()) {
-                    Name.setError("This is required")
-                    Surname.setError("This is required")
-                    userName.setError("This is required")
-                    email.setError("This is required")
-                    password.setError("This is required")
+                    Name.setError(getString(R.string.emptyError))
+                    Surname.setError(getString(R.string.emptyError))
+                    userName.setError(getString(R.string.emptyError))
+                    email.setError(getString(R.string.emptyError))
+                    password.setError(getString(R.string.emptyError))
                     return
                 }
 
@@ -62,7 +56,7 @@ class RegisterActivity : AppCompatActivity() {
                             alreadyused = usernameAlreadyExists(view!!.context, userName.text.toString())
                             withContext(Dispatchers.Main) {
                                 if (alreadyused) {
-                                    userName.setError("This username is already in use")
+                                    userName.setError(getString(R.string.usernameError))
                                 }
                                 else {
                                     //initialize mutable list of created events

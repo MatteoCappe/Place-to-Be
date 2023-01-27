@@ -62,9 +62,9 @@ class UpdateProfileActivity: AppCompatActivity() {
                 val userName: EditText = findViewById<View>(R.id.Update_userName) as EditText
 
                 if (Name.text.isEmpty() || Surname.text.isEmpty() || userName.text.isEmpty()) {
-                    Name.setError("This is required")
-                    Surname.setError("This is required")
-                    userName.setError("This is required")
+                    Name.setError(getString(R.string.emptyError))
+                    Surname.setError(getString(R.string.emptyError))
+                    userName.setError(getString(R.string.emptyError))
                     return
                 }
 
@@ -76,7 +76,7 @@ class UpdateProfileActivity: AppCompatActivity() {
 
                             withContext(Dispatchers.Main) {
                                 if (alreadyused) {
-                                    userName.setError("This username is already in use")
+                                    userName.setError(getString(R.string.usernameError))
                                 }
                                 else {
                                     user!!.userName = userName.text.toString()

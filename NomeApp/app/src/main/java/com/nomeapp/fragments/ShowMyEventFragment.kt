@@ -12,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nomeapp.activities.MainActivity
 import com.nomeapp.activities.UpdateMyEventActivity
 import com.nomeapp.models.DeleteEvent
+import kotlinx.coroutines.*
 
 class ShowMyEventFragment(): Fragment() {
     var eventID: Long? = null
@@ -37,10 +38,17 @@ class ShowMyEventFragment(): Fragment() {
 
         DeleteEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                DeleteEvent(this@ShowMyEventFragment.requireContext(), eventID!!)
-                val intent: Intent = Intent(context, MainActivity::class.java)
-                startActivity(intent)
-                //TODO: magari metti un toast che dice che è statp cancellato
+                CoroutineScope(Dispatchers.Main + Job()).launch {
+                    withContext(Dispatchers.IO) {
+                        DeleteEvent(this@ShowMyEventFragment.requireContext(), eventID!!)
+
+                        withContext(Dispatchers.Main) {
+                            //TODO: metti un toast
+                            val intent: Intent = Intent(context, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
             }
         })
 

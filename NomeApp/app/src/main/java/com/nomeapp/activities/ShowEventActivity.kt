@@ -32,11 +32,9 @@ class ShowEventActivity() : AppCompatActivity() {
     private var event: Event? = null
     private var currentUser: User? = null
     private var user: User? = null
-    val context: Context = this //vedi se serve
+    val context: Context = this
     var image: Uri? = null
     var userImage: Uri? = null
-
-    //TODO: aggiungi visualizzazione della via
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,11 +78,12 @@ class ShowEventActivity() : AppCompatActivity() {
                     Bio = event!!.Bio
                     userID = event!!.userID
 
-                    val dateFormatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
+                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+
+                    Log.d("gianni", event!!.formattedDate!!)
 
                     val fragmentManager = supportFragmentManager
 
-                    //si potrebbe evitare di inizializzare variabili e cambiare direttamente la view
                     findViewById<TextView>(R.id.ShowEvent_Title).text = Title
                     findViewById<TextView>(R.id.ShowEvent_City).text = City
                     findViewById<TextView>(R.id.ShowEvent_Address).text = Address
@@ -134,13 +133,13 @@ class ShowEventActivity() : AppCompatActivity() {
                             else {
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
-                                if (!currentUser!!.Favourites!!.contains(searched)) {
-                                    currentUser!!.Favourites!!.add(searched)
-                                    FirebaseDbWrapper(this@ShowEventActivity).writeDbUser(currentUser!!)
+                                //if (!currentUser!!.Favourites!!.contains(searched)) {
+                                currentUser!!.Favourites!!.add(searched)
+                                FirebaseDbWrapper(this@ShowEventActivity).writeDbUser(currentUser!!)
 
-                                    FollowUnfollow.text = getString(R.string.unfollow)
-                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
-                                }
+                                FollowUnfollow.text = getString(R.string.unfollow)
+                                FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
+                                //}
                             }
 
                         }

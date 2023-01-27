@@ -5,6 +5,8 @@
     <string name="hello_blank_fragment">Questo è un testo vuoto</string>
     <string name="follow">Segui</string>
     <string name="unfollow">Non seguire più</string>
+    <string name="emptyError">Questo campo deve essere compilato!</string>
+    <string name="usernameError">Questo username è già in uso</string>
     <!--
     <string name="MyProfile_UserName">placeholder</string>
     <string name="MyProfile_Name">placeholder</string>
