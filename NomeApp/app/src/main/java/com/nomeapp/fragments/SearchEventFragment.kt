@@ -14,17 +14,29 @@ import androidx.fragment.app.commit
 import com.example.nomeapp.R
 import com.nomeapp.activities.ShowEventActivity
 import com.nomeapp.adapters.EventsAdapter
-import com.nomeapp.models.getEventsByTitleStart
+import com.nomeapp.models.SearchEvent
+import com.nomeapp.models.SearchEvent
 import kotlinx.coroutines.*
 
 class SearchEventFragment(): Fragment() {
     var Title: String? = null
-    //TODO: metti città e data
+    var City: String? = null
+    var Date: String? = null
+    //TODO: checkbox per mostrare e nascondere campi di ricerca
+    //search by: title, city, date, con tutte le possibili combinazioni
+
+    //TODO: risolvi ricerca come per users
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.getString("Title")?.let {
             Title = it
+        }
+        arguments?.getString("City")?.let {
+            City = it
+        }
+        arguments?.getString("Date")?.let {
+            Date = it
         }
     }
 
@@ -38,7 +50,7 @@ class SearchEventFragment(): Fragment() {
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
-                val eventList = getEventsByTitleStart(this@SearchEventFragment.requireContext(), Title!!)
+                val eventList = SearchEvent(this@SearchEventFragment.requireContext(), Title!!, City!!, Date!!)
 
                 withContext(Dispatchers.Main) {
                     if (eventList.isEmpty()) {
@@ -55,6 +67,7 @@ class SearchEventFragment(): Fragment() {
                             AdapterView.OnItemClickListener { position, view, parent, id ->
                                 val EventIDFromBox: Long =
                                     view.findViewById<TextView>(R.id.EventBox_ID).text.toString().toLong()
+                                //TODO: check sulla data dell'evento prima di show
                                 val intent: Intent = Intent(context, ShowEventActivity::class.java)
                                 intent.putExtra("EventBoxID", EventIDFromBox)
                                 startActivity(intent)
@@ -69,12 +82,12 @@ class SearchEventFragment(): Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance (Title: String) = SearchEventFragment().apply {
+        fun newInstance (Title: String, City: String, Date: String) = SearchEventFragment().apply {
             arguments = Bundle().apply {
                 putString("Title", Title)
+                putString("City", City)
+                putString("Date", Date)
             }
         }
     }
-
-    //TODO: rimuovi implemenazioni inutili
 }

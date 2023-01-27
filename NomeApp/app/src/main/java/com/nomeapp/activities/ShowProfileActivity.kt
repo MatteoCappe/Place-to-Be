@@ -19,10 +19,9 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var event: Event? = null
     var image: Uri? = null
     var eventList: MutableList<Event>? = arrayListOf()
+    var query: String? = null
 
     val context: Context = this
-
-    //Show
 
     //TODO: vedi se esiste un modo per velocizzare lettura, etichette per le varie informazioni
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,9 +142,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     currentUser!!.Following!!.add(user!!.UserID)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
 
-                                    //update numerino
-                                    findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
-
                                     FollowUnfollow.text = getString(R.string.unfollow)
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                 }
@@ -153,6 +149,9 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 if (!user!!.Followers!!.contains(userID!!)) {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
+
+                                    //update numerino
+                                    findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
 
                                     FollowUnfollow.text = getString(R.string.unfollow)
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080")) //vedi
@@ -165,6 +164,13 @@ class ShowProfileActivity(): AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        query = intent.getStringExtra("query")
+        val intent: Intent = Intent(context, SearchUserActivity::class.java)
+        intent.putExtra("query", query)
+        startActivity(intent)
     }
 
 }

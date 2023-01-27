@@ -13,9 +13,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.nomeapp.R
+import com.nomeapp.activities.SearchUserActivity
 import com.nomeapp.activities.ShowProfileActivity
 import com.nomeapp.adapters.UsersAdapter
-import com.nomeapp.models.User
 import com.nomeapp.models.getUsersByUsernameStart
 import kotlinx.coroutines.*
 
@@ -31,6 +31,8 @@ class SearchUserFragment(): Fragment() {
 
     override fun onCreateView (inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        //TODO: quando si torna indietro da visualizzazion profilo fai una nuova ricerca
 
         val view: View = inflater.inflate(R.layout.fragment_searchuser, container, false)
         val fragmentManager = requireActivity().supportFragmentManager
@@ -57,6 +59,7 @@ class SearchUserFragment(): Fragment() {
                                 val UsernameFromUserBox = view.findViewById<TextView>(R.id.UserBox_Username)
                                 val intent: Intent = Intent(context, ShowProfileActivity::class.java)
                                 intent.putExtra("UserBoxUsername", UsernameFromUserBox.text.toString())
+                                intent.putExtra("query", userName)
                                 startActivity(intent)
                             }
                     }

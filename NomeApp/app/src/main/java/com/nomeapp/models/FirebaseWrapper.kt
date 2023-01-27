@@ -16,7 +16,10 @@ import com.nomeapp.activities.SplashActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.locks.ReentrantLock
+import kotlin.collections.ArrayList
 import kotlin.concurrent.withLock
 
 class FirebaseAuthWrapper(private val context: Context) {
@@ -304,7 +307,6 @@ fun getUserByID(context: Context, userID: String): User {
     lock.withLock {
         condition.await()
     }
-    Log.d("followers", "boh empty")
     return user!!
 }
 
@@ -408,10 +410,13 @@ fun getUsersByUsernameStart (context: Context, userName: String): MutableList<Us
 
 }
 
-fun getEventsByTitleStart (context: Context, Title: String): MutableList<Event> {
+fun SearchEvent (context: Context, Title: String, City: String, Date: String): MutableList<Event> {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
     var eventList: MutableList<Event> = ArrayList()
+
+    //TODO: check data db > data attuale prima du show
+    //se si rompe è per l'implementazine del check sulla data
 
     GlobalScope.launch {
         FirebaseDbWrapper(context).readDbData(object :
@@ -420,8 +425,59 @@ fun getEventsByTitleStart (context: Context, Title: String): MutableList<Event> 
                 Log.d("onDataChangeCallback", "invoked")
                 for (events in snapshot.child("events").children) {
                     val event = events.getValue(Event::class.java)
-                    if (event!!.Title.startsWith(Title, true)) {
-                        eventList.add(event!!)
+
+                    if (Title.length > 0 && City.length == 0 && Date.length == 0) {
+                        if (event!!.Title.startsWith(Title, true)) {
+                            eventList.add(event!!)
+                        }
+                    }
+
+                    else if (City.length > 0 && Title.length == 0 && Date.length == 0) {
+                        if (event!!.City.equals(City)) {
+                            eventList.add(event!!)
+                        }
+                    }
+
+                    else if (Date.length > 0 && Title.length == 0 && City.length == 0) {
+                        val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                        val convertedDate = DBDate.parse(event!!.formattedDate!!)
+                        val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)
+                        if (Date.equals(formattedDate) ) {
+                            eventList.add(event!!)
+                        }
+                    }
+
+                    else if(Title.length > 0 && City.length > 0 && Date.length == 0) {
+                        if (event!!.Title.startsWith(Title, true) && event!!.City.equals(City)) {
+                            eventList.add(event!!)
+                        }
+                    }
+
+                    else if(Title.length > 0 && Date.length > 0 && City.length == 0) {
+                        val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                        val convertedDate = DBDate.parse(event!!.formattedDate!!)
+                        val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)
+                        if (event!!.Title.startsWith(Title, true) && Date.equals(formattedDate)) {
+                            eventList.add(event!!)
+                        }
+                    }
+
+                    else if(City.length > 0 && Date.length > 0 && Title.length == 0) {
+                        val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                        val convertedDate = DBDate.parse(event!!.formattedDate!!)
+                        val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)
+                        if (event!!.City.equals(City) && Date.equals(formattedDate)) {
+                            eventList.add(event!!)
+                        }
+                    }
+
+                    else {
+                        val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                        val convertedDate = DBDate.parse(event!!.formattedDate!!)
+                        val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)
+                        if (event!!.Title.startsWith(Title, true) && event!!.City.equals(City) && Date.equals(formattedDate)) {
+                            eventList.add(event!!)
+                        }
                     }
                 }
                 lock.withLock {

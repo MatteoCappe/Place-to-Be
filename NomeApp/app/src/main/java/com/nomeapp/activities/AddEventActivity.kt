@@ -13,7 +13,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nomeapp.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.FirebaseAuth
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -40,8 +39,6 @@ class AddEventActivity : AppCompatActivity() {
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, month)
                 myCalendar.set(Calendar.DAY_OF_MONTH, day)
-
-                //TODO: mettere un check in modo che la data inserita per l'evento sia maggiore di quella attuale
 
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US) //vedi se il formato della data va bene quando si aggiungerà ricerca
                 Date.setText(dateFormat.format(this.myCalendar.time))
@@ -88,7 +85,7 @@ class AddEventActivity : AppCompatActivity() {
                 }
                 else if (myCalendar.timeInMillis < System.currentTimeMillis()) {
                     Date.setError("Non puoi scegliere un giorno già passato!")
-                } //TODO: check bene
+                }
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
                         withContext(Dispatchers.IO) {

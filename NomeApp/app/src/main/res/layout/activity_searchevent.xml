@@ -21,6 +21,41 @@
             android:layout_margin="30dp"
             android:hint="Inserisci il titolo dell'evento da cercare.."/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/searchCity"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:hint="Inserisci la città in cui cercare.."/>
+
+            <EditText
+                android:id="@+id/searchDate"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Inserisci la data in cui cercare..."/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/ClearDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rimuovi"
+            android:layout_margin="5dp"
+            android:layout_marginTop="0dp" />
+
         <Button
             android:id="@+id/SearchEventButton"
             android:layout_width="match_parent"

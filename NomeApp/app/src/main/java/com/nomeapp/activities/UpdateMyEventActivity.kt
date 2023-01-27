@@ -128,7 +128,7 @@ class UpdateMyEventActivity: AppCompatActivity() {
 
                 else if (myCalendar.timeInMillis < System.currentTimeMillis()) {
                     Date.setError("Non puoi scegliere un giorno già passato!")
-                } //TODO: check bene
+                }
 
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
