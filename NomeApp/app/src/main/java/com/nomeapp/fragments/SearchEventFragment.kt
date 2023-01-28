@@ -23,10 +23,6 @@ class SearchEventFragment(): Fragment() {
     var City: String? = null
     var Date: String? = null
 
-    var queryTitle: String? = null
-    var queryCity: String? = null
-    var queryDate: String? = null
-
     //TODO: checkbox per mostrare e nascondere campi di ricerca
     //search by: title, city, date, con tutte le possibili combinazioni
 
@@ -73,9 +69,6 @@ class SearchEventFragment(): Fragment() {
                                 //TODO: check sulla data dell'evento prima di show
                                 val intent: Intent = Intent(context, ShowEventActivity::class.java)
                                 intent.putExtra("EventBoxID", EventIDFromBox)
-                                intent.putExtra("queryTitle", queryTitle)
-                                intent.putExtra("queryCity", queryCity)
-                                intent.putExtra("queryDate", queryDate)
                                 startActivity(intent)
                             }
                     }

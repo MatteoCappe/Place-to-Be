@@ -19,7 +19,7 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var event: Event? = null
     var image: Uri? = null
     var eventList: MutableList<Event>? = arrayListOf()
-    var query: String? = null
+    //var query: String? = null
 
     val context: Context = this
 
@@ -162,13 +162,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onBackPressed() {
-        query = intent.getStringExtra("query")
-        val intent: Intent = Intent(context, SearchUserActivity::class.java)
-        intent.putExtra("query", query)
-        startActivity(intent)
     }
 
 }

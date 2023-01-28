@@ -55,7 +55,6 @@ class SearchUserFragment(): Fragment() {
                                 val UsernameFromUserBox = view.findViewById<TextView>(R.id.UserBox_Username)
                                 val intent: Intent = Intent(context, ShowProfileActivity::class.java)
                                 intent.putExtra("UserBoxUsername", UsernameFromUserBox.text.toString())
-                                intent.putExtra("query", userName)
                                 startActivity(intent)
                             }
                     }

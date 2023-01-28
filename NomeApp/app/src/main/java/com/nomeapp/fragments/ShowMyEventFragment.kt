@@ -1,5 +1,6 @@
 package com.nomeapp.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -38,17 +39,27 @@ class ShowMyEventFragment(): Fragment() {
 
         DeleteEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                CoroutineScope(Dispatchers.Main + Job()).launch {
-                    withContext(Dispatchers.IO) {
-                        DeleteEvent(this@ShowMyEventFragment.requireContext(), eventID!!)
+                val builder = AlertDialog.Builder(this@ShowMyEventFragment.requireActivity())
+                builder.setMessage("Vuoi davvero cancellare questo evento?")
+                    .setCancelable(false)
+                    .setPositiveButton("Sì") { dialog, id ->
+                        CoroutineScope(Dispatchers.Main + Job()).launch {
+                            withContext(Dispatchers.IO) {
+                                DeleteEvent(this@ShowMyEventFragment.requireContext(), eventID!!)
 
-                        withContext(Dispatchers.Main) {
-                            //TODO: metti un toast
-                            val intent: Intent = Intent(context, MainActivity::class.java)
-                            startActivity(intent)
+                                withContext(Dispatchers.Main) {
+                                    //TODO: metti un toast
+                                    val intent: Intent = Intent(context, MainActivity::class.java)
+                                    startActivity(intent)
+                                }
+                            }
                         }
                     }
-                }
+                    .setNegativeButton("No") { dialog, id ->
+                        dialog.dismiss()
+                    }
+                val alert = builder.create()
+                alert.show()
             }
         })
 

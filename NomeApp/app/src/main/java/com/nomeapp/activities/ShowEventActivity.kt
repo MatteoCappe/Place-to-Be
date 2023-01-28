@@ -36,10 +36,6 @@ class ShowEventActivity() : AppCompatActivity() {
     var image: Uri? = null
     var userImage: Uri? = null
 
-    var queryTitle: String? = null
-    var queryCity: String? = null
-    var queryDate: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showevent)
@@ -149,17 +145,6 @@ class ShowEventActivity() : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onBackPressed() {
-        queryTitle = intent.getStringExtra("queryTitle")
-        queryCity = intent.getStringExtra("queryCity")
-        queryDate = intent.getStringExtra("queryDate")
-        val intent: Intent = Intent(context, SearchEventActivity::class.java)
-        intent.putExtra("queryTitle", queryTitle)
-        intent.putExtra("queryCity", queryCity)
-        intent.putExtra("queryDate", queryDate)
-        startActivity(intent)
     }
     //upload image disponibile solo dal menu di modifica dell'evento
     //stesso problema del registration, non posso sapere id prima di ottenerlo

@@ -83,7 +83,7 @@ class AddEventActivity : AppCompatActivity() {
                     Time.setError(getString(R.string.emptyError))
                     return
                 }
-                else if (myCalendar.timeInMillis < System.currentTimeMillis()) {
+                else if (myCalendar.timeInMillis < System.currentTimeMillis()) { //TODO: check se si può mettere data odierna
                     Date.setError("Non puoi scegliere un giorno già passato!")
                 }
                 else {

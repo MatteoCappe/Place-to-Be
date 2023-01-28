@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.nomeapp.R
 import com.nomeapp.fragments.SearchEventFragment
+import com.nomeapp.fragments.SearchUserFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,12 +28,6 @@ class SearchEventActivity: AppCompatActivity() {
 
         val SearchEventButton: Button = findViewById<View>(R.id.SearchEventButton) as Button
         val ClearDate: Button = findViewById<View>(R.id.ClearDate) as Button
-        //TODO: search by città e data!!!!
-        //TODO: fix problme come fatto per cerca user
-
-        val queryTitle = intent.getStringExtra("queryTitle")
-        val queryCity = intent.getStringExtra("queryCity")
-        val queryDate = intent.getStringExtra("queryDate")
 
         val Title: EditText = findViewById<View>(R.id.searchTitle) as EditText
         val City: EditText = findViewById<View>(R.id.searchCity) as EditText
@@ -66,37 +61,6 @@ class SearchEventActivity: AppCompatActivity() {
             }
         })
 
-        //risolto issue che faceva crashare app dopo una determinata serie di comandi
-        if (queryTitle != null || queryCity != null  || queryDate != null ) {
-            Log.d("gianni titolo", queryTitle!!)
-            Log.d("gianni città", queryCity!!)
-            Log.d("gianni data", queryDate!!)
-            fragmentManager.commit {
-                setReorderingAllowed(true)
-                val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())
-                replace(R.id.SearchEventFragment, frag)
-            }
-            //copiato codice da sotto, proprio per risolvere l'errore
-            SearchEventButton.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(v: View?) {
-
-                    if (Title.text.isEmpty() && City.text.isEmpty() && Date.text.isEmpty()) {
-                        Title.setError(getString(R.string.eventSearchError))
-                        City.setError(getString(R.string.eventSearchError))
-                        Date.setError(getString(R.string.eventSearchError))
-                    }
-
-                    else {
-                        fragmentManager.commit {
-                            setReorderingAllowed(true)
-                            val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())
-                            replace(R.id.SearchEventFragment, frag)
-                        }
-                    }
-                }
-            })
-        }
-
         SearchEventButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
@@ -117,9 +81,71 @@ class SearchEventActivity: AppCompatActivity() {
         })
     }
 
-    override fun onBackPressed() {
-        val intent: Intent = Intent(this@SearchEventActivity, MainActivity::class.java)
-        startActivity(intent)
+    //usato per risolvere un problema che si presentava dopo essere tornti indietro da showEvent
+    override fun onResume() {
+        super.onResume()
+
+        val Title: EditText = findViewById<View>(R.id.searchTitle) as EditText
+        val City: EditText = findViewById<View>(R.id.searchCity) as EditText
+        val Date: EditText = findViewById<View>(R.id.searchDate) as EditText
+
+        if (!(Title.text.isEmpty() && City.text.isEmpty() && Date.text.isEmpty())) {
+            fragmentManager.commit {
+                setReorderingAllowed(true)
+                val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())
+                replace(R.id.SearchEventFragment, frag)
+            }
+        }
+
+        val SearchEventButton: Button = findViewById<View>(R.id.SearchEventButton) as Button
+        val ClearDate: Button = findViewById<View>(R.id.ClearDate) as Button
+
+        val DateListener =
+            DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, month)
+                myCalendar.set(Calendar.DAY_OF_MONTH, day)
+
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US) //vedi se il formato della data va bene quando si aggiungerà ricerca
+                Date.setText(dateFormat.format(myCalendar.time))
+            }
+
+        Date.setOnClickListener(object:View.OnClickListener{
+            override fun onClick(view: View?) {
+                DatePickerDialog(
+                    this@SearchEventActivity,
+                    DateListener,
+                    myCalendar.get(Calendar.YEAR),
+                    myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH),
+                ).show()
+            }
+        })
+
+        ClearDate.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                Date.text.clear()
+            }
+        })
+
+        SearchEventButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+
+                if (Title.text.isEmpty() && City.text.isEmpty() && Date.text.isEmpty()) {
+                    Title.setError(getString(R.string.eventSearchError))
+                    City.setError(getString(R.string.eventSearchError))
+                    Date.setError(getString(R.string.eventSearchError))
+                }
+
+                else {
+                    fragmentManager.commit {
+                        setReorderingAllowed(true)
+                        val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())
+                        replace(R.id.SearchEventFragment, frag)
+                    }
+                }
+            }
+        })
     }
 
 }
