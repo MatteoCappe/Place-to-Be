@@ -70,10 +70,6 @@ class FirebaseAuthWrapper(private val context: Context) {
         val intent : Intent = Intent(this.context, SplashActivity::class.java)
         context.startActivity(intent)
     }
-
-    //logOut() {auth.signOut()}, vedi (comodo magari per evitare di disinstallare e reinstallare ogni volta)
-
-    //delete?
 }
 
 class FirebaseDbWrapper(private val context: Context) {
@@ -91,6 +87,10 @@ class FirebaseDbWrapper(private val context: Context) {
 
     fun writeDbEvent(event: Event, eventID: Long) {
         ref.child("events").child(eventID.toString()).setValue(event)
+    }
+
+    fun writeDbFollower(UserID: String, followerUID: String) {
+        ref.child("followers").child(UserID).setValue(followerUID)
     }
 
     fun readDbData(callback: FirebaseReadCallback) {
@@ -415,7 +415,7 @@ fun SearchEvent (context: Context, Title: String, City: String, Date: String): M
     val condition = lock.newCondition()
     var eventList: MutableList<Event> = ArrayList()
 
-    //TODO: check data db > data attuale prima du show
+    //TODO: check data db > data attuale prima di show
     //se si rompe è per l'implementazine del check sulla data
 
     GlobalScope.launch {
@@ -433,7 +433,7 @@ fun SearchEvent (context: Context, Title: String, City: String, Date: String): M
                     }
 
                     else if (City.length > 0 && Title.length == 0 && Date.length == 0) {
-                        if (event!!.City.equals(City)) {
+                        if (event!!.City.lowercase().equals(City.lowercase())) {
                             eventList.add(event!!)
                         }
                     }
@@ -448,7 +448,8 @@ fun SearchEvent (context: Context, Title: String, City: String, Date: String): M
                     }
 
                     else if(Title.length > 0 && City.length > 0 && Date.length == 0) {
-                        if (event!!.Title.startsWith(Title, true) && event!!.City.equals(City)) {
+                        if (event!!.Title.startsWith(Title, true) &&
+                            event!!.City.lowercase().equals(City.lowercase())) {
                             eventList.add(event!!)
                         }
                     }
@@ -466,16 +467,20 @@ fun SearchEvent (context: Context, Title: String, City: String, Date: String): M
                         val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
                         val convertedDate = DBDate.parse(event!!.formattedDate!!)
                         val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)
-                        if (event!!.City.equals(City) && Date.equals(formattedDate)) {
+                        if (event!!.City.lowercase().equals(City.lowercase()) && Date.equals(formattedDate)) {
                             eventList.add(event!!)
                         }
                     }
+
+                    //TODO: metti data < DBData amziche uguale in quelle con più campi?
+                    //in quello only data lascia uguale
 
                     else {
                         val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
                         val convertedDate = DBDate.parse(event!!.formattedDate!!)
                         val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)
-                        if (event!!.Title.startsWith(Title, true) && event!!.City.equals(City) && Date.equals(formattedDate)) {
+                        if (event!!.Title.startsWith(Title, true) &&
+                            event!!.City.lowercase().equals(City.lowercase()) && Date.equals(formattedDate)) {
                             eventList.add(event!!)
                         }
                     }
@@ -532,4 +537,100 @@ fun DeleteEvent (context: Context, EventID: Long) {
     lock.withLock {
         condition.await()
     }
+}
+
+fun DeleteFollower (context: Context, followerUID: String) {
+    val userID = FirebaseAuthWrapper(context).getUid()
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+
+                snapshot.child("followers").child(userID!!).child(followerUID).ref.removeValue()
+
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
+}
+
+fun getFollowers(context: Context): MutableList<User> {
+    val userID = FirebaseAuthWrapper(context).getUid()
+
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
+    var list: MutableList<String> = ArrayList()
+    var followerList: MutableList<User> = ArrayList()
+    var user: User? = null
+
+    GlobalScope.launch {
+        FirebaseDbWrapper(context).readDbData(object :
+            FirebaseDbWrapper.Companion.FirebaseReadCallback {
+            override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                Log.d("onDataChangeCallback", "invoked")
+
+                val followers = snapshot.child("followers").child(userID!!).children
+                for (follower in followers) {
+                    list.add(follower.toString())
+                }
+
+                lock.withLock {
+                    condition.signal()
+                }
+            }
+
+            override fun onCancelledCallback(error: DatabaseError) {
+                Log.d("onCancelledCallback", "invoked")
+            }
+        })
+    }
+    lock.withLock {
+        condition.await()
+    }
+
+    //da uid a user
+    if (list.isNotEmpty()) {
+        GlobalScope.launch {
+            FirebaseDbWrapper(context).readDbData(object :
+                FirebaseDbWrapper.Companion.FirebaseReadCallback {
+                override fun onDataChangeCallback(snapshot: DataSnapshot) {
+                    Log.d("onDataChangeCallback", "invoked")
+
+                    val users = snapshot.child("users").children
+                    for (uid in users) {
+                        if (list.contains(uid.child("userID").getValue(String::class.java)!!)) {
+                            user = uid.getValue(User::class.java)
+                            followerList.add(user!!)
+                            break
+                        }
+                    }
+                    lock.withLock {
+                        condition.signal()
+                    }
+                }
+
+                override fun onCancelledCallback(error: DatabaseError) {
+                    Log.d("onCancelledCallback", "invoked")
+                }
+            })
+        }
+        lock.withLock {
+            condition.await()
+        }
+    }
+
+    return followerList
 }

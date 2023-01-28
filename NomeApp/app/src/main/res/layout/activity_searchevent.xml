@@ -9,30 +9,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="top">
+        android:gravity="top"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Compila almeno uno di questi campi"
+            android:gravity="center"
+            android:layout_marginTop="10dp"/>
 
         <EditText
             android:id="@+id/searchTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
             android:layout_margin="30dp"
-            android:hint="Inserisci il titolo da cercare.."/>
+            android:ems="10"
+            android:hint="Inserisci il titolo da cercare.."
+            android:inputType="text" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/searchCity"
                 android:layout_width="173dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
-                android:hint="Inserisci la città in cui cercare.."/>
+                android:hint="Inserisci la città in cui cercare.." />
 
             <EditText
                 android:id="@+id/searchDate"
@@ -44,7 +53,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="Inserisci la data in cui cercare..."/>
+                android:hint="Inserisci la data in cui cercare..." />
 
         </LinearLayout>
 
@@ -52,17 +61,17 @@
             android:id="@+id/ClearDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="rimuovi"
             android:layout_margin="5dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"
+            android:text="rimuovi data lol" />
 
         <Button
             android:id="@+id/SearchEventButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cerca"
             android:layout_margin="5dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"
+            android:text="Cerca" />
         <!-- magari mettere fab carino della lente di ingrandimento -->
 
         <!-- TODO: ricerca tramite città e data!!!, tutto insieme a title, possibilità di campi vuoti -->
@@ -101,7 +110,7 @@
             android:id="@+id/SearchEventFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"/> <!-- vedi per bottom -->
+            android:layout_gravity="bottom" /> <!-- vedi per bottom -->
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

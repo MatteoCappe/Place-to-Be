@@ -40,6 +40,8 @@ class ShowEventActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showevent)
 
+        val fragmentManager = supportFragmentManager
+
         //mettere casetta per tornare alla home e uscire dalla schermata di creazione dell'evento
 
         var Title: String
@@ -52,10 +54,6 @@ class ShowEventActivity() : AppCompatActivity() {
 
         val FollowUnfollow: Button = findViewById<View>(R.id.ShowEvent_FollowUnfollowButton) as Button
         val UserBox: CardView = findViewById<View>(R.id.ShowEvent_UserBox) as CardView
-
-        //val searched: String = "Prova" //questo dovrà essere inizializzato con una stringa
-                                       //derivante dalla funzione "ricerca"
-                                       //momentaneamente è inizializzato a "Prova" per far vedere come funzionerebbe
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
@@ -77,9 +75,17 @@ class ShowEventActivity() : AppCompatActivity() {
                     Bio = event!!.Bio
                     userID = event!!.userID
 
-                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                    if (userID == FirebaseAuthWrapper(context).getUid()) {
+                        fragmentManager.commit {
+                            FollowUnfollow.setVisibility(View.GONE)
+                            UserBox.setVisibility(View.GONE)
+                            setReorderingAllowed(true)
+                            val frag: Fragment = ShowMyEventFragment.newInstance(event!!.eventID)
+                            this.add(R.id.showMyEventFragment, frag)
+                        }
+                    }
 
-                    val fragmentManager = supportFragmentManager
+                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
 
                     findViewById<TextView>(R.id.ShowEvent_Title).text = Title
                     findViewById<TextView>(R.id.ShowEvent_City).text = City
@@ -96,17 +102,6 @@ class ShowEventActivity() : AppCompatActivity() {
                     findViewById<TextView>(R.id.ShowEvent_UserBox_Surname).text = user!!.Surname
                     if (userImage != null) {
                         findViewById<ImageView>(R.id.ShowEvent_UserBox_Photo).setImageURI(userImage)
-                    }
-
-                    if (userID == FirebaseAuthWrapper(context).getUid()) {
-                        FollowUnfollow.setVisibility(View.GONE)
-                        UserBox.setVisibility(View.GONE)
-                        //TODO: quando metti mappa, toglia pulsante se mio
-                        fragmentManager.commit {
-                            setReorderingAllowed(true)
-                            val frag: Fragment = ShowMyEventFragment.newInstance(event!!.eventID)
-                            this.add(R.id.showMyEventFragment, frag)
-                        }
                     }
 
                     UserBox.setOnClickListener(object: View.OnClickListener{

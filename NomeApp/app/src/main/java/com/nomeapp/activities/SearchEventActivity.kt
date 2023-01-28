@@ -140,7 +140,8 @@ class SearchEventActivity: AppCompatActivity() {
                 else {
                     fragmentManager.commit {
                         setReorderingAllowed(true)
-                        val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(), City.text.toString(), Date.text.toString())
+                        val frag: Fragment = SearchEventFragment.newInstance(Title.text.toString(),
+                            City.text.toString(), Date.text.toString())
                         replace(R.id.SearchEventFragment, frag)
                     }
                 }

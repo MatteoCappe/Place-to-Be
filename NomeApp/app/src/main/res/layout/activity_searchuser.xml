@@ -19,7 +19,7 @@
             android:ems="10"
             android:inputType="text"
             android:layout_margin="30dp"
-            android:hint="Inserisci lo username da cercare.."/>
+            android:hint="Cerca uno username.."/>
 
         <Button
             android:id="@+id/SearchUserButton"

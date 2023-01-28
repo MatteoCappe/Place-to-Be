@@ -19,7 +19,6 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var event: Event? = null
     var image: Uri? = null
     var eventList: MutableList<Event>? = arrayListOf()
-    //var query: String? = null
 
     val context: Context = this
 
@@ -61,7 +60,7 @@ class ShowProfileActivity(): AppCompatActivity() {
 
                 if (currentUser!!.Following!!.contains(user!!.UserID)) {
                     FollowUnfollow.text = getString(R.string.unfollow)
-                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080")) //vedi
+                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                 }
 
                 withContext(Dispatchers.Main) {
@@ -95,6 +94,8 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 user!!.Followers!!.remove(userID!!)
                                 FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
 
+                                DeleteFollower(this@ShowProfileActivity, currentUser!!.UserID)
+
                                 //update numerino
                                 findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
 
@@ -118,13 +119,17 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
 
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, currentUser!!.UserID) //tODO: remove
+
+                                    //TODO: notifica?
+
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
 
                                     ArrayListFollowers.add(userID!!)
 
                                     FollowUnfollow.text = getString(R.string.unfollow)
-                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080")) //vedi
+                                    FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                     //tecnicamente inutile ripeterlo due volte ma vbb
                                 }
                             }

@@ -39,6 +39,8 @@ android {
 
 dependencies {
 
+    //guarda che non ci sia roba da togliere
+
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -77,6 +79,9 @@ dependencies {
     //Firebase storage
     implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
 
-    //debug
+    //run on real phone
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
+
+    //notifiche
+    implementation 'androidx.core:core-ktx:1.9.0'
 }

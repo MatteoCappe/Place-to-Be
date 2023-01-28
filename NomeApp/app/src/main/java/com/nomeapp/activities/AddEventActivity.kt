@@ -26,6 +26,8 @@ class AddEventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addevent)
 
+        Log.d("test tempo", System.currentTimeMillis().toString())
+
         val Title: EditText = findViewById<View>(R.id.EventTitle) as EditText
         val City: EditText = findViewById<View>(R.id.City) as EditText
         val Address: EditText = findViewById<View>(R.id.Address) as EditText
@@ -71,6 +73,8 @@ class AddEventActivity : AppCompatActivity() {
             }
         })
 
+        Log.d("test tempo 1", myCalendar.timeInMillis.toString())
+
         CreateEvent.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 if (Title.text.isEmpty() || City.text.isEmpty() || Address.text.isEmpty()
@@ -83,7 +87,7 @@ class AddEventActivity : AppCompatActivity() {
                     Time.setError(getString(R.string.emptyError))
                     return
                 }
-                else if (myCalendar.timeInMillis < System.currentTimeMillis()) { //TODO: check se si può mettere data odierna
+                else if (myCalendar.timeInMillis < System.currentTimeMillis() - 86400000) { //TODO: && check su ora?
                     Date.setError("Non puoi scegliere un giorno già passato!")
                 }
                 else {

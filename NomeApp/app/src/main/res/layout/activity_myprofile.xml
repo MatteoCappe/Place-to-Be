@@ -53,7 +53,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:gravity="center"
-            android:textColor="#000"
             android:textSize="20sp"/>
 
         <LinearLayout
@@ -104,7 +103,6 @@
                     android:layout_width="173dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="#000"
                     android:textSize="15sp" />
 
                 <TextView
@@ -128,7 +126,6 @@
                     android:layout_width="173dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="#000"
                     android:textSize="15sp" />
 
                 <TextView

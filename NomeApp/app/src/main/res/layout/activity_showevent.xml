@@ -75,16 +75,17 @@
         <TextView
             android:id="@+id/ShowEvent_Bio"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text|textMultiLine"
+            android:inputType="text"
             android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/ShowEvent_Date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10" />
+            android:ems="10"
+            android:layout_margin="10dp"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/ShowEvent_UserBox"
@@ -160,6 +161,7 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/showMyEventFragment"

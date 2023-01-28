@@ -33,7 +33,7 @@ class FavouritesActivity: AppCompatActivity() {
                 user = getMyData(this@FavouritesActivity)
 
                 if (user!!.Favourites!!.size == 0) {
-                    FavouritesEmpty.setVisibility(View.VISIBLE) //TODO: check
+                    FavouritesEmpty.setVisibility(View.VISIBLE)
                 }
                 else {
                     for (id in user!!.Favourites!!) {
@@ -44,7 +44,7 @@ class FavouritesActivity: AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         val adapter = EventsAdapter(this@FavouritesActivity, eventList!!)
                         FavouritesList.adapter = adapter
-                        FavouritesEmpty.setVisibility(View.GONE) //TODO: check
+                        FavouritesEmpty.setVisibility(View.GONE)
                         FavouritesList.onItemClickListener =
                             AdapterView.OnItemClickListener { position, view, parent, id ->
                                 val EventIDFromBox: Long =
