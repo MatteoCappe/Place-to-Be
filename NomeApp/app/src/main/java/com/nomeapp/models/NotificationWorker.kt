@@ -8,6 +8,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
@@ -21,16 +22,21 @@ import java.util.concurrent.TimeUnit
 import kotlin.random.Random.Default.nextInt
 
 fun runInstantWorker(context: Context) {
+    Log.d("gianni", "16")
     val followerNotificationWorker = OneTimeWorkRequestBuilder<followerNotificationWorker>().build()
     WorkManager.getInstance(context).enqueue(followerNotificationWorker)
+    Log.d("gianni", "17")
     startWorker(context)
 }
 
 fun startWorker(context: Context) {
+    Log.d("gianni", "18")
     val DB = FirebaseDbWrapper(context).ref
+    val uid = FirebaseAuthWrapper(context).getUid()
     GlobalScope.launch {
-        DB.child("followers").addValueEventListener(object: ValueEventListener{
+        DB.child("followers").child(uid!!).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("gianni", "19")
                 val followerNotificationWorker = OneTimeWorkRequestBuilder<followerNotificationWorker>().build()
                 WorkManager.getInstance(context).enqueue(followerNotificationWorker)
             }

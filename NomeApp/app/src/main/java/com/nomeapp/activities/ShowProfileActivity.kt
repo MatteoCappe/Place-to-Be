@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var event: Event? = null
     var image: Uri? = null
     var eventList: MutableList<Event>? = arrayListOf()
+    var followersList: MutableList<String>? = arrayListOf()
 
     val context: Context = this
 
@@ -103,6 +105,26 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
+                                CoroutineScope(Dispatchers.Main + Job()).launch {
+                                    Log.d("gianni", "2")
+                                    withContext(Dispatchers.IO) {
+                                        Log.d("gianni", "3")
+                                        var followers = getFollowers(context)
+                                        Log.d("gianni", "4")
+
+                                        for (follower in followers) {
+                                            followersList!!.add(follower.UserID)
+                                        }
+                                        withContext(Dispatchers.Main) {
+                                            Log.d("gianni", "4_1")
+                                            followersList!!.add(currentUser!!.UserID)
+                                            Log.d("gianni", "4_2")
+                                            FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, followersList!!)
+                                            Log.d("gianni", "4_3")
+                                        }
+                                    }
+                                }
+
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {
@@ -116,6 +138,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 else if (!user!!.Followers!!.contains(userID!!)) {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
+<<<<<<< Updated upstream
 
                                     CoroutineScope(Dispatchers.Main + Job()).launch {
                                         withContext(Dispatchers.IO) {
@@ -125,6 +148,9 @@ class ShowProfileActivity(): AppCompatActivity() {
                                             }
                                         }
                                     }
+=======
+                                    Log.d("gianni", "1")
+>>>>>>> Stashed changes
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
