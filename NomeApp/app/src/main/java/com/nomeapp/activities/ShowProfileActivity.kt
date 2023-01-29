@@ -113,9 +113,18 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                 }
 
-                                if (!user!!.Followers!!.contains(userID!!)) {
+                                else if (!user!!.Followers!!.contains(userID!!)) {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
+
+                                    CoroutineScope(Dispatchers.Main + Job()).launch {
+                                        withContext(Dispatchers.IO) {
+                                            SendFollow(this@ShowProfileActivity, currentUser!!.UserID)
+                                            withContext(Dispatchers.Main) {
+                                                //TODO: boh scrivi qualcosa
+                                            }
+                                        }
+                                    }
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
@@ -125,18 +134,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     FollowUnfollow.text = getString(R.string.unfollow)
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                     //tecnicamente inutile ripeterlo due volte ma vbb
-
-                                    CoroutineScope(Dispatchers.Main + Job()).launch {
-                                        withContext(Dispatchers.IO) {
-                                            SendFollow(
-                                                this@ShowProfileActivity,
-                                                currentUser!!.UserID
-                                            )
-                                            withContext(Dispatchers.Main) {
-                                                //TODO: boh scrivi qualcosa
-                                            }
-                                        }
-                                    }
                                 }
                             }
 
