@@ -94,8 +94,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 user!!.Followers!!.remove(userID!!)
                                 FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
 
-                                DeleteFollower(this@ShowProfileActivity, currentUser!!.UserID)
-
                                 //update numerino
                                 findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
 
@@ -119,9 +117,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
 
-                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, currentUser!!.UserID) //tODO: remove
-
-                                    //TODO: notifica?
+                                    SendFollow(this@ShowProfileActivity, currentUser!!.UserID)
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
