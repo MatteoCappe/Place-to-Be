@@ -15,6 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NomeApp">
 
+        <receiver
+            android:name="com.nomeapp.receivers.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <activity android:name="com.nomeapp.activities.LoginActivity"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.RegisterActivity"

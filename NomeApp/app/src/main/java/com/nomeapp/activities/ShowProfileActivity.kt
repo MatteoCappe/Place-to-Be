@@ -135,22 +135,10 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                 }
 
-                                else if (!user!!.Followers!!.contains(userID!!)) {
+                                if (!user!!.Followers!!.contains(userID!!)) {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
-<<<<<<< Updated upstream
-
-                                    CoroutineScope(Dispatchers.Main + Job()).launch {
-                                        withContext(Dispatchers.IO) {
-                                            SendFollow(this@ShowProfileActivity, currentUser!!.UserID)
-                                            withContext(Dispatchers.Main) {
-                                                //TODO: boh scrivi qualcosa
-                                            }
-                                        }
-                                    }
-=======
                                     Log.d("gianni", "1")
->>>>>>> Stashed changes
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
