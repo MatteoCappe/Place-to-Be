@@ -33,7 +33,7 @@ fun startWorker(context: Context) {
     val DB = FirebaseDbWrapper(context).ref
     val uid = FirebaseAuthWrapper(context).getUid()
     GlobalScope.launch {
-        DB.child("followers").child(uid!!).addValueEventListener(object: ValueEventListener{
+        DB.child("users").child(uid!!).child("followers").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("gianni", "19")
                 val followerNotificationWorker = OneTimeWorkRequestBuilder<followerNotificationWorker>().build()
@@ -48,8 +48,7 @@ fun startWorker(context: Context) {
 
 class followerNotificationWorker(val context: Context, params: WorkerParameters): Worker(context, params) {
     override fun doWork(): Result {
-        val uid = FirebaseAuthWrapper(context).getUid()
-        val followers = getFollowers(context, uid!!)
+        val followers = getFollowers(context)
         var notificationID = 0
         Log.d("gianni", "22")
 
@@ -58,7 +57,7 @@ class followerNotificationWorker(val context: Context, params: WorkerParameters)
             Log.d("gianni", "23")
             for (follower in followers) {
                 Log.d("gianni", "25")
-                val notificationText = "${follower.Username} ha iniziato a seguirti!"
+                val notificationText = "${follower/*.Username*/} ha iniziato a seguirti!"
                 val builder = NotificationCompat.Builder(context, "FOLLOWER")
                     .setSmallIcon(R.drawable.icon)
                     .setContentTitle("Follower")

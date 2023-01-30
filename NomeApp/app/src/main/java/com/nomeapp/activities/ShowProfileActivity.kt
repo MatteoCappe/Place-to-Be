@@ -45,7 +45,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                 image =
                     FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
                 Log.d("gianni", "stronzo")
-                followersList = getFollowers(this@ShowProfileActivity, user!!.UserID)
+                //followersList = getFollowers(this@ShowProfileActivity, user!!.UserID)
                 Log.d("gianni", "stronzo 1")
 
                 val ArrayListEvents: ArrayList<Long> = ArrayList(user!!.Events!!)
@@ -113,7 +113,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
-                                follower = Follower(
+                                /*follower = Follower(
                                     currentUser!!.UserID,
                                     currentUser!!.userName
                                 )
@@ -122,7 +122,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(followersList)
                                 Log.d("gianni", "4_3")
 
-                                //TODO: serve una lista di qualche tipo?
+                                //TODO: serve una lista di qualche tipo?*/
 
 
 
