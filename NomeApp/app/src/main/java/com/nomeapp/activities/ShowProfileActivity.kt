@@ -124,10 +124,6 @@ class ShowProfileActivity(): AppCompatActivity() {
 
                                 //TODO: serve una lista di qualche tipo?*/
 
-
-
-
-
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {
@@ -142,6 +138,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
                                     Log.d("gianni", "1")
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.Followers!!)
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()

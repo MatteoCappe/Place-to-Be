@@ -89,9 +89,9 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.child("events").child(eventID.toString()).setValue(event)
     }
 
-    /*fun writeDbFollower(followers: MutableList<Follower>) {
+    fun writeDbFollower(followers: MutableList<String>) {
         ref.child("followers").child(userID!!).setValue(followers)
-    } //TODO: fix*/
+    } //TODO: fix
 
     fun readDbData(callback: FirebaseReadCallback) {
         ref.addValueEventListener(FirebaseReadListener(callback))
@@ -592,7 +592,7 @@ fun getFollowers(context: Context): MutableList<String> {
 
 
                 //TODO
-                for (follower in snapshot.child("users").child(uid!!).child("followers").children) {
+                for (follower in snapshot.child("followers").child(uid!!).children) {
                     Log.d("gianni", "10")
                     list.add(follower.getValue(String::class.java)!!)
                 }
