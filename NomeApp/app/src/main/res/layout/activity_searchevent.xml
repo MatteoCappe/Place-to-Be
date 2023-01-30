@@ -74,7 +74,7 @@
             android:text="Cerca" />
         <!-- magari mettere fab carino della lente di ingrandimento -->
 
-        <!-- TODO: ricerca tramite città e data!!!, tutto insieme a title, possibilità di campi vuoti -->
+        <!-- TODO: checkbox per ricerca -->
 
         <!--
         <LinearLayout

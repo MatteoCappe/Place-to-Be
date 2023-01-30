@@ -44,7 +44,6 @@ class UpdateProfileActivity: AppCompatActivity() {
 
         UploadImage.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //TODO: check doppio click
                 ImagePicker.with(this@UpdateProfileActivity)
                     .crop()
                     .compress(1024)

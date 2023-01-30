@@ -89,9 +89,9 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.child("events").child(eventID.toString()).setValue(event)
     }
 
-    fun writeDbFollower(shownUserID: String, followersUID: MutableList<String>) {
-        ref.child("followers").child(shownUserID).setValue(followersUID)
-    }
+    fun writeDbFollower(followers: MutableList<Follower>) {
+        ref.child("followers").child(userID!!).setValue(followers)
+    } //TODO: fix
 
     fun readDbData(callback: FirebaseReadCallback) {
         ref.addValueEventListener(FirebaseReadListener(callback))
@@ -125,7 +125,7 @@ class FirebaseStorageWrapper (private val context: Context) {
     }
 
     fun uploadEventImage (eventImage: Uri, eventID: String) {
-        storageRef.child("events/${eventID}.jpg").putFile(eventImage) //TODO: check
+        storageRef.child("events/${eventID}.jpg").putFile(eventImage)
     }
 
     fun downloadUserImage (userID: String): Uri? {
@@ -574,29 +574,29 @@ fun DeleteEvent (context: Context, EventID: Long) {
     Log.d("gianni", "8")
 }*/
 
-fun getFollowers(context: Context): MutableList<User> {
+//TODO: fix
+fun getFollowers(context: Context): MutableList<Follower> {
     Log.d("gianni", "9")
-    val userID = FirebaseAuthWrapper(context).getUid()
+    val uid = FirebaseAuthWrapper(context).getUid()
 
     val lock = ReentrantLock()
     val condition = lock.newCondition()
-    var list: MutableList<String> = ArrayList()
-    var followerList: MutableList<User> = ArrayList()
-    var user: User? = null
+    var list: MutableList<Follower> = ArrayList()
 
     GlobalScope.launch {
         FirebaseDbWrapper(context).readDbData(object :
             FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
+                val followers = snapshot.child("followers").child(uid!!).children
 
                 Log.d("gianni", "10")
 
-                val followers = snapshot.child("followers").child(userID!!).children
-                Log.d("gianni", "11")
+                //TODO
                 for (follower in followers) {
-                    list.add(follower.toString())
+                    list.add(follower.getValue(Follower::class.java)!!)
                 }
+                Log.d("gianni", "11")
 
                 lock.withLock {
                     condition.signal()
@@ -612,40 +612,6 @@ fun getFollowers(context: Context): MutableList<User> {
         condition.await()
     }
 
-    //da uid a user
-    if (list.isNotEmpty()) {
-        Log.d("gianni", "12")
-        GlobalScope.launch {
-            FirebaseDbWrapper(context).readDbData(object :
-                FirebaseDbWrapper.Companion.FirebaseReadCallback {
-                override fun onDataChangeCallback(snapshot: DataSnapshot) {
-                    Log.d("onDataChangeCallback", "invoked")
-
-                    Log.d("gianni", "13")
-
-                    val users = snapshot.child("users").children
-                    for (uid in users) {
-                        if (list.contains(uid.child("userID").getValue(String::class.java)!!)) {
-                            user = uid.getValue(User::class.java)
-                            followerList.add(user!!)
-                            Log.d("gianni", "14")
-                            break
-                        }
-                    }
-                    lock.withLock {
-                        condition.signal()
-                    }
-                }
-
-                override fun onCancelledCallback(error: DatabaseError) {
-                    Log.d("onCancelledCallback", "invoked")
-                }
-            })
-        }
-        lock.withLock {
-            condition.await()
-        }
-    }
     Log.d("gianni", "15")
-    return followerList
+    return list
 }

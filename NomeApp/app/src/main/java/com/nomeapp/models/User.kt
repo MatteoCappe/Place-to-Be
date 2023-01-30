@@ -6,9 +6,9 @@ class User() {
     var Surname: String = ""
     var UserID: String = ""
     var Events: MutableList<Long>? = mutableListOf()
-    var Followers: MutableList<String>? = mutableListOf() //? lista di uid
-    var Following: MutableList<String>? = mutableListOf() //? lista di uid
-    var Favourites: MutableList<Long>? = mutableListOf() //lista di EventID
+    var Followers: MutableList<String>? = mutableListOf()
+    var Following: MutableList<String>? = mutableListOf()
+    var Favourites: MutableList<Long>? = mutableListOf()
 
     constructor(
         userName: String,

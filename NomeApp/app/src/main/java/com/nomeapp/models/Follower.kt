@@ -1,14 +1,14 @@
 package com.nomeapp.models
 
 class Follower() {
-    var userName: String = ""
     var UserID: String = ""
+    var Username: String = ""
 
     constructor(
-        userName: String,
-        UserID: String
+        UserID: String,
+        Username: String
     ) : this() {
-        this.userName = userName
         this.UserID = UserID
+        this.Username = Username
     }
 }

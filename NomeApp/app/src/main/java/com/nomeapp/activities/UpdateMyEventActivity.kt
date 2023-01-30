@@ -64,7 +64,6 @@ class UpdateMyEventActivity: AppCompatActivity() {
 
         UploadImage.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                //TODO: check doppio click
                 ImagePicker.with(this@UpdateMyEventActivity)
                     .crop()
                     .compress(1024)

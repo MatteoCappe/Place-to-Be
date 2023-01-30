@@ -15,8 +15,7 @@ import androidx.work.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random.Default.nextInt
@@ -42,7 +41,6 @@ fun startWorker(context: Context) {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
     }
@@ -52,15 +50,21 @@ class followerNotificationWorker(val context: Context, params: WorkerParameters)
     override fun doWork(): Result {
         val followers = getFollowers(context)
         var notificationID = 0
+        Log.d("gianni", "22")
 
+        //TODO: capisci come farlo funzionare
         if (followers.isNotEmpty()) {
+            Log.d("gianni", "23")
             for (follower in followers) {
-                val notificationText = "${follower.userName} ha iniziato a seguirti!"
+                Log.d("gianni", "25")
+                val notificationText = "${follower.Username} ha iniziato a seguirti!"
                 val builder = NotificationCompat.Builder(context, "FOLLOWER")
                     .setSmallIcon(R.drawable.icon)
                     .setContentTitle("Follower")
                     .setContentText(notificationText)
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
+                    .setStyle(
+                        NotificationCompat.BigTextStyle().bigText(notificationText)
+                    )
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setAutoCancel(true) //TODO: vedi se si riesce a rimandare al profilo
@@ -69,9 +73,10 @@ class followerNotificationWorker(val context: Context, params: WorkerParameters)
                     val name = "follower"
                     val descriptionText = "follower alert"
                     val importance = NotificationManager.IMPORTANCE_DEFAULT
-                    val channel = NotificationChannel("FOLLOWER", name, importance).apply{
-                        description = descriptionText
-                    }
+                    val channel =
+                        NotificationChannel("FOLLOWER", name, importance).apply {
+                            description = descriptionText
+                        }
 
                     val notificationManager: NotificationManager =
                         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -80,7 +85,7 @@ class followerNotificationWorker(val context: Context, params: WorkerParameters)
 
                 with(NotificationManagerCompat.from(context)) {
                     notify(notificationID, builder.build())
-                    notificationID += 1 //TODO: check
+                    notificationID += 1 //TODO: fai come eventID (firebase -> geteventid)
                 }
             }
         }

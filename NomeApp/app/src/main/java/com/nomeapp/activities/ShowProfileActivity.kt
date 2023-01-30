@@ -20,7 +20,8 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var event: Event? = null
     var image: Uri? = null
     var eventList: MutableList<Event>? = arrayListOf()
-    var followersList: MutableList<String>? = arrayListOf()
+    private var follower: Follower? = null
+    var followersList: MutableList<Follower> = arrayListOf()
 
     val context: Context = this
 
@@ -43,6 +44,9 @@ class ShowProfileActivity(): AppCompatActivity() {
                 currentUser = getMyData(this@ShowProfileActivity)
                 image =
                     FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
+                Log.d("gianni", "stronzo")
+                followersList = getFollowers(this@ShowProfileActivity)
+                Log.d("gianni", "stronzo 1")
 
                 val ArrayListEvents: ArrayList<Long> = ArrayList(user!!.Events!!)
                 val ArrayListFollowers: ArrayList<String> = ArrayList(user!!.Followers!!)
@@ -63,6 +67,10 @@ class ShowProfileActivity(): AppCompatActivity() {
                 if (currentUser!!.Following!!.contains(user!!.UserID)) {
                     FollowUnfollow.text = getString(R.string.unfollow)
                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
+                }
+                else {
+                    FollowUnfollow.text = getString(R.string.follow)
+                    FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                 }
 
                 withContext(Dispatchers.Main) {
@@ -105,25 +113,20 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
-                                CoroutineScope(Dispatchers.Main + Job()).launch {
-                                    Log.d("gianni", "2")
-                                    withContext(Dispatchers.IO) {
-                                        Log.d("gianni", "3")
-                                        var followers = getFollowers(context)
-                                        Log.d("gianni", "4")
+                                follower = Follower(
+                                    currentUser!!.UserID,
+                                    currentUser!!.userName
+                                )
+                                followersList!!.add(follower!!)
+                                Log.d("gianni", "4_2")
+                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(followersList)
+                                Log.d("gianni", "4_3")
 
-                                        for (follower in followers) {
-                                            followersList!!.add(follower.UserID)
-                                        }
-                                        withContext(Dispatchers.Main) {
-                                            Log.d("gianni", "4_1")
-                                            followersList!!.add(currentUser!!.UserID)
-                                            Log.d("gianni", "4_2")
-                                            FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, followersList!!)
-                                            Log.d("gianni", "4_3")
-                                        }
-                                    }
-                                }
+                                //TODO: serve una lista di qualche tipo?
+
+
+
+
 
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
