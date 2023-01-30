@@ -48,7 +48,8 @@ fun startWorker(context: Context) {
 
 class followerNotificationWorker(val context: Context, params: WorkerParameters): Worker(context, params) {
     override fun doWork(): Result {
-        val followers = getFollowers(context)
+        val uid = FirebaseAuthWrapper(context).getUid()
+        val followers = getFollowers(context, uid!!)
         var notificationID = 0
         Log.d("gianni", "22")
 

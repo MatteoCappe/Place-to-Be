@@ -575,9 +575,8 @@ fun DeleteEvent (context: Context, EventID: Long) {
 }*/
 
 //TODO: fix
-fun getFollowers(context: Context): MutableList<Follower> {
+fun getFollowers(context: Context, userID: String): MutableList<Follower> {
     Log.d("gianni", "9")
-    val uid = FirebaseAuthWrapper(context).getUid()
 
     val lock = ReentrantLock()
     val condition = lock.newCondition()
@@ -588,7 +587,7 @@ fun getFollowers(context: Context): MutableList<Follower> {
             FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 Log.d("onDataChangeCallback", "invoked")
-                val followers = snapshot.child("followers").child(uid!!).children
+                val followers = snapshot.child("followers").child(userID).children
 
                 Log.d("gianni", "10")
 

@@ -45,7 +45,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                 image =
                     FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
                 Log.d("gianni", "stronzo")
-                followersList = getFollowers(this@ShowProfileActivity)
+                followersList = getFollowers(this@ShowProfileActivity, user!!.UserID)
                 Log.d("gianni", "stronzo 1")
 
                 val ArrayListEvents: ArrayList<Long> = ArrayList(user!!.Events!!)
