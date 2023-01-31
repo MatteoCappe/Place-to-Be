@@ -138,7 +138,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
                                     Log.d("gianni", "1")
-                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.Followers!!)
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
@@ -148,6 +148,10 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     FollowUnfollow.text = getString(R.string.unfollow)
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                     //tecnicamente inutile ripeterlo due volte ma vbb
+                                }
+                                else if (user!!.Followers!!.contains(userID!!)) {
+                                    user!!.Followers!!.add(userID!!)
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
                                 }
                             }
 

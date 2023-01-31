@@ -89,8 +89,8 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.child("events").child(eventID.toString()).setValue(event)
     }
 
-    fun writeDbFollower(followers: MutableList<String>) {
-        ref.child("followers").child(userID!!).setValue(followers)
+    fun writeDbFollower(uid: String, followers: MutableList<String>) {
+        ref.child("followers").child(uid).setValue(followers)
     } //TODO: fix
 
     fun readDbData(callback: FirebaseReadCallback) {
