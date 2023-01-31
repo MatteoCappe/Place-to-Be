@@ -149,7 +149,8 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                     //tecnicamente inutile ripeterlo due volte ma vbb
                                 }
-                                else if (user!!.Followers!!.contains(userID!!)) {
+                                else {
+                                    Log.d("gianni", "porca troia 1")
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
                                 }
