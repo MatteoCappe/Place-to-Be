@@ -20,8 +20,7 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var event: Event? = null
     var image: Uri? = null
     var eventList: MutableList<Event>? = arrayListOf()
-    private var follower: Follower? = null
-    var followersList: MutableList<Follower> = arrayListOf()
+    var followersList: MutableList<String> = arrayListOf()
 
     val context: Context = this
 
@@ -113,17 +112,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
-                                /*follower = Follower(
-                                    currentUser!!.UserID,
-                                    currentUser!!.userName
-                                )
-                                followersList!!.add(follower!!)
-                                Log.d("gianni", "4_2")
-                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(followersList)
-                                Log.d("gianni", "4_3")
-
-                                //TODO: serve una lista di qualche tipo?*/
-
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {
@@ -151,7 +139,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 }
                                 else {
                                     Log.d("gianni", "porca troia 1")
-                                    user!!.Followers!!.add(userID!!)
+                                    followersList.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
                                 }
                             }
