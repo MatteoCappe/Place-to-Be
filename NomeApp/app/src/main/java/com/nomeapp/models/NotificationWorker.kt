@@ -22,6 +22,7 @@ import com.nomeapp.activities.ShowProfileActivity
 import kotlinx.coroutines.*
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random.Default.nextInt
 
 fun runInstantWorker(context: Context) {
     Log.d("gianni", "16")
@@ -29,7 +30,7 @@ fun runInstantWorker(context: Context) {
     WorkManager.getInstance(context).enqueue(followerNotificationWorker)
     Log.d("gianni", "17")
     startWorker(context)
-    //startPeriodicWorker(context)
+    startPeriodicWorker(context)
 }
 
 fun startWorker(context: Context) {
@@ -50,33 +51,20 @@ fun startWorker(context: Context) {
     }
 }
 
-/*fun startPeriodicWorker(context: Context) {
-    val DB = FirebaseDbWrapper(context).ref
-    val uid = FirebaseAuthWrapper(context).getUid()
-    GlobalScope.launch {
-        DB.child("followers").child(uid!!).addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("gianni", "30")
-                val followerPeriodicNotificationWorker =
-                    PeriodicWorkRequestBuilder<followerNotificationWorker>(15, TimeUnit.MINUTES).build()
-                WorkManager.getInstance(context)
-                    .enqueueUniquePeriodicWork("myPeriodicWork", ExistingPeriodicWorkPolicy.KEEP, followerPeriodicNotificationWorker)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-    }
-}*/
+fun startPeriodicWorker(context: Context) {
+    val followerPeriodicNotificationWorker =
+        PeriodicWorkRequestBuilder<followerNotificationWorker>(15, TimeUnit.MINUTES).build()
+    WorkManager.getInstance(context)
+        .enqueueUniquePeriodicWork("myPeriodicWork", ExistingPeriodicWorkPolicy.KEEP, followerPeriodicNotificationWorker)
+}
 
 class followerNotificationWorker(val context: Context, params: WorkerParameters): Worker(context, params) {
-    val uid = FirebaseAuthWrapper(context).getUid()
-    val DB = FirebaseDbWrapper(context).ref
-    val followers = getFollowers(context)
-    var notificationID = 0
-
     override fun doWork(): Result {
+        val uid = FirebaseAuthWrapper(context).getUid()
+        val followers = getFollowers(context)
+        var notificationID = 0
         Log.d("gianni", "22")
+
         //TODO: capisci come farlo funzionare
         if (followers.isNotEmpty()) {
             Log.d("gianni", "23")
@@ -84,48 +72,50 @@ class followerNotificationWorker(val context: Context, params: WorkerParameters)
                 CoroutineScope(Dispatchers.Main + Job()).launch {
                     withContext(Dispatchers.IO) {
                         val user = getUserByID(context, follower)
-
-                        //TODO: check
-                        val intent = Intent(context, ShowProfileActivity::class.java).apply() {
-                            putExtra("UserBoxUsername", user.userName)
-                        }
-
-                        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, UUID.randomUUID().hashCode(), intent, PendingIntent.FLAG_IMMUTABLE)
-
-                        val notificationText = "${user.userName} ha iniziato a seguirti!"
-
                         withContext(Dispatchers.Main) {
                             Log.d("gianni", "25")
-                            val builder = NotificationCompat.Builder(context, "FOLLOWER NOTIFICATION")
+                            val notificationText = "${user.userName} ha iniziato a seguirti!"
+
+                            //TODO: check
+                            val intent = Intent(context, ShowProfileActivity::class.java)
+                            intent.putExtra("UserBoxUsername", user.userName)
+
+                            val pendingIntent: PendingIntent = PendingIntent.getActivity(context, UUID.randomUUID().hashCode(), intent, PendingIntent.FLAG_IMMUTABLE)
+
+                            val builder = NotificationCompat.Builder(context, "FOLLOWER")
                                 .setSmallIcon(R.drawable.icon)
                                 .setContentTitle("Follower")
                                 .setContentText(notificationText)
-                                .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
+                                .setStyle(
+                                    NotificationCompat.BigTextStyle().bigText(notificationText)
+                                )
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                                .setContentIntent(pendingIntent)
                                 .setAutoCancel(true)
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 val name = "follower"
                                 val descriptionText = "follower alert"
                                 val importance = NotificationManager.IMPORTANCE_DEFAULT
-                                val channel = NotificationChannel("FOLLOWER", name, importance).apply {
-                                    description = descriptionText
-                                }
+                                val channel =
+                                    NotificationChannel("FOLLOWER", name, importance).apply {
+                                        description = descriptionText
+                                    }
 
                                 val notificationManager: NotificationManager =
                                     context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                                 notificationManager.createNotificationChannel(channel)
                             }
 
+
                             with(NotificationManagerCompat.from(context)) {
                                 notify(notificationID, builder.build())
                                 notificationID += 1 //TODO: fai come eventID (firebase -> geteventid)
                                 Log.d("gianni notifiche", notificationID.toString())
                             }
-                            DB.child("followers").child(uid!!).child(follower).removeValue()
-                            //TODO: mettilo effetivamente nel db
+                            //TODO: forse sbagliato ed è per quello che non funziona
+                            Firebase.database.getReference("followers").child(uid!!).child(follower).removeValue()
+
                         }
                     }
                 }

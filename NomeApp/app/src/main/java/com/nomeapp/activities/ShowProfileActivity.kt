@@ -43,7 +43,8 @@ class ShowProfileActivity(): AppCompatActivity() {
                 currentUser = getMyData(this@ShowProfileActivity)
                 image =
                     FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
-                //followersList = getFollowers()
+                //followersList = getFollowers(this@ShowProfileActivity, user!!.UserID)
+                //TODO forse togliendo il commento a qua sopra fa effettivamente il cambio che voglio
 
                 val ArrayListEvents: ArrayList<Long> = ArrayList(user!!.Events!!)
                 val ArrayListFollowers: ArrayList<String> = ArrayList(user!!.Followers!!)
@@ -110,11 +111,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
-                                //TODO: guarda dopo cambio in followersList
-                                Log.d("gianni", "porca troia 1")
-                                followersList.add(currentUser!!.UserID)
-                                FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, followersList)
-
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {
@@ -139,6 +135,11 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     FollowUnfollow.text = getString(R.string.unfollow)
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                     //tecnicamente inutile ripeterlo due volte ma vbb
+                                }
+                                else {
+                                    Log.d("gianni", "porca troia 1")
+                                    followersList.add(userID!!)
+                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
                                 }
                             }
 
