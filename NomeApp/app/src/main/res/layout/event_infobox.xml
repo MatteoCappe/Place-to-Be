@@ -63,14 +63,12 @@
                         android:id="@+id/EventBox_City"
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
                         android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/EventBox_Date"
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
                         android:textSize="15dp" />
 
                     <TextView

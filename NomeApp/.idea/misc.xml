@@ -45,18 +45,18 @@
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_searchevent.xml" value="0.25" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_searchuser.xml" value="0.25" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_showevent.xml" value="0.25" />
-        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_showprofile.xml" value="0.25" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_showprofile.xml" value="0.2268041237113402" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_splash.xml" value="0.9130434782608695" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_updateprofile.xml" value="0.42857142857142855" />
-        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/event_infobox.xml" value="0.21458333333333332" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/event_infobox.xml" value="0.75" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_followed.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_notfollowed.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_searchuser.xml" value="0.21458333333333332" />
-        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_showmyevent.xml" value="0.1" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_showmyevent.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_unfollow.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_usernamenotfound.xml" value="0.2146951537258989" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_usernotfound.xml" value="0.21458333333333332" />
-        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/user_infobox.xml" value="0.25" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/user_infobox.xml" value="0.67" />
       </map>
     </option>
   </component>
@@ -65,5 +65,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.21458333333333332" />
+      </ProjectState>
+    </option>
   </component>
 </project>

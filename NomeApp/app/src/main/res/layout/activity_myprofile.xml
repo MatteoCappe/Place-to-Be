@@ -42,10 +42,21 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
+                android:scaleType="centerCrop"
                 android:layout_margin="20sp"
                 android:clickable="true"
                 app:srcCompat="@drawable/empty_profile_picture" />
+
         </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/myProfile_EditPhotoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-65dp"
+            android:layout_marginLeft="210dp"
+            android:clickable="true"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
 
         <TextView
             android:id="@+id/MyProfile_Username"
@@ -80,8 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Logout"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
+            android:layout_margin="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +113,7 @@
                     android:layout_width="173dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -126,7 +136,7 @@
                     android:layout_width="173dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="match_parent"

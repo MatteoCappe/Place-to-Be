@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nomeapp.R
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nomeapp.adapters.EventsAdapter
 import com.nomeapp.models.*
@@ -34,6 +35,18 @@ class MyProfileActivity: AppCompatActivity() {
         val context: Context = this
 
         val userID = FirebaseAuthWrapper(context).getUid()
+
+        val UploadImage: FloatingActionButton = findViewById<View>(R.id.myProfile_EditPhotoButton) as FloatingActionButton
+
+        UploadImage.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                ImagePicker.with(this@MyProfileActivity)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start()
+            }
+        })
 
         val Followers = findViewById<View>(R.id.MyProfile_ViewFollowers) as LinearLayout
         val Following = findViewById<View>(R.id.MyProfile_ViewFollowing) as LinearLayout
@@ -141,6 +154,25 @@ class MyProfileActivity: AppCompatActivity() {
                     context.startActivity(addEvent)
                 }
             })
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                image = data?.data!!
+            }
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Toast.makeText(this, "Task cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (image != null) {
+            FirebaseStorageWrapper(this@MyProfileActivity).uploadUserImage(image!!)
+            findViewById<ImageView>(R.id.MyProfile_ProfileImage).setImageURI(image)
         }
     }
 

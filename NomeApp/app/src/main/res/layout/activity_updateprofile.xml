@@ -14,14 +14,6 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <Button
-            android:id="@+id/UpdateProfile_UploadImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Carica una immagine"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
-
         <EditText
             android:id="@+id/Update_Name"
             android:layout_width="match_parent"

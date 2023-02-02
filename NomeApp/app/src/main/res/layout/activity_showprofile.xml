@@ -32,14 +32,15 @@
             app:cardCornerRadius="75dp"
             app:cardBackgroundColor="@color/black"
             android:layout_gravity="center"
-            android:layout_margin="20sp">
+            android:layout_margin="15sp">
 
             <ImageView
                 android:id="@+id/ShowProfile_profileImage"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_margin="20sp"
+                android:layout_margin="15sp"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/empty_profile_picture" />
         </androidx.cardview.widget.CardView>
 
@@ -47,7 +48,7 @@
             android:id="@+id/ShowProfile_Username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10sp"
+            android:layout_margin="7sp"
             android:gravity="center"
             android:textSize="20sp"/>
 
@@ -55,19 +56,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/ShowProfile_Name"
                 android:layout_width="173dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"/>
+                android:layout_margin="10sp"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/ShowProfile_Surname"
-                android:layout_width="168dp"
+                android:layout_width="173dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"/>
+                android:layout_margin="10sp"
+                android:gravity="center" />
 
         </LinearLayout>
 
@@ -76,13 +80,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/follow"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp"/>
+            android:layout_margin="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_margin="10sp"
+            android:layout_height="63dp"
+            android:layout_margin="15sp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -98,8 +101,7 @@
                     android:id="@+id/ShowProfile_Followers"
                     android:layout_width="173dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="15sp" />
+                    android:gravity="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -121,8 +123,7 @@
                     android:id="@+id/ShowProfile_Following"
                     android:layout_width="173dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="15sp" />
+                    android:gravity="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
