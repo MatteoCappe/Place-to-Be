@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- TODO: fai grant permission per notifiche -->
 
     <application
         android:allowBackup="true"
@@ -25,10 +26,13 @@
         </receiver>
 
         <activity android:name="com.nomeapp.activities.LoginActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.RegisterActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.SplashActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,32 +41,46 @@
             </intent-filter>
         </activity>
         <activity android:name="com.nomeapp.activities.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.MyProfileActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.UpdateProfileActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.ShowProfileActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.AddEventActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.ShowEventActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.UpdateMyEventActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.SearchUserActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.SearchEventActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FollowersActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FollowingActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FollowersNotFoundActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FollowingNotFoundActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FavouritesActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
     </application>
 

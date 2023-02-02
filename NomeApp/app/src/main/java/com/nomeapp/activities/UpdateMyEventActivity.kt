@@ -1,18 +1,15 @@
 package com.nomeapp.activities
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nomeapp.R
-import com.github.dhaval2404.imagepicker.ImagePicker
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -21,7 +18,6 @@ import java.util.*
 
 class UpdateMyEventActivity: AppCompatActivity() {
     val context: Context = this
-    var image: Uri? = null
     var event: Event? = null
     var user: User? = null
     var eventID: Long? = null
@@ -39,7 +35,6 @@ class UpdateMyEventActivity: AppCompatActivity() {
         val Bio: EditText = findViewById<View>(R.id.UpdateEvent_Bio) as EditText
         val Date: EditText = findViewById<View>(R.id.UpdateEvent_Date) as EditText
         val Time: EditText = findViewById<View>(R.id.UpdateEvent_Time) as EditText
-        val UploadImage: Button = findViewById<View>(R.id.UpdateEvent_UploadImage) as Button
         val SaveChanges: Button = findViewById<View>(R.id.UpdateEvent_SaveChanges) as Button
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
@@ -61,16 +56,6 @@ class UpdateMyEventActivity: AppCompatActivity() {
                 }
             }
         }
-
-        UploadImage.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                ImagePicker.with(this@UpdateMyEventActivity)
-                    .crop()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .start()
-            }
-        })
 
         val DateListener =
             DatePickerDialog.OnDateSetListener { view, year, month, day ->
@@ -162,24 +147,6 @@ class UpdateMyEventActivity: AppCompatActivity() {
                 }
             }
         })
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                image = data?.data!!
-            }
-            ImagePicker.RESULT_ERROR -> {
-                Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                Toast.makeText(this, "Task cancelled", Toast.LENGTH_SHORT).show()
-            }
-        }
-        if (image != null) {
-            FirebaseStorageWrapper(this@UpdateMyEventActivity).uploadEventImage(image!!, eventID!!.toString())
-        }
     }
 
 }

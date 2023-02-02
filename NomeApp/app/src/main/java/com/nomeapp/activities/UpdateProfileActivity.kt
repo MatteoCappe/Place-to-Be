@@ -3,21 +3,17 @@ package com.nomeapp.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nomeapp.R
-import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
 
 class UpdateProfileActivity: AppCompatActivity() {
     val context: Context = this
-    var image: Uri? = null
     var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +22,6 @@ class UpdateProfileActivity: AppCompatActivity() {
 
         var alreadyused: Boolean = false
 
-        val UploadImage: Button = findViewById<View>(R.id.UpdateProfile_UploadImage) as Button
         val SaveChanges: Button = findViewById<View>(R.id.UpdateProfile_saveChanges) as Button
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
@@ -41,16 +36,6 @@ class UpdateProfileActivity: AppCompatActivity() {
                 }
             }
         }
-
-        UploadImage.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                ImagePicker.with(this@UpdateProfileActivity)
-                    .crop()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .start()
-            }
-        })
 
         SaveChanges.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
@@ -90,24 +75,6 @@ class UpdateProfileActivity: AppCompatActivity() {
                 }
             }
         })
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                image = data?.data!!
-            }
-            ImagePicker.RESULT_ERROR -> {
-                Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                Toast.makeText(this, "Task cancelled", Toast.LENGTH_SHORT).show()
-            }
-        }
-        if (image != null) {
-            FirebaseStorageWrapper(this@UpdateProfileActivity).uploadUserImage(image!!)
-        }
     }
 
 }
