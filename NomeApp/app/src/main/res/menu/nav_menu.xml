@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"/>
+
+    <item
+        android:id="@+id/nav_myprofile"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Il mio profilo"/>
+
+    <item
+        android:id="@+id/nav_addevent"
+        android:icon="@drawable/ic_baseline_add_circle_outline_24"
+        android:title="Crea nuovo evento"/>
+
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="Ricerca"/>
+
+    <item
+        android:id="@+id/nav_favourites"
+        android:icon="@drawable/ic_baseline_star_border_24"
+        android:title="Eventi preferiti"/>
+
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        android:title="Logout"/>
+
+</menu>

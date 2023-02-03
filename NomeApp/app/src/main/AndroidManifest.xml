@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NomeApp">
 
+        <!--
         <receiver
             android:name="com.nomeapp.receivers.BootReceiver"
             android:enabled="true"
@@ -24,6 +25,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        -->
 
         <activity android:name="com.nomeapp.activities.LoginActivity"
             android:screenOrientation="portrait"
@@ -71,12 +73,6 @@
             android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FollowingActivity"
-            android:screenOrientation="portrait"
-            android:exported="false"/>
-        <activity android:name="com.nomeapp.activities.FollowersNotFoundActivity"
-            android:screenOrientation="portrait"
-            android:exported="false"/>
-        <activity android:name="com.nomeapp.activities.FollowingNotFoundActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FavouritesActivity"

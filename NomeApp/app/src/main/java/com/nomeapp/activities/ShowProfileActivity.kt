@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nomeapp.R
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.nomeapp.adapters.EventsAdapter
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
@@ -20,11 +22,10 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var event: Event? = null
     var image: Uri? = null
     var eventList: MutableList<Event>? = arrayListOf()
-    var followersList: MutableList<String> = arrayListOf()
+    //var followersList: MutableList<String> = arrayListOf()
 
     val context: Context = this
 
-    //TODO: vedi se esiste un modo per velocizzare lettura, etichette per le varie informazioni
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showprofile)
@@ -125,7 +126,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
                                     Log.d("gianni", "1")
-                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
+                                    //FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
@@ -136,11 +137,11 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                     //tecnicamente inutile ripeterlo due volte ma vbb
                                 }
-                                else {
+                                /*else {
                                     Log.d("gianni", "porca troia 1")
                                     followersList.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
-                                }
+                                }*/
                             }
 
                         }
@@ -148,29 +149,17 @@ class ShowProfileActivity(): AppCompatActivity() {
 
                     Followers.setOnClickListener(object: View.OnClickListener {
                         override fun onClick(view: View?) {
-                            if (user!!.Followers!!.size == 0) {
-                                val intent: Intent = Intent(context, FollowersNotFoundActivity::class.java)
-                                context.startActivity(intent)
-                            }
-                            else {
-                                val intent: Intent = Intent(context, FollowersActivity::class.java)
-                                intent.putStringArrayListExtra("Followers", ArrayListFollowers)
-                                context.startActivity(intent)
-                            }
+                            val intent: Intent = Intent(context, FollowersActivity::class.java)
+                            intent.putStringArrayListExtra("Followers", ArrayListFollowers)
+                            context.startActivity(intent)
                         }
                     })
 
                     Following.setOnClickListener(object: View.OnClickListener {
                         override fun onClick(view: View?) {
-                            if (user!!.Following!!.size == 0) {
-                                val intent: Intent = Intent(context, FollowingNotFoundActivity::class.java)
-                                context.startActivity(intent)
-                            }
-                            else {
-                                val intent: Intent = Intent(context, FollowingActivity::class.java)
-                                intent.putExtra("Following", ArrayListFollowing)
-                                context.startActivity(intent)
-                            }
+                            val intent: Intent = Intent(context, FollowingActivity::class.java)
+                            intent.putExtra("Following", ArrayListFollowing)
+                            context.startActivity(intent)
                         }
                     })
                 }

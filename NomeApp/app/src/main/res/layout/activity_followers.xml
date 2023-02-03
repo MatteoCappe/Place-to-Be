@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.FollowersActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+        <TextView
+            android:id="@+id/EmptyFollowers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="BRUH! Non hai amici!"
+            android:layout_margin="10sp"
+            android:gravity="center"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
     <ListView
         android:id="@+id/FollowersList"
         android:layout_width="match_parent"

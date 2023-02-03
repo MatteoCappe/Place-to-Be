@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
@@ -26,9 +27,14 @@ class FollowingActivity: AppCompatActivity() {
         val followingList = intent.getStringArrayListExtra("Following")
 
         val FollowingList: ListView = findViewById<ListView>(R.id.FollowingList)
+        val FollowingEmpty: TextView = findViewById<TextView>(R.id.EmptyFollowing)
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
+
+                if (followingList!!.isEmpty()) {
+                    FollowingEmpty.setVisibility(View.VISIBLE)
+                }
 
                 for (id in followingList!!) {
                     user = getUserByID(this@FollowingActivity, id)

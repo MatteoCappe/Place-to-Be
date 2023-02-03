@@ -39,7 +39,7 @@
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_favouritesnotfound.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_followersnotfound.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_followingnotfound.xml" value="0.42857142857142855" />
-        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_myprofile.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_register.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_searchevent.xml" value="0.25" />
@@ -56,7 +56,9 @@
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_unfollow.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_usernamenotfound.xml" value="0.2146951537258989" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_usernotfound.xml" value="0.21458333333333332" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/nav_header.xml" value="0.33" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/user_infobox.xml" value="0.67" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/menu/nav_menu.xml" value="0.33" />
       </map>
     </option>
   </component>

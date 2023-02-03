@@ -34,6 +34,10 @@ class FirebaseAuthWrapper(private val context: Context) {
         return auth.currentUser?.uid
     }
 
+    fun getEmail() : String? {
+        return auth.currentUser?.email
+    }
+
     fun signUp(user: User, email: String, password: String) {
         this.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -89,9 +93,9 @@ class FirebaseDbWrapper(private val context: Context) {
         ref.child("events").child(eventID.toString()).setValue(event)
     }
 
-    fun writeDbFollower(uid: String, followers: MutableList<String>) {
+    /*fun writeDbFollower(uid: String, followers: MutableList<String>) {
         ref.child("followers").child(uid).setValue(followers)
-    } //TODO: fix
+    } //TODO: fix*/
 
     fun readDbData(callback: FirebaseReadCallback) {
         ref.addValueEventListener(FirebaseReadListener(callback))
@@ -183,6 +187,10 @@ class FirebaseStorageWrapper (private val context: Context) {
     }
 
 }
+
+/*class FirebaseMessagingWrapper(context: Context) {
+
+}*/
 
 fun usernameAlreadyExists(context: Context, userName: String): Boolean {
     val lock = ReentrantLock()
@@ -574,6 +582,7 @@ fun DeleteEvent (context: Context, EventID: Long) {
     Log.d("gianni", "8")
 }*/
 
+/*
 //TODO: fix
 fun getFollowers(context: Context): MutableList<String> {
     val uid = FirebaseAuthWrapper(context).getUid()
@@ -614,4 +623,4 @@ fun getFollowers(context: Context): MutableList<String> {
 
     Log.d("gianni", "15")
     return list
-}
+}*/

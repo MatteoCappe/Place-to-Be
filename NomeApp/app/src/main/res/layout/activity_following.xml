@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.FollowingActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+        <TextView
+            android:id="@+id/EmptyFollowing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="BRUH! Inizia a seguire qualcuno!"
+            android:layout_margin="10sp"
+            android:gravity="center"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
     <ListView
         android:id="@+id/FollowingList"
         android:layout_width="match_parent"

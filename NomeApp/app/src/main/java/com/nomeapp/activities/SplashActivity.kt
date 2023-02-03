@@ -13,13 +13,12 @@ import com.nomeapp.listeners.GrantPermissionListener
 import com.nomeapp.models.FirebaseAuthWrapper
 
 class SplashActivity : AppCompatActivity() {
-    private val TAG = SplashActivity::class.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        Log.d(TAG, "The SplashActivity has started!")
+        Log.d("prova aaaa", "The SplashActivity has started!")
 
         // Check if user logged or not
         val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(this)

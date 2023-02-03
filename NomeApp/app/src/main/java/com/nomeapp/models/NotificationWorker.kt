@@ -24,6 +24,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random.Default.nextInt
 
+/*
 fun runInstantWorker(context: Context) {
     Log.d("gianni", "16")
     val followerNotificationWorker = OneTimeWorkRequestBuilder<followerNotificationWorker>().build()
@@ -124,4 +125,4 @@ class followerNotificationWorker(val context: Context, params: WorkerParameters)
 
         return Result.success()
     }
-}
+}*/
