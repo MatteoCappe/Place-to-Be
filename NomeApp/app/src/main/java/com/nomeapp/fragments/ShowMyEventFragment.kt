@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nomeapp.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -48,7 +49,8 @@ class ShowMyEventFragment(): Fragment() {
                                 DeleteEvent(this@ShowMyEventFragment.requireContext(), eventID!!)
 
                                 withContext(Dispatchers.Main) {
-                                    //TODO: metti un toast
+                                    Toast.makeText(context, "Evento cancellato con successo!", Toast.LENGTH_LONG).show()
+                                    //TODO: check toast
                                     val intent: Intent = Intent(context, MainActivity::class.java)
                                     startActivity(intent)
                                 }

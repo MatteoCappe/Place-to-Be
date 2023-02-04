@@ -10,9 +10,8 @@ class Event() {
     var City: String = ""
     var Address: String = ""
     var Bio: String = ""
-    var userID: String = "" //id creatore
-    var userName: String = "" //username creatore, se serve
-    //var Partecipanti: MutableList<String>? = mutableListOf() //dopo follow //TODO: rimuovi
+    var userID: String = ""
+    var userName: String = ""
 
     constructor(
         Title: String,
@@ -23,7 +22,6 @@ class Event() {
         Bio: String,
         userID: String,
         userName: String
-        //Partecipanti: MutableList<String>?
     ) : this() {
         this.Title = Title
         this.eventID = eventID
@@ -33,7 +31,6 @@ class Event() {
         this.Bio = Bio
         this.userID = userID
         this.userName = userName
-        //this.Partecipanti = Partecipanti
     }
 
     private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)

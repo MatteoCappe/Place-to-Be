@@ -63,10 +63,7 @@
         <activity android:name="com.nomeapp.activities.UpdateMyEventActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
-        <activity android:name="com.nomeapp.activities.SearchUserActivity"
-            android:screenOrientation="portrait"
-            android:exported="false"/>
-        <activity android:name="com.nomeapp.activities.SearchEventActivity"
+        <activity android:name="com.nomeapp.activities.SearchActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
         <activity android:name="com.nomeapp.activities.FollowersActivity"

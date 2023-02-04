@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.ShowEventActivity">
@@ -9,158 +10,161 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="200dp"
-            android:layout_height="150dp"
-            app:cardBackgroundColor="@color/black"
-            android:layout_gravity="center"
-            android:layout_margin="20sp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ShowEvent_eventImage"
-                android:layout_width="300dp"
+            <androidx.cardview.widget.CardView
+                android:layout_width="200dp"
                 android:layout_height="150dp"
+                app:cardBackgroundColor="@color/black"
                 android:layout_gravity="center"
-                android:layout_margin="20sp"
-                app:srcCompat="@drawable/empty_event_picture" />
-        </androidx.cardview.widget.CardView>
+                android:layout_margin="20sp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/ShowEvent_EditPhotoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-55dp"
-            android:layout_marginLeft="240dp"
-            android:visibility="gone"
-            android:clickable="true"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
-
-        <Button
-            android:id="@+id/ShowEvent_FollowUnfollowButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/follow"
-            android:visibility="gone"
-            android:layout_margin="15dp"/>
-
-        <TextView
-            android:id="@+id/ShowEvent_Title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="22sp"
-            android:layout_margin="10dp"/>
-
-        <TextView
-            android:id="@+id/ShowEvent_City"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_margin="10dp"/>
-
-        <TextView
-            android:id="@+id/ShowEvent_Address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_margin="10dp"/>
-
-        <TextView
-            android:id="@+id/ShowEvent_Bio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text|textMultiLine"
-            android:layout_margin="10dp"/>
-
-        <TextView
-            android:id="@+id/ShowEvent_Date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_margin="10dp"/>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/ShowEvent_UserBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:cardBackgroundColor="@color/cardview_shadow_start_color"
-            tools:ignore="MissingConstraints">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="top"
-                android:orientation="horizontal"
-                tools:layout_editor_absoluteX="63dp"
-                tools:layout_editor_absoluteY="0dp">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                <ImageView
+                    android:id="@+id/ShowEvent_eventImage"
+                    android:layout_width="300dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
                     android:layout_margin="20sp"
-                    app:cardBackgroundColor="@color/black"
-                    app:cardCornerRadius="60dp">
+                    app:srcCompat="@drawable/empty_event_picture" />
+            </androidx.cardview.widget.CardView>
 
-                    <ImageView
-                        android:id="@+id/ShowEvent_UserBox_Photo"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/empty_profile_picture" />
-                </androidx.cardview.widget.CardView>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/ShowEvent_EditPhotoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-55dp"
+                android:layout_marginLeft="240dp"
+                android:visibility="gone"
+                android:clickable="true"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
+            <Button
+                android:id="@+id/ShowEvent_FollowUnfollowButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/follow"
+                android:visibility="gone"
+                android:layout_margin="15dp"/>
+
+            <TextView
+                android:id="@+id/ShowEvent_Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textSize="22sp"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/ShowEvent_City"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/ShowEvent_Address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/ShowEvent_Bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text|textMultiLine"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/ShowEvent_Date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_margin="10dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ShowEvent_UserBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/cardview_shadow_start_color"
+                tools:ignore="MissingConstraints">
 
                 <LinearLayout
-                    android:layout_width="250dp"
-                    android:layout_height="127dp"
-                    android:layout_margin="10sp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="63dp"
+                    tools:layout_editor_absoluteY="0dp">
 
-                    <TextView
-                        android:id="@+id/ShowEvent_UserBox_Username"
-                        android:layout_width="240dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textSize="20sp" />
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="20sp"
+                        app:cardBackgroundColor="@color/black"
+                        app:cardCornerRadius="60dp">
+
+                        <ImageView
+                            android:id="@+id/ShowEvent_UserBox_Photo"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/empty_profile_picture" />
+                    </androidx.cardview.widget.CardView>
 
                     <LinearLayout
                         android:layout_width="250dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="127dp"
                         android:layout_margin="10sp"
                         android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <!-- magari sistema in modo da poter mettere wrap_content nelle width-->
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/ShowEvent_UserBox_Name"
-                            android:layout_width="110dp"
+                            android:id="@+id/ShowEvent_UserBox_Username"
+                            android:layout_width="240dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:textSize="15dp" />
+                            android:textSize="20sp" />
 
-                        <TextView
-                            android:id="@+id/ShowEvent_UserBox_Surname"
-                            android:layout_width="110dp"
+                        <LinearLayout
+                            android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:textSize="15dp" />
+                            android:layout_margin="10sp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <!-- magari sistema in modo da poter mettere wrap_content nelle width-->
+
+                            <TextView
+                                android:id="@+id/ShowEvent_UserBox_Name"
+                                android:layout_width="110dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:id="@+id/ShowEvent_UserBox_Surname"
+                                android:layout_width="110dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textSize="15dp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        </androidx.cardview.widget.CardView>
-
-        <!-- TODO: per mettere fragment in fondo a schermo, mettere fragment dentro nuovo linear layout e settare quello con bottom -->
-
-    </LinearLayout>
+        </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/showMyEventFragment"
@@ -169,5 +173,16 @@
         android:layout_gravity="bottom"
         android:layout_marginTop="140dp" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_menu"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
 

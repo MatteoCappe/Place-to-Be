@@ -1,91 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.AddEventActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <EditText
-            android:id="@+id/EventTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Inserisci il titolo dell'evento.."
-            android:layout_margin="10dp"/>
-
-        <EditText
-            android:id="@+id/City"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Inserisci la città.."
-            android:inputType="textPostalAddress"
-            android:layout_margin="10dp"/>
-
-        <EditText
-            android:id="@+id/Address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Inserisci l'indirizzo.."
-            android:inputType="textPostalAddress"
-            android:layout_margin="10dp"/>
-
-        <EditText
-            android:id="@+id/Bio"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:ems="10"
-            android:inputType="text|textMultiLine"
-            android:hint="Inserisci la descrizione dell'evento.."
-            android:layout_margin="10dp"/>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="132dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             android:gravity="center">
 
             <EditText
-                android:id="@+id/EventDate"
-                android:layout_width="173dp"
+                android:id="@+id/EventTitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:clickable="false"
-                android:cursorVisible="false"
                 android:ems="10"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:hint="Inserisci la data..." />
+                android:hint="Inserisci il titolo dell'evento.."
+                android:layout_margin="10dp"/>
 
             <EditText
-                android:id="@+id/EventTime"
-                android:layout_width="173dp"
+                android:id="@+id/City"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:clickable="false"
-                android:cursorVisible="false"
                 android:ems="10"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:hint="Inserisci l'ora..." />
+                android:hint="Inserisci la città.."
+                android:inputType="textPostalAddress"
+                android:layout_margin="10dp"/>
+
+            <EditText
+                android:id="@+id/Address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Inserisci l'indirizzo.."
+                android:inputType="textPostalAddress"
+                android:layout_margin="10dp"/>
+
+            <EditText
+                android:id="@+id/Bio"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:ems="10"
+                android:inputType="text|textMultiLine"
+                android:hint="Inserisci la descrizione dell'evento.."
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="132dp"
+                android:gravity="center">
+
+                <EditText
+                    android:id="@+id/EventDate"
+                    android:layout_width="173dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Inserisci la data..." />
+
+                <EditText
+                    android:id="@+id/EventTime"
+                    android:layout_width="173dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Inserisci l'ora..." />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/CreateEvent"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="10dp"
+                android:layout_marginTop="0dp"
+                android:text="Crea evento" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/CreateEvent"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp"
-            android:text="Crea evento" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_menu"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

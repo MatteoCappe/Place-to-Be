@@ -17,6 +17,37 @@
             android:orientation="vertical"
             android:gravity="center">
 
+            <RelativeLayout
+                android:id="@+id/textview1"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:background="@drawable/rectangle_border_box" >
+
+                <ImageView
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    app:srcCompat="@drawable/ic_baseline_person_outline_24"/>
+
+                <TextView
+                    android:layout_width="122dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="-100dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Il mio Profilo"
+                    android:textStyle="bold"
+                    android:textSize="20dp" />
+
+            </RelativeLayout>
+
             <Button
                 android:id="@+id/MyProfileButton"
                 android:layout_width="match_parent"
@@ -34,18 +65,10 @@
                 android:layout_marginTop="0dp" />
 
             <Button
-                android:id="@+id/SearchUserButton"
+                android:id="@+id/SearchButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ricerca Utente"
-                android:layout_margin="10dp"
-                android:layout_marginTop="0dp" />
-
-            <Button
-                android:id="@+id/SearchEventButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ricerca Evento"
+                android:text="Ricerca"
                 android:layout_margin="10dp"
                 android:layout_marginTop="0dp" />
 
@@ -69,7 +92,5 @@
         app:menu="@menu/nav_menu"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"/>
-
-    <!--TODO: copia per tutte le activity -->
 
 </androidx.drawerlayout.widget.DrawerLayout>

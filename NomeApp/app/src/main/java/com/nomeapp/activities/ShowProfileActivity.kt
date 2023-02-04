@@ -6,12 +6,14 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.nomeapp.R
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
+import com.google.android.material.navigation.NavigationView
 import com.nomeapp.adapters.EventsAdapter
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
@@ -25,10 +27,55 @@ class ShowProfileActivity(): AppCompatActivity() {
     //var followersList: MutableList<String> = arrayListOf()
 
     val context: Context = this
+    var userMenu: User? = null
+    var imageMenu: Uri? = null
+    var email: String? = null
+    lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showprofile)
+
+        ///////////////////////////////////////MENU///////////////////////////////////////////
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+
+        CoroutineScope(Dispatchers.Main + Job()).launch {
+            withContext(Dispatchers.IO) {
+                email = FirebaseAuthWrapper(context).getEmail()
+                userMenu = getMyData(context)
+                imageMenu = FirebaseStorageWrapper(context).downloadUserImage(userMenu!!.UserID)
+
+                withContext(Dispatchers.Main) {
+                    findViewById<TextView>(R.id.NavMenu_Username).text = userMenu!!.userName
+                    findViewById<TextView>(R.id.NavMenu_Email).text = email!!
+
+                    if (imageMenu != null) {
+                        findViewById<ImageView>(R.id.NavMenu_Photo).setImageURI(imageMenu)
+                    }
+                }
+            }
+        }
+
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> intent = Intent(context, MainActivity::class.java)
+                R.id.nav_myprofile -> intent = Intent(context, MyProfileActivity::class.java)
+                R.id.nav_addevent -> intent = Intent(context, AddEventActivity::class.java)
+                R.id.nav_search -> intent = Intent(context, SearchActivity::class.java)
+                R.id.nav_favourites -> intent = Intent(context, FavouritesActivity::class.java)
+                R.id.nav_logout -> intent = Intent(context, LoginActivity::class.java)
+            }
+
+            context.startActivity(intent)
+            true
+        }
+        ///////////////////////////////////////MENU///////////////////////////////////////////
 
         val FollowUnfollow: Button = findViewById<View>(R.id.ShowProfile_FollowUnfollowButton) as Button
         val Followers = findViewById<View>(R.id.ShowProfile_ViewFollowers) as LinearLayout
@@ -166,5 +213,15 @@ class ShowProfileActivity(): AppCompatActivity() {
             }
         }
     }
+
+    ///////////////////////////////////////MENU///////////////////////////////////////////
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+    ///////////////////////////////////////MENU///////////////////////////////////////////
 
 }

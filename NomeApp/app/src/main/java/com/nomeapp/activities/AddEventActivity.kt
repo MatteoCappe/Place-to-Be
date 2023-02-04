@@ -5,14 +5,19 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.nomeapp.R
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -21,12 +26,56 @@ import java.text.SimpleDateFormat
 class AddEventActivity : AppCompatActivity() {
     val context: Context = this
     private var myCalendar : Calendar= Calendar.getInstance()
+    var userMenu: User? = null
+    var imageMenu: Uri? = null
+    var email: String? = null
+
+    lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addevent)
 
-        Log.d("test tempo", System.currentTimeMillis().toString())
+        ///////////////////////////////////////MENU///////////////////////////////////////////
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+
+        CoroutineScope(Dispatchers.Main + Job()).launch {
+            withContext(Dispatchers.IO) {
+                email = FirebaseAuthWrapper(context).getEmail()
+                userMenu = getMyData(context)
+                imageMenu = FirebaseStorageWrapper(context).downloadUserImage(userMenu!!.UserID)
+
+                withContext(Dispatchers.Main) {
+                    findViewById<TextView>(R.id.NavMenu_Username).text = userMenu!!.userName
+                    findViewById<TextView>(R.id.NavMenu_Email).text = email!!
+
+                    if (imageMenu != null) {
+                        findViewById<ImageView>(R.id.NavMenu_Photo).setImageURI(imageMenu)
+                    }
+                }
+            }
+        }
+
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> intent = Intent(context, MainActivity::class.java)
+                R.id.nav_myprofile -> intent = Intent(context, MyProfileActivity::class.java)
+                R.id.nav_addevent -> intent = Intent(context, AddEventActivity::class.java)
+                R.id.nav_search -> intent = Intent(context, SearchActivity::class.java)
+                R.id.nav_favourites -> intent = Intent(context, FavouritesActivity::class.java)
+                R.id.nav_logout -> intent = Intent(context, LoginActivity::class.java)
+            }
+
+            context.startActivity(intent)
+            true
+        }
+        ///////////////////////////////////////MENU///////////////////////////////////////////
 
         val Title: EditText = findViewById<View>(R.id.EventTitle) as EditText
         val City: EditText = findViewById<View>(R.id.City) as EditText
@@ -72,8 +121,6 @@ class AddEventActivity : AppCompatActivity() {
                 ).show()
             }
         })
-
-        Log.d("test tempo 1", myCalendar.timeInMillis.toString())
 
         CreateEvent.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
@@ -121,16 +168,21 @@ class AddEventActivity : AppCompatActivity() {
                         }
                     }
 
-                    //torna alla home page, vedi se si può invece riportare all'activity precedente
-                    //siccome a Add Event si può accedere sia da profilo che da home
                     val intent: Intent = Intent(context, MainActivity::class.java)
                     startActivity(intent)
                 }
             }
         })
     }
-    //upload image disponibile solo dal menu di modifica dell'evento
-    //stesso problema del registration, non posso sapere id prima di ottenerlo
-    //vedi se magari dopo CreateEvent dopo click mettere un intent che porta ad aggiungere la foto (?)
-    //oppure se si possa mettere la ImageView e fare in modo di leggerla e caricarla dopo averla inserita nel solito modo
+
+    ///////////////////////////////////////MENU///////////////////////////////////////////
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+    ///////////////////////////////////////MENU///////////////////////////////////////////
+
 }

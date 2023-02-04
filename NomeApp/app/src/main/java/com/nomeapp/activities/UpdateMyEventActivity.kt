@@ -113,7 +113,7 @@ class UpdateMyEventActivity: AppCompatActivity() {
                 }
 
                 else if (myCalendar.timeInMillis < System.currentTimeMillis() &&
-                        !Date.text.toString().equals(formattedDate)) { //TODO: check
+                        !Date.text.toString().equals(formattedDate)) { //TODO: guarda se mettere check su ora
                     Date.setError("Non puoi scegliere un giorno già passato!")
                 }
 

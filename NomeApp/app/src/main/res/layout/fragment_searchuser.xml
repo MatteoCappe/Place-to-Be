@@ -4,13 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nomeapp.fragments.SearchUserFragment"> <!-- o SearchUSerActivity? -->
+    tools:context="com.nomeapp.fragments.SearchUserFragment">
 
-    <ListView
-        android:id="@+id/SearchUserList"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/user_infobox"/>
+        android:orientation="vertical"
+        android:gravity="top">
 
+        <EditText
+            android:id="@+id/searchUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:layout_margin="30dp"
+            android:hint="Cerca uno username.."/>
+
+        <Button
+            android:id="@+id/SearchUserButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cerca"
+            android:layout_margin="5dp"
+            android:layout_marginTop="0dp" />
+        <!-- magari mettere fab carino della lente di ingrandimento -->
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/SearchUserFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"/> <!-- vedi per bottom -->
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-

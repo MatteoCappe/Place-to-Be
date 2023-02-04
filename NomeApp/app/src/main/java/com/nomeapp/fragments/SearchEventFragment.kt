@@ -1,43 +1,22 @@
 package com.nomeapp.fragments
 
-import android.content.Intent
+import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.nomeapp.R
-import com.nomeapp.activities.ShowEventActivity
-import com.nomeapp.adapters.EventsAdapter
-import com.nomeapp.models.SearchEvent
-import com.nomeapp.models.SearchEvent
-import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
+import java.util.*
 
-class SearchEventFragment(): Fragment() {
-    var Title: String? = null
-    var City: String? = null
-    var Date: String? = null
-
-    //TODO: checkbox per mostrare e nascondere campi di ricerca
-    //search by: title, city, date, con tutte le possibili combinazioni
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.getString("Title")?.let {
-            Title = it
-        }
-        arguments?.getString("City")?.let {
-            City = it
-        }
-        arguments?.getString("Date")?.let {
-            Date = it
-        }
-    }
+class SearchEventFragment: Fragment() {
+    private var myCalendar : Calendar= Calendar.getInstance()
 
     override fun onCreateView (inflater: LayoutInflater, container: ViewGroup?,
                                savedInstanceState: Bundle?): View? {
@@ -45,48 +24,142 @@ class SearchEventFragment(): Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_searchevent, container, false)
         val fragmentManager = requireActivity().supportFragmentManager
 
-        val ListOfEvents: ListView = view.findViewById(R.id.SearchEventList)
+        val SearchEventButton: Button = view.findViewById(R.id.SearchEventButton) as Button
+        val ClearDate: ImageView = view.findViewById(R.id.ClearDate) as ImageView
 
-        CoroutineScope(Dispatchers.Main + Job()).launch {
-            withContext(Dispatchers.IO) {
-                val eventList = SearchEvent(this@SearchEventFragment.requireContext(), Title!!, City!!, Date!!)
+        val Title: EditText = view.findViewById(R.id.searchTitle) as EditText
+        val City: EditText = view.findViewById(R.id.searchCity) as EditText
+        val Date: EditText = view.findViewById(R.id.searchDate) as EditText
 
-                withContext(Dispatchers.Main) {
-                    if (eventList.isEmpty()) {
-                        fragmentManager.commit {
-                            setReorderingAllowed(true)
-                            val frag: Fragment = EventNotFoundFragment()
-                            this.replace(R.id.SearchEventFragment, frag)
-                        }
-                    }
-                    else {
-                        val adapter = EventsAdapter(requireActivity(), eventList)
-                        ListOfEvents.adapter = adapter
-                        ListOfEvents.onItemClickListener =
-                            AdapterView.OnItemClickListener { position, view, parent, id ->
-                                val EventIDFromBox: Long =
-                                    view.findViewById<TextView>(R.id.EventBox_ID).text.toString().toLong()
-                                //TODO: check sulla data dell'evento prima di show
-                                val intent: Intent = Intent(context, ShowEventActivity::class.java)
-                                intent.putExtra("EventBoxID", EventIDFromBox)
-                                startActivity(intent)
-                            }
+        //TODO: checkbox per mostrare e nascondere campi di ricerca
+        //search by: title, city, date, con tutte le possibili combinazioni
+
+        val DateListener =
+            DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, month)
+                myCalendar.set(Calendar.DAY_OF_MONTH, day)
+
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US) //vedi se il formato della data va bene quando si aggiungerà ricerca
+                Date.setText(dateFormat.format(myCalendar.time))
+            }
+
+        Date.setOnClickListener(object:View.OnClickListener{
+            override fun onClick(view: View?) {
+                DatePickerDialog(
+                    this@SearchEventFragment.requireActivity(),
+                    DateListener,
+                    myCalendar.get(Calendar.YEAR),
+                    myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH),
+                ).show()
+            }
+        })
+
+        ClearDate.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                Date.text.clear()
+            }
+        })
+
+        SearchEventButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+
+                if (Title.text.isEmpty() && City.text.isEmpty() && Date.text.isEmpty()) {
+                    Title.setError(getString(R.string.eventSearchError))
+                    City.setError(getString(R.string.eventSearchError))
+                    Date.setError(getString(R.string.eventSearchError))
+                }
+
+                else {
+                    fragmentManager.commit {
+                        setReorderingAllowed(true)
+                        val frag: Fragment = EventListFragment.newInstance(
+                            Title.text.toString(),
+                            City.text.toString(),
+                            Date.text.toString()
+                        )
+                        replace(R.id.SearchEventFragment, frag)
                     }
                 }
             }
-        }
+        })
 
         return view
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance (Title: String, City: String, Date: String) = SearchEventFragment().apply {
-            arguments = Bundle().apply {
-                putString("Title", Title)
-                putString("City", City)
-                putString("Date", Date)
+    //usato per risolvere un problema che si presentava dopo essere tornti indietro da showEvent
+    override fun onResume() {
+        super.onResume()
+
+        val Title: EditText = requireView().findViewById<View>(R.id.searchTitle) as EditText
+        val City: EditText = requireView().findViewById<View>(R.id.searchCity) as EditText
+        val Date: EditText = requireView().findViewById<View>(R.id.searchDate) as EditText
+
+        if (!(Title.text.isEmpty() && City.text.isEmpty() && Date.text.isEmpty())) {
+            requireFragmentManager().commit {
+                setReorderingAllowed(true)
+                val frag: Fragment = EventListFragment.newInstance(
+                    Title.text.toString(),
+                    City.text.toString(),
+                    Date.text.toString()
+                )
+                replace(R.id.SearchEventFragment, frag)
             }
         }
+
+        val SearchEventButton: Button = requireView().findViewById<View>(R.id.SearchEventButton) as Button
+        val ClearDate: ImageView = requireView().findViewById<View>(R.id.ClearDate) as ImageView
+
+        val DateListener =
+            DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, month)
+                myCalendar.set(Calendar.DAY_OF_MONTH, day)
+
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                Date.setText(dateFormat.format(myCalendar.time))
+            }
+
+        Date.setOnClickListener(object:View.OnClickListener{
+            override fun onClick(view: View?) {
+                DatePickerDialog(
+                    this@SearchEventFragment.requireActivity(),
+                    DateListener,
+                    myCalendar.get(Calendar.YEAR),
+                    myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH),
+                ).show()
+            }
+        })
+
+        ClearDate.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                Date.text.clear()
+            }
+        })
+
+        SearchEventButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+
+                if (Title.text.isEmpty() && City.text.isEmpty() && Date.text.isEmpty()) {
+                    Title.setError(getString(R.string.eventSearchError))
+                    City.setError(getString(R.string.eventSearchError))
+                    Date.setError(getString(R.string.eventSearchError))
+                }
+
+                else {
+                    requireFragmentManager().commit {
+                        setReorderingAllowed(true)
+                        val frag: Fragment = EventListFragment.newInstance(
+                            Title.text.toString(),
+                            City.text.toString(), Date.text.toString()
+                        )
+                        replace(R.id.SearchEventFragment, frag)
+                    }
+                }
+            }
+        })
     }
+
 }
