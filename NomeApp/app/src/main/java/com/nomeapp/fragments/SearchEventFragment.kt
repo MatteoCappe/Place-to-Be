@@ -1,19 +1,17 @@
 package com.nomeapp.fragments
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.nomeapp.R
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class SearchEventFragment: Fragment() {
     private var myCalendar : Calendar= Calendar.getInstance()
@@ -31,8 +29,56 @@ class SearchEventFragment: Fragment() {
         val City: EditText = view.findViewById(R.id.searchCity) as EditText
         val Date: EditText = view.findViewById(R.id.searchDate) as EditText
 
-        //TODO: checkbox per mostrare e nascondere campi di ricerca
-        //search by: title, city, date, con tutte le possibili combinazioni
+        val checkboxTitle: CheckBox = view.findViewById(R.id.checkboxTitle) as CheckBox
+        val checkboxCity: CheckBox = view.findViewById(R.id.checkboxCity) as CheckBox
+        val checkboxDate: CheckBox = view.findViewById(R.id.checkboxDate) as CheckBox
+
+        checkboxTitle.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                Title.setVisibility(View.VISIBLE)
+            }
+            else {
+                if (checkboxDate.isChecked || checkboxCity.isChecked) {
+                    Title.setVisibility(View.GONE)
+                }
+                else {
+                    checkboxTitle.setChecked(true)
+                    Title.setError(getString(R.string.eventSearchError))
+                }
+            }
+        })
+
+        checkboxCity.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                City.setVisibility(View.VISIBLE)
+            }
+            else {
+                if (checkboxTitle.isChecked || checkboxDate.isChecked) {
+                    City.setVisibility(View.GONE)
+                }
+                else {
+                    checkboxCity.setChecked(true)
+                    City.setError(getString(R.string.eventSearchError))
+                }
+            }
+        })
+
+        checkboxDate.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                Date.setVisibility(View.VISIBLE)
+                ClearDate.setVisibility(View.VISIBLE)
+            }
+            else {
+                if (checkboxTitle.isChecked || checkboxCity.isChecked) {
+                    Date.setVisibility(View.GONE)
+                    ClearDate.setVisibility(View.GONE)
+                }
+                else {
+                    checkboxDate.setChecked(true)
+                    Date.setError(getString(R.string.eventSearchError))
+                }
+            }
+        })
 
         val DateListener =
             DatePickerDialog.OnDateSetListener { view, year, month, day ->
@@ -40,7 +86,7 @@ class SearchEventFragment: Fragment() {
                 myCalendar.set(Calendar.MONTH, month)
                 myCalendar.set(Calendar.DAY_OF_MONTH, day)
 
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US) //vedi se il formato della data va bene quando si aggiungerà ricerca
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
                 Date.setText(dateFormat.format(myCalendar.time))
             }
 

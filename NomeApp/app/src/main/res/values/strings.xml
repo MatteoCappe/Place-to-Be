@@ -6,7 +6,7 @@
     <string name="follow">Segui</string>
     <string name="unfollow">Non seguire più</string>
     <string name="emptyError">Tutti i campi devono essere compilati!</string>
-    <string name="eventSearchError">Compila almeno uno di questi campi!</string>
+    <string name="eventSearchError">Almeno uno di questi campi deve essere compilato!</string>
     <string name="usernameError">Questo username è già in uso</string>
     <string name="open">Apri</string>
     <string name="close">Chiudi</string>

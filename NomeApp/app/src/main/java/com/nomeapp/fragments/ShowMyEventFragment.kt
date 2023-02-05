@@ -50,7 +50,6 @@ class ShowMyEventFragment(): Fragment() {
 
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(context, "Evento cancellato con successo!", Toast.LENGTH_LONG).show()
-                                    //TODO: check toast
                                     val intent: Intent = Intent(context, MainActivity::class.java)
                                     startActivity(intent)
                                 }

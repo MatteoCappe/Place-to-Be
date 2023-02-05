@@ -7,10 +7,9 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.MyProfileActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,12 +76,30 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/LogoutButton"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Logout"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/LogoutButton"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:gravity="center"
+                    android:text="Logout"
+                    android:layout_margin="5dp"/>
+
+                <Button
+                    android:id="@+id/MyProfile_EditProfileButton"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Modifica Profilo"
+                    android:layout_margin="5dp"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,29 +161,12 @@
                 android:id="@+id/MyProfile_EventList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/event_infobox" />
+                tools:listitem="@layout/event_infobox" >
+            </ListView>
 
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/MyProfile_EditProfileButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            app:srcCompat="@android:drawable/ic_menu_edit"
-            android:layout_gravity="bottom|left"
-            android:layout_margin="20sp"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/MyProfile_AddEventButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            app:srcCompat="@android:drawable/ic_input_add"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="20sp"/>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

@@ -95,8 +95,6 @@ class FavouritesActivity: AppCompatActivity() {
                 else {
                     for (id in user!!.Favourites!!) {
                         event = getEventByID(this@FavouritesActivity, id)
-                        //TODO: magari anzichè toglierli dalla vista metti uno sfondo rosso o la scritta "terminato"
-                        //TODO: da fare tramite eventAdapter
                         eventList!!.add(event!!)
                     }
 

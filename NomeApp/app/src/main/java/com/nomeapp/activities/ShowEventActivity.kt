@@ -93,11 +93,10 @@ class ShowEventActivity() : AppCompatActivity() {
         var Bio: String
         var userID: String
 
-        val FollowUnfollow: Button =
-            findViewById<View>(R.id.ShowEvent_FollowUnfollowButton) as Button
+        val FollowUnfollow: Button = findViewById<View>(R.id.ShowEvent_FollowUnfollowButton) as Button
         val UserBox: CardView = findViewById<View>(R.id.ShowEvent_UserBox) as CardView
-        val EditPhoto: FloatingActionButton =
-            findViewById(R.id.ShowEvent_EditPhotoButton) as FloatingActionButton
+        val CreatedBy: TextView = findViewById<View>(R.id.createdBy) as TextView
+        val EditPhoto: FloatingActionButton = findViewById(R.id.ShowEvent_EditPhotoButton) as FloatingActionButton
 
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
@@ -129,6 +128,7 @@ class ShowEventActivity() : AppCompatActivity() {
                             this.add(R.id.showMyEventFragment, frag)
                         }
                     } else {
+                        CreatedBy.setVisibility(View.VISIBLE)
                         FollowUnfollow.setVisibility(View.VISIBLE)
                         UserBox.setVisibility(View.VISIBLE)
                     }

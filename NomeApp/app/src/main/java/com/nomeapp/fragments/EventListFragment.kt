@@ -61,7 +61,6 @@ class EventListFragment(): Fragment() {
                             AdapterView.OnItemClickListener { position, view, parent, id ->
                                 val EventIDFromBox: Long =
                                     view.findViewById<TextView>(R.id.EventBox_ID).text.toString().toLong()
-                                //TODO: check sulla data dell'evento prima di show
                                 val intent: Intent = Intent(context, ShowEventActivity::class.java)
                                 intent.putExtra("EventBoxID", EventIDFromBox)
                                 startActivity(intent)
