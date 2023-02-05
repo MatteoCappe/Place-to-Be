@@ -34,13 +34,14 @@
         <entry key="..\:/Users/matte/Desktop/Nome_App/NomeApp/app/src/main/res/layout/activity_splash.xml" value="0.2146951537258989" />
         <entry key="..\:/Users/matte/Desktop/Nome_App/NomeApp/app/src/main/res/layout/activity_updateprofile.xml" value="0.25" />
         <entry key="..\:/Users/matte/Desktop/Nome_App/NomeApp/app/src/main/res/layout/fragment_showmyevent.xml" value="0.25" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/drawable/expired_event.xml" value="0.148" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/drawable/rectangle_border_box.xml" value="0.148" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_addevent.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_favourites.xml" value="0.25" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_favouritesnotfound.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_followersnotfound.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_followingnotfound.xml" value="0.42857142857142855" />
-        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_main.xml" value="0.13983050847457626" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_myprofile.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_register.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_search.xml" value="0.21458333333333332" />
@@ -50,7 +51,7 @@
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_showprofile.xml" value="0.2268041237113402" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_splash.xml" value="0.9130434782608695" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/activity_updateprofile.xml" value="0.42857142857142855" />
-        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/event_infobox.xml" value="0.75" />
+        <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/event_infobox.xml" value="0.25" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_followed.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_notfollowed.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/matte/Desktop/Place to Be/NomeApp/app/src/main/res/layout/fragment_searchevent.xml" value="0.42916666666666664" />

@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:hint="BRUH! Inizia a seguire qualcuno!"
+            android:visibility="gone"
             android:layout_margin="10sp"
             android:gravity="center"
             android:textSize="15sp"/>

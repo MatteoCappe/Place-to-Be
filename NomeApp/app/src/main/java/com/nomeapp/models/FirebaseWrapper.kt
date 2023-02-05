@@ -12,11 +12,16 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.nomeapp.activities.SplashActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.collections.ArrayList
@@ -423,8 +428,9 @@ fun SearchEvent (context: Context, Title: String, City: String, Date: String): M
     val condition = lock.newCondition()
     var eventList: MutableList<Event> = ArrayList()
 
-    //TODO: check data db > data attuale prima di show
-    //se si rompe è per l'implementazine del check sulla data
+    val currentTime = Calendar.getInstance()
+
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.US)
 
     GlobalScope.launch {
         FirebaseDbWrapper(context).readDbData(object :
@@ -435,13 +441,15 @@ fun SearchEvent (context: Context, Title: String, City: String, Date: String): M
                     val event = events.getValue(Event::class.java)
 
                     if (Title.length > 0 && City.length == 0 && Date.length == 0) {
-                        if (event!!.Title.startsWith(Title, true)) {
+                        if (event!!.Title.startsWith(Title, true) &&
+                            LocalDateTime.parse(event!!.formattedDate, formatter).atOffset(ZoneOffset.UTC).toInstant().toEpochMilli() > currentTime.timeInMillis) { //mostra eventi successivi alla data odierna
                             eventList.add(event!!)
                         }
                     }
 
                     else if (City.length > 0 && Title.length == 0 && Date.length == 0) {
-                        if (event!!.City.lowercase().equals(City.lowercase())) {
+                        if (event!!.City.lowercase().equals(City.lowercase()) &&
+                            LocalDateTime.parse(event!!.formattedDate, formatter).atOffset(ZoneOffset.UTC).toInstant().toEpochMilli() > currentTime.timeInMillis) {
                             eventList.add(event!!)
                         }
                     }
@@ -457,7 +465,8 @@ fun SearchEvent (context: Context, Title: String, City: String, Date: String): M
 
                     else if(Title.length > 0 && City.length > 0 && Date.length == 0) {
                         if (event!!.Title.startsWith(Title, true) &&
-                            event!!.City.lowercase().equals(City.lowercase())) {
+                            event!!.City.lowercase().equals(City.lowercase()) &&
+                            LocalDateTime.parse(event!!.formattedDate, formatter).atOffset(ZoneOffset.UTC).toInstant().toEpochMilli() > currentTime.timeInMillis) {
                             eventList.add(event!!)
                         }
                     }
@@ -479,9 +488,6 @@ fun SearchEvent (context: Context, Title: String, City: String, Date: String): M
                             eventList.add(event!!)
                         }
                     }
-
-                    //TODO: metti data < DBData amziche uguale in quelle con più campi?
-                    //in quello only data lascia uguale
 
                     else {
                         val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
@@ -519,6 +525,7 @@ fun DeleteEvent (context: Context, EventID: Long) {
             FirebaseDbWrapper.Companion.FirebaseReadCallback {
             override fun onDataChangeCallback(snapshot: DataSnapshot) {
                 snapshot.child("events").child(EventID.toString()).ref.removeValue()
+                FirebaseStorage.getInstance().reference.child("events/${EventID}.jpg").delete()
 
                 Log.d("onDataChangeCallback", "invoked")
                 for (users in snapshot.child("users").children) {

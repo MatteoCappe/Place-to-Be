@@ -18,6 +18,10 @@ import com.google.android.material.navigation.NavigationView
 import com.nomeapp.adapters.EventsAdapter
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class FavouritesActivity: AppCompatActivity() {
     var event: Event? = null
@@ -91,6 +95,8 @@ class FavouritesActivity: AppCompatActivity() {
                 else {
                     for (id in user!!.Favourites!!) {
                         event = getEventByID(this@FavouritesActivity, id)
+                        //TODO: magari anzichè toglierli dalla vista metti uno sfondo rosso o la scritta "terminato"
+                        //TODO: da fare tramite eventAdapter
                         eventList!!.add(event!!)
                     }
 

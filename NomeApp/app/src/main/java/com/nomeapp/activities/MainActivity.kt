@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -73,10 +74,10 @@ class MainActivity : AppCompatActivity() {
         }
         ///////////////////////////////////////MENU///////////////////////////////////////////
 
-        val MyProfileButton: Button = findViewById<View>(R.id.MyProfileButton) as Button
-        val AddEventButton: Button = findViewById<View>(R.id.AddEventButton) as Button
-        val SearchButton: Button = findViewById<View>(R.id.SearchButton) as Button
-        val FavouritesButton: Button = findViewById<View>(R.id.FavouritesButton) as Button
+        val MyProfileButton: RelativeLayout = findViewById<View>(R.id.MyProfile) as RelativeLayout
+        val AddEventButton: RelativeLayout = findViewById<View>(R.id.AddEvent) as RelativeLayout
+        val SearchButton: RelativeLayout = findViewById<View>(R.id.Search) as RelativeLayout
+        val FavouritesButton: RelativeLayout = findViewById<View>(R.id.Favourites) as RelativeLayout
 
         MyProfileButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {

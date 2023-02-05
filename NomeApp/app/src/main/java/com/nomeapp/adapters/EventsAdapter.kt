@@ -15,6 +15,10 @@ import com.nomeapp.models.Event
 import com.nomeapp.models.FirebaseStorageWrapper
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class EventsAdapter (context: Context, val events: List<Event>):
     ArrayAdapter<Event>(context, R.layout.event_infobox, events) {
@@ -31,8 +35,17 @@ class EventsAdapter (context: Context, val events: List<Event>):
 
         val dateFormatter = SimpleDateFormat("yyyy/MM/dd HH:mm")
 
+        val currentTime = Calendar.getInstance()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.US)
+
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.event_infobox, parent, false)
+        }
+
+        val ExpiredEvent: TextView = view!!.findViewById(R.id.Expired)
+        if (LocalDateTime.parse(event!!.formattedDate, formatter).atOffset(ZoneOffset.UTC).toInstant().toEpochMilli() < currentTime.timeInMillis) {
+            ExpiredEvent.setVisibility(View.VISIBLE)
         }
 
         val EventBoxEventID: TextView = view!!.findViewById(R.id.EventBox_ID)

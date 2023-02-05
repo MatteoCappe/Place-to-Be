@@ -17,6 +17,11 @@ import com.google.android.material.navigation.NavigationView
 import com.nomeapp.adapters.EventsAdapter
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ShowProfileActivity(): AppCompatActivity() {
     private var user: User? = null
@@ -85,6 +90,10 @@ class ShowProfileActivity(): AppCompatActivity() {
         val userID: String? = FirebaseAuthWrapper(this@ShowProfileActivity).getUid()
         val searched = intent.getStringExtra("UserBoxUsername")!!
 
+        val currentTime = Calendar.getInstance()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.US)
+
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 user = getUserByUsername(this@ShowProfileActivity, searched)
@@ -101,7 +110,9 @@ class ShowProfileActivity(): AppCompatActivity() {
                 if (user!!.Events!!.size != 0) {
                     for (id in ArrayListEvents) {
                         event = getEventByID(this@ShowProfileActivity, id)
-                        eventList!!.add(event!!)
+                        if (LocalDateTime.parse(event!!.formattedDate, formatter).atOffset(ZoneOffset.UTC).toInstant().toEpochMilli() > currentTime.timeInMillis) {
+                            eventList!!.add(event!!)
+                        }
                     }
                 }
 
@@ -159,6 +170,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
+                                //TODO
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {

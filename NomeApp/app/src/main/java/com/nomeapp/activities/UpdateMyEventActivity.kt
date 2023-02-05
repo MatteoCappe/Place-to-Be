@@ -96,7 +96,6 @@ class UpdateMyEventActivity: AppCompatActivity() {
 
         SaveChanges.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-
                 val DBDate = SimpleDateFormat("yyyy-MM-dd HH:mm")
                 val convertedDate = DBDate.parse(event!!.formattedDate!!)
                 val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(convertedDate!!)

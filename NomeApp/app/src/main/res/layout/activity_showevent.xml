@@ -164,14 +164,14 @@
 
             </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/showMyEventFragment"
+                android:layout_width="match_parent"
+                android:layout_height="136dp"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="140dp" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/showMyEventFragment"
-        android:layout_width="match_parent"
-        android:layout_height="136dp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="140dp" />
+        </LinearLayout>
 
     </LinearLayout>
 

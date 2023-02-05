@@ -12,6 +12,19 @@
         app:cardBackgroundColor="@color/cardview_shadow_start_color"
         tools:ignore="MissingConstraints">
 
+        <TextView
+            android:id="@+id/Expired"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:textSize="15dp"
+            android:text="  TERMINATO  "
+            android:textColor="@color/red"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="250dp"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            android:background="@drawable/expired_event"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

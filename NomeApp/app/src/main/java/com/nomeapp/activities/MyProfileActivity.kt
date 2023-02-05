@@ -20,6 +20,11 @@ import com.google.android.material.navigation.NavigationView
 import com.nomeapp.adapters.EventsAdapter
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MyProfileActivity: AppCompatActivity() {
     //mettere casetta che rimanda alla home page (vdi fab)
@@ -101,6 +106,10 @@ class MyProfileActivity: AppCompatActivity() {
         var Name: String
         var Surname: String
 
+        val currentTime = Calendar.getInstance()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.US)
+
         //read user data
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
@@ -112,7 +121,9 @@ class MyProfileActivity: AppCompatActivity() {
                 if (user!!.Events!!.size != 0) {
                     for (id in ArrayListEvents) {
                         event = getEventByID(this@MyProfileActivity, id)
-                        eventList!!.add(event!!)
+                        if (LocalDateTime.parse(event!!.formattedDate, formatter).atOffset(ZoneOffset.UTC).toInstant().toEpochMilli() > currentTime.timeInMillis) {
+                            eventList!!.add(event!!)
+                        }
                     }
                 }
 
