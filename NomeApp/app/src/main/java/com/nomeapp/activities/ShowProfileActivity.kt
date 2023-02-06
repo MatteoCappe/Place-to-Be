@@ -22,6 +22,14 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+val TAG = "ShowProfileActivity"
+//const val TOPIC = "/topics/myTopic2"
 
 class ShowProfileActivity(): AppCompatActivity() {
     private var user: User? = null
@@ -29,7 +37,6 @@ class ShowProfileActivity(): AppCompatActivity() {
     private var event: Event? = null
     var image: Uri? = null
     var eventList: MutableList<Event>? = arrayListOf()
-    //var followersList: MutableList<String> = arrayListOf()
 
     val context: Context = this
     var userMenu: User? = null
@@ -37,9 +44,22 @@ class ShowProfileActivity(): AppCompatActivity() {
     var email: String? = null
     lateinit var toggle: ActionBarDrawerToggle
 
+    var fbToken: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showprofile)
+
+        FirebaseMessagingWrapper.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { result ->
+            if(result != null){
+                FirebaseMessagingWrapper.token = result
+                fbToken = result
+            }
+        }
+
+        //FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         ///////////////////////////////////////MENU///////////////////////////////////////////
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
@@ -100,8 +120,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                 currentUser = getMyData(this@ShowProfileActivity)
                 image =
                     FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
-                //followersList = getFollowers(this@ShowProfileActivity, user!!.UserID)
-                //TODO forse togliendo il commento a qua sopra fa effettivamente il cambio che voglio
 
                 val ArrayListEvents: ArrayList<Long> = ArrayList(user!!.Events!!)
                 val ArrayListFollowers: ArrayList<String> = ArrayList(user!!.Followers!!)
@@ -170,7 +188,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
-                                //TODO
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {
@@ -184,8 +201,17 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 if (!user!!.Followers!!.contains(userID!!)) {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
-                                    Log.d("gianni", "1")
-                                    //FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
+
+                                    //invio notifica
+                                    val title = "Follower"
+                                    val username = currentUser!!.userName
+                                    val message = "$username ha iniziato a seguirti!"
+                                    PushNotification(
+                                        NotificationData(title, message),
+                                        fbToken!!
+                                    ).also {
+                                        sendNotification(it)
+                                    }
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
@@ -196,11 +222,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
                                     //tecnicamente inutile ripeterlo due volte ma vbb
                                 }
-                                /*else {
-                                    Log.d("gianni", "porca troia 1")
-                                    followersList.add(userID!!)
-                                    FirebaseDbWrapper(this@ShowProfileActivity).writeDbFollower(user!!.UserID, user!!.Followers!!)
-                                }*/
                             }
 
                         }
@@ -236,4 +257,19 @@ class ShowProfileActivity(): AppCompatActivity() {
     }
     ///////////////////////////////////////MENU///////////////////////////////////////////
 
+    //notifiche con FCM
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e(TAG, response.errorBody().toString())
+            }
+        } catch(e: Exception) {
+            Log.e(TAG, e.toString())
+        }
+    }
+
 }
+

@@ -5,8 +5,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <!-- TODO: fai grant permission per notifiche -->
+    <!-- ricervere messaggi da firebase -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -16,16 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NomeApp">
 
-        <!--
-        <receiver
-            android:name="com.nomeapp.receivers.BootReceiver"
-            android:enabled="true"
-            android:exported="true">
+        <service android:name="com.nomeapp.models.FirebaseMessagingWrapper"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.android.c2dm.RECEIVE"/>
             </intent-filter>
-        </receiver>
-        -->
+        </service>
 
         <activity android:name="com.nomeapp.activities.LoginActivity"
             android:screenOrientation="portrait"

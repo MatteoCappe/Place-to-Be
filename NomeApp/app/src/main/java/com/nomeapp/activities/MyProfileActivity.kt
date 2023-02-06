@@ -176,7 +176,6 @@ class MyProfileActivity: AppCompatActivity() {
 
             val LogoutButton: Button = findViewById<View>(R.id.LogoutButton) as Button
             val EditProfileButton: Button = findViewById<View>(R.id.MyProfile_EditProfileButton) as Button
-            //val AddEventButton: FloatingActionButton = findViewById<View>(R.id.MyProfile_AddEventButton) as FloatingActionButton
 
             LogoutButton.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(view: View?) {
@@ -191,13 +190,6 @@ class MyProfileActivity: AppCompatActivity() {
                     context.startActivity(update)
                 }
             })
-
-            /*AddEventButton.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(view: View?) {
-                    val addEvent: Intent = Intent(context, AddEventActivity::class.java)
-                    context.startActivity(addEvent)
-                }
-            })*/
         }
     }
 

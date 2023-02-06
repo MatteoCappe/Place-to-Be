@@ -91,7 +91,7 @@ class AddEventActivity : AppCompatActivity() {
                 myCalendar.set(Calendar.MONTH, month)
                 myCalendar.set(Calendar.DAY_OF_MONTH, day)
 
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US) //vedi se il formato della data va bene quando si aggiungerà ricerca
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
                 Date.setText(dateFormat.format(this.myCalendar.time))
             }
 

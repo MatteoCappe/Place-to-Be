@@ -118,9 +118,6 @@
             android:layout_margin="5dp"
             android:layout_marginTop="0dp"
             android:text="Cerca" />
-        <!-- magari mettere fab carino della lente di ingrandimento -->
-
-        <!-- TODO: checkbox per ricerca -->
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/SearchEventFragment"
