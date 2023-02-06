@@ -161,8 +161,6 @@
                             android:gravity="center"
                             android:orientation="horizontal">
 
-                            <!-- magari sistema in modo da poter mettere wrap_content nelle width-->
-
                             <TextView
                                 android:id="@+id/ShowEvent_UserBox_Name"
                                 android:layout_width="110dp"

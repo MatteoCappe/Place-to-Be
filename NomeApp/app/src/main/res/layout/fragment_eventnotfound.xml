@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:hint="404 Error, Evento non trovato!! Controlla l'input!"
+            android:hint="Errore, Evento non trovato!! Controlla l'input!"
             android:gravity="center"
             android:layout_margin="10dp"/>
     </LinearLayout>

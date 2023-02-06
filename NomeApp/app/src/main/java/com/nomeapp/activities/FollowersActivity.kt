@@ -36,7 +36,7 @@ class FollowersActivity: AppCompatActivity() {
                     FollowersEmpty.setVisibility(View.VISIBLE)
                 }
 
-                for (id in followersList!!) { //boh vedi per !!
+                for (id in followersList!!) {
                     user = getUserByID(this@FollowersActivity, id)
                     userList!!.add(user!!)
                 }

@@ -1,18 +1,15 @@
 package com.nomeapp.activities
 
-
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -29,6 +26,7 @@ class AddEventActivity : AppCompatActivity() {
     var userMenu: User? = null
     var imageMenu: Uri? = null
     var email: String? = null
+    var user: User? = null
 
     lateinit var toggle: ActionBarDrawerToggle
 
@@ -140,12 +138,13 @@ class AddEventActivity : AppCompatActivity() {
                 else {
                     CoroutineScope(Dispatchers.Main + Job()).launch {
                         withContext(Dispatchers.IO) {
-                            val user: User = getMyData(this@AddEventActivity)
+                            user = getMyData(this@AddEventActivity)
 
                             //eventID, parte da 0 a ogni evento creato incrementa di 1
                             val eventID: Long = getEventID(this@AddEventActivity)
 
                             withContext(Dispatchers.Main) {
+
                                 val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
                                 val EventDate = formatter.parse(Date.text.toString() + " " + Time.text.toString())
 
@@ -156,19 +155,21 @@ class AddEventActivity : AppCompatActivity() {
                                     City.text.toString(),
                                     Address.text.toString(),
                                     Bio.text.toString(),
-                                    user.UserID,
-                                    user.userName
+                                    user!!.UserID,
+                                    user!!.userName
                                 )
 
-                                user.Events!!.add(eventID)
-                                FirebaseDbWrapper(this@AddEventActivity).writeDbUser(user)
+                                user!!.Events!!.add(eventID)
+                                FirebaseDbWrapper(this@AddEventActivity).writeDbUser(user!!)
 
                                 FirebaseDbWrapper(this@AddEventActivity).writeDbEvent(event, eventID)
+
+                                Toast.makeText(context, "Evento creato con successo!", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
 
-                    val intent: Intent = Intent(context, MainActivity::class.java)
+                    val intent: Intent = Intent(context, MyProfileActivity::class.java)
                     startActivity(intent)
                 }
             }

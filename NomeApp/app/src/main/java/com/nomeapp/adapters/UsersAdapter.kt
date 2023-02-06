@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.nomeapp.R
@@ -17,7 +16,6 @@ import kotlinx.coroutines.*
 class UsersAdapter (context: Context, val users: List<User>):
     ArrayAdapter<User>(context, R.layout.user_infobox, users) {
 
-    //potrebbe servire per follower etc
     override fun getCount(): Int {
         return users.size
     }

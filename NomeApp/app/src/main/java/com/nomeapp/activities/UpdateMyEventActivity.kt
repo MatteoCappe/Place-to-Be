@@ -15,7 +15,6 @@ import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class UpdateMyEventActivity: AppCompatActivity() {
     val context: Context = this
     var event: Event? = null

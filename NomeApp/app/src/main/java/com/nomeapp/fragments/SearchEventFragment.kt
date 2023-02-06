@@ -12,7 +12,6 @@ import com.example.nomeapp.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class SearchEventFragment: Fragment() {
     private var myCalendar : Calendar= Calendar.getInstance()
 
@@ -134,7 +133,7 @@ class SearchEventFragment: Fragment() {
         return view
     }
 
-    //usato per risolvere un problema che si presentava dopo essere tornti indietro da showEvent
+    //usato per risolvere un problema che si presentava dopo una determinata serie di comandi
     override fun onResume() {
         super.onResume()
 

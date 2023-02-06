@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -73,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         }
         ///////////////////////////////////////MENU///////////////////////////////////////////
 
-        //get user token for notifiaction
+        //get and save user notification token at every access
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 email = FirebaseAuthWrapper(context).getEmail()
@@ -81,8 +80,7 @@ class MainActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
 
-                    FirebaseMessagingWrapper.sharedPref =
-                        getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+                    FirebaseMessagingWrapper.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
                     FirebaseMessaging.getInstance().token.addOnSuccessListener { result ->
                         if (result != null) {

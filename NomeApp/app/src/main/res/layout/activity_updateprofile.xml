@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.nomeapp.activities.UpdateProfileActivity">
 
-    <!-- crocetta per tornare indietro senza modificare profilo -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,29 +35,6 @@
             android:ems="10"
             android:hint="Inserisci il nuovo username.."
             android:layout_margin="10dp"/>
-
-        <!-- se abbiamo tempo mettere cambio di email e pw tramite FirebaseAuth
-
-        <EditText
-            android:id="@+id/userEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:hint="Insert email address.."
-            android:layout_margin="10dp"/>
-
-        <EditText
-            android:id="@+id/userPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:hint="Insert password.."
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp"/>
-        -->
-
         <Button
             android:id="@+id/UpdateProfile_saveChanges"
             android:layout_width="match_parent"
@@ -67,7 +42,6 @@
             android:text="Aggiorna il tuo profilo"
             android:layout_margin="10dp"
             android:layout_marginTop="0dp" />
-        <!-- ticke anzichè button savechanges? -->
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

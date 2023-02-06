@@ -1,13 +1,11 @@
 package com.nomeapp.adapters
 
-import android.app.usage.UsageEvents
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.nomeapp.R
@@ -23,9 +21,7 @@ import java.util.*
 class EventsAdapter (context: Context, val events: List<Event>):
     ArrayAdapter<Event>(context, R.layout.event_infobox, events) {
 
-    //potrebbe servire per follower etc
     override fun getCount(): Int {
-        Log.d("users num", events.size.toString())
         return events.size
     }
 
@@ -43,6 +39,7 @@ class EventsAdapter (context: Context, val events: List<Event>):
             view = LayoutInflater.from(context).inflate(R.layout.event_infobox, parent, false)
         }
 
+        //solo nei preferiti
         val ExpiredEvent: TextView = view!!.findViewById(R.id.Expired)
         if (LocalDateTime.parse(event!!.formattedDate, formatter).atOffset(ZoneOffset.UTC).toInstant().toEpochMilli() < currentTime.timeInMillis) {
             ExpiredEvent.setVisibility(View.VISIBLE)

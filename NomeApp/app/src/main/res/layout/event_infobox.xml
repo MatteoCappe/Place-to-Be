@@ -70,8 +70,6 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <!-- magari sistema in modo da poter mettere wrap_content nelle width-->
-
                     <TextView
                         android:id="@+id/EventBox_City"
                         android:layout_width="110dp"

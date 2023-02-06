@@ -10,10 +10,5 @@
     <string name="usernameError">Questo username è già in uso</string>
     <string name="open">Apri</string>
     <string name="close">Chiudi</string>
-    <!--
-    <string name="MyProfile_UserName">placeholder</string>
-    <string name="MyProfile_Name">placeholder</string>
-    <string name="MyProfile_Surname">GRANT PERMISSION</string>
-    -->
 
 </resources>

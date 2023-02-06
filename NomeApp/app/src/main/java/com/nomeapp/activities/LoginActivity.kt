@@ -1,7 +1,4 @@
-
 package com.nomeapp.activities
-
-
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.nomeapp.R
-import com.google.firebase.auth.FirebaseAuth
 import com.nomeapp.models.FirebaseAuthWrapper
 
 

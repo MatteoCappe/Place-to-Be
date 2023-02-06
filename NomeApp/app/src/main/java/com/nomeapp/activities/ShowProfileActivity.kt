@@ -43,13 +43,9 @@ class ShowProfileActivity(): AppCompatActivity() {
     var email: String? = null
     lateinit var toggle: ActionBarDrawerToggle
 
-    //var fbToken: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showprofile)
-
-        //FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         ///////////////////////////////////////MENU///////////////////////////////////////////
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
@@ -108,8 +104,7 @@ class ShowProfileActivity(): AppCompatActivity() {
             withContext(Dispatchers.IO) {
                 user = getUserByUsername(this@ShowProfileActivity, searched)
                 currentUser = getMyData(this@ShowProfileActivity)
-                image =
-                    FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
+                image = FirebaseStorageWrapper(this@ShowProfileActivity).downloadUserImage(user!!.UserID)
 
                 val ArrayListEvents: ArrayList<Long> = ArrayList(user!!.Events!!)
                 val ArrayListFollowers: ArrayList<String> = ArrayList(user!!.Followers!!)
@@ -169,7 +164,7 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 user!!.Followers!!.remove(userID!!)
                                 FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
 
-                                //update numerino
+                                //update numero followers
                                 findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
 
                                 ArrayListFollowers.remove(userID!!)
@@ -178,19 +173,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
-                                //invio notifica
-                                val title = "Follower"
-                                val username = currentUser!!.userName
-                                val message = "$username ha iniziato a seguirti!"
-                                PushNotification(
-                                    NotificationData(title, message),
-                                    user!!.FBToken!!
-                                ).also {
-                                    sendNotification(it)
-                                }
-
-                                //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
-                                //per rendere il tutto più leggibile
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {
                                     currentUser!!.Following!!.add(user!!.UserID)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbUser(currentUser!!)
@@ -203,17 +185,26 @@ class ShowProfileActivity(): AppCompatActivity() {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
 
-                                    //update numerino
+                                    //update numero followers
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()
 
                                     ArrayListFollowers.add(userID!!)
 
                                     FollowUnfollow.text = getString(R.string.unfollow)
                                     FollowUnfollow.setBackgroundColor(Color.parseColor("#808080"))
-                                    //tecnicamente inutile ripeterlo due volte ma vbb
+                                }
+
+                                //invio notifica
+                                val title = "Follower"
+                                val username = currentUser!!.userName
+                                val message = "$username ha iniziato a seguirti!"
+                                PushNotification(
+                                    NotificationData(title, message),
+                                    user!!.FBToken!!
+                                ).also {
+                                    sendNotification(it)
                                 }
                             }
-
                         }
                     })
 

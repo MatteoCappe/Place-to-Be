@@ -25,7 +25,7 @@ class SearchUserFragment: Fragment() {
                 var userName: EditText = view.findViewById<View>(R.id.searchUserName) as EditText
 
                 if (userName.text.isEmpty()) {
-                    userName.setError("This is required")
+                    userName.setError(getString(R.string.emptyError))
                 }
 
                 else {
@@ -41,7 +41,7 @@ class SearchUserFragment: Fragment() {
         return view
     }
 
-    //usato per risolvere un problema che si presentava dopo essere tornti indietro da showProfile
+    //usato per risolvere un problema che si presentava dopo una determinata serie di comandi
     override fun onResume() {
         super.onResume()
 

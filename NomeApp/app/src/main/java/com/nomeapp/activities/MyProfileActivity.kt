@@ -1,7 +1,5 @@
 package com.nomeapp.activities
 
-//potrebbe essere unito a ShowProfileActivity con l'uso di un fragment
-
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -27,7 +25,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MyProfileActivity: AppCompatActivity() {
-    //mettere casetta che rimanda alla home page (vdi fab)
     private var user: User? = null
     private var event: Event? = null
     var image: Uri? = null
@@ -116,10 +113,8 @@ class MyProfileActivity: AppCompatActivity() {
                 user = getMyData(this@MyProfileActivity)
                 image = FirebaseStorageWrapper(this@MyProfileActivity).downloadUserImage(userID!!)
 
-                val ArrayListEvents: ArrayList<Long> = ArrayList(user!!.Events!!)
-
                 if (user!!.Events!!.size != 0) {
-                    for (id in ArrayListEvents) {
+                    for (id in user!!.Events!!) {
                         event = getEventByID(this@MyProfileActivity, id)
                         if (LocalDateTime.parse(event!!.formattedDate, formatter).atOffset(ZoneOffset.UTC).toInstant().toEpochMilli() > currentTime.timeInMillis) {
                             eventList!!.add(event!!)

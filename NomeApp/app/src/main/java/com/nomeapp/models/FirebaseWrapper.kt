@@ -1,6 +1,5 @@
 package com.nomeapp.models
 
-
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
@@ -22,13 +21,16 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.storage.FirebaseStorage
 import com.nomeapp.activities.MainActivity
 import com.nomeapp.activities.SplashActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -39,8 +41,6 @@ import java.util.concurrent.locks.ReentrantLock
 import kotlin.collections.ArrayList
 import kotlin.concurrent.withLock
 import kotlin.random.Random
-
-private const val CHANNEL_ID = "my_channel"
 
 class FirebaseAuthWrapper(private val context: Context) {
     private val TAG : String = FirebaseAuthWrapper::class.simpleName.toString()
@@ -112,10 +112,6 @@ class FirebaseDbWrapper(private val context: Context) {
     fun writeDbEvent(event: Event, eventID: Long) {
         ref.child("events").child(eventID.toString()).setValue(event)
     }
-
-    /*fun writeDbFollower(uid: String, followers: MutableList<String>) {
-        ref.child("followers").child(uid).setValue(followers)
-    } //TODO: fix*/
 
     fun readDbData(callback: FirebaseReadCallback) {
         ref.addValueEventListener(FirebaseReadListener(callback))
@@ -204,62 +200,6 @@ class FirebaseStorageWrapper (private val context: Context) {
             condition.await()
         }
         return image
-    }
-
-}
-
-class FirebaseMessagingWrapper : FirebaseMessagingService() {
-
-    companion object {
-        var sharedPref: SharedPreferences? = null
-
-        var token: String?
-            get() {
-                return sharedPref?.getString("token", "")
-            }
-            set(value) {
-                sharedPref?.edit()?.putString("token", value)?.apply()
-            }
-    }
-
-    override fun onNewToken(newToken: String) {
-        super.onNewToken(newToken)
-        token = newToken
-    }
-
-    override fun onMessageReceived(message: RemoteMessage) {
-        super.onMessageReceived(message)
-
-        val intent = Intent(this, MainActivity::class.java)
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notificationID = Random.nextInt()
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(notificationManager)
-        }
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.icon)
-            .setContentTitle(message.data["title"])
-            .setContentText(message.data["message"])
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .build()
-
-        notificationManager.notify(notificationID, notification)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(notificationManager: NotificationManager) {
-        val channelName = "channelName"
-        val channel = NotificationChannel(CHANNEL_ID, channelName, IMPORTANCE_HIGH).apply {
-            description = "Follower"
-            enableLights(true)
-            lightColor = Color.GREEN
-        }
-        notificationManager.createNotificationChannel(channel)
     }
 
 }
@@ -621,80 +561,60 @@ fun DeleteEvent (context: Context, EventID: Long) {
     }
 }
 
-/*fun SendFollow (context: Context, followerUID: String) {
-    Log.d("gianni", "5")
-    val userID = FirebaseAuthWrapper(context).getUid()
-    val lock = ReentrantLock()
-    val condition = lock.newCondition()
-    var followersUID: MutableList<String> = ArrayList()
+class FirebaseMessagingWrapper : FirebaseMessagingService() {
 
-    GlobalScope.launch {
-        FirebaseDbWrapper(context).readDbData(object :
-            FirebaseDbWrapper.Companion.FirebaseReadCallback {
-            override fun onDataChangeCallback(snapshot: DataSnapshot) {
-                Log.d("onDataChangeCallback", "invoked")
-                Log.d("gianni", "6")
-                //followersUID = snapshot.child("followers").child(userID!!).value as MutableList<String>
-                followersUID.add(followerUID)
+    private val CHANNEL_ID = "my_channel"
 
-                lock.withLock {
-                    condition.signal()
-                }
+    companion object {
+        var sharedPref: SharedPreferences? = null
+
+        var token: String?
+            get() {
+                return sharedPref?.getString("token", "")
             }
-
-            override fun onCancelledCallback(error: DatabaseError) {
-                Log.d("onCancelledCallback", "invoked")
+            set(value) {
+                sharedPref?.edit()?.putString("token", value)?.apply()
             }
-        })
-    }
-    lock.withLock {
-        condition.await()
     }
 
-    Log.d("gianni", "7")
-    FirebaseDbWrapper(context).ref.child("followers").child(userID!!).setValue(followersUID)
-    Log.d("gianni", "8")
-}*/
-
-/*
-//TODO: fix
-fun getFollowers(context: Context): MutableList<String> {
-    val uid = FirebaseAuthWrapper(context).getUid()
-    Log.d("gianni", "9")
-
-    val lock = ReentrantLock()
-    val condition = lock.newCondition()
-    var list: MutableList<String> = ArrayList()
-
-    GlobalScope.launch {
-        FirebaseDbWrapper(context).readDbData(object :
-            FirebaseDbWrapper.Companion.FirebaseReadCallback {
-            override fun onDataChangeCallback(snapshot: DataSnapshot) {
-                Log.d("onDataChangeCallback", "invoked")
-
-
-
-                //TODO
-                for (follower in snapshot.child("followers").child(uid!!).children) {
-                    Log.d("gianni", "10")
-                    list.add(follower.getValue(String::class.java)!!)
-                }
-                Log.d("gianni", "11")
-
-                lock.withLock {
-                    condition.signal()
-                }
-            }
-
-            override fun onCancelledCallback(error: DatabaseError) {
-                Log.d("onCancelledCallback", "invoked")
-            }
-        })
-    }
-    lock.withLock {
-        condition.await()
+    override fun onNewToken(newToken: String) {
+        super.onNewToken(newToken)
+        token = newToken
     }
 
-    Log.d("gianni", "15")
-    return list
-}*/
+    override fun onMessageReceived(message: RemoteMessage) {
+        super.onMessageReceived(message)
+
+        val intent = Intent(this, MainActivity::class.java)
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationID = Random.nextInt()
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel(notificationManager)
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.icon)
+            .setContentTitle(message.data["title"])
+            .setContentText(message.data["message"])
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        notificationManager.notify(notificationID, notification)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(notificationManager: NotificationManager) {
+        val channelName = "channelName"
+        val channel = NotificationChannel(CHANNEL_ID, channelName, IMPORTANCE_HIGH).apply {
+            description = "Follower"
+            enableLights(true)
+            lightColor = Color.GREEN
+        }
+        notificationManager.createNotificationChannel(channel)
+    }
+
+}

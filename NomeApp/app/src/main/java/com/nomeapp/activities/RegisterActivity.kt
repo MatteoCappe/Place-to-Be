@@ -1,8 +1,4 @@
-
 package com.nomeapp.activities
-
-//no possibilità di caricare foto al momento della registrazione siccome queste vengono salvate per userID (per comodità)
-//che al momento della registrazione risulta ancora sconosciuto, si può caricare solo da updateProfileActivity
 
 import android.content.Context
 import android.content.Intent
@@ -14,7 +10,6 @@ import android.widget.*
 import com.example.nomeapp.R
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
-
 
 class RegisterActivity : AppCompatActivity() {
     val context: Context = this
@@ -59,7 +54,6 @@ class RegisterActivity : AppCompatActivity() {
                                     userName.setError(getString(R.string.usernameError))
                                 }
                                 else {
-                                    //initialize mutable list of created events
                                     var Events: MutableList<Long>? = mutableListOf()
                                     var Followers: MutableList<String>? = mutableListOf()
                                     var Following: MutableList<String>? = mutableListOf()

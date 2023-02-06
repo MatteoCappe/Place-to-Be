@@ -28,13 +28,12 @@
             android:text="Cerca"
             android:layout_margin="5dp"
             android:layout_marginTop="0dp" />
-        <!-- magari mettere fab carino della lente di ingrandimento -->
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/SearchUserFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"/> <!-- vedi per bottom -->
+            android:layout_gravity="bottom"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

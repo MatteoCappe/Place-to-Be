@@ -18,10 +18,6 @@ import com.google.android.material.navigation.NavigationView
 import com.nomeapp.adapters.EventsAdapter
 import com.nomeapp.models.*
 import kotlinx.coroutines.*
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 class FavouritesActivity: AppCompatActivity() {
     var event: Event? = null
@@ -86,8 +82,6 @@ class FavouritesActivity: AppCompatActivity() {
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 user = getMyData(this@FavouritesActivity)
-
-                //ODO: metti check che data di oggi > data evento
 
                 if (user!!.Favourites!!.size == 0) {
                     FavouritesEmpty.setVisibility(View.VISIBLE)
