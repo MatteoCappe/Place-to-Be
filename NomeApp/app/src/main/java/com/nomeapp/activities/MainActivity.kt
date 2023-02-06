@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -15,10 +16,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.nomeapp.R
 import com.google.android.material.navigation.NavigationView
-import com.nomeapp.models.FirebaseAuthWrapper
-import com.nomeapp.models.FirebaseStorageWrapper
-import com.nomeapp.models.User
-import com.nomeapp.models.getMyData
+import com.google.firebase.messaging.FirebaseMessaging
+import com.nomeapp.models.*
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -73,6 +72,27 @@ class MainActivity : AppCompatActivity() {
             true
         }
         ///////////////////////////////////////MENU///////////////////////////////////////////
+
+        //get user token for notifiaction
+        CoroutineScope(Dispatchers.Main + Job()).launch {
+            withContext(Dispatchers.IO) {
+                email = FirebaseAuthWrapper(context).getEmail()
+                user = getMyData(context)
+
+                withContext(Dispatchers.Main) {
+
+                    FirebaseMessagingWrapper.sharedPref =
+                        getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+
+                    FirebaseMessaging.getInstance().token.addOnSuccessListener { result ->
+                        if (result != null) {
+                            user!!.FBToken = result
+                            FirebaseDbWrapper(context).writeDbUser(user!!)
+                        }
+                    }
+                }
+            }
+        }
 
         val MyProfileButton: RelativeLayout = findViewById<View>(R.id.MyProfile) as RelativeLayout
         val AddEventButton: RelativeLayout = findViewById<View>(R.id.AddEvent) as RelativeLayout

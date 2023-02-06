@@ -73,8 +73,9 @@ class RegisterActivity : AppCompatActivity() {
                                         Events,
                                         Followers,
                                         Following,
-                                        Favourites
-                                    )
+                                        Favourites,
+                                        "null"
+                                        )
 
                                     action(user, email.text.toString(), password.text.toString())
                                 }

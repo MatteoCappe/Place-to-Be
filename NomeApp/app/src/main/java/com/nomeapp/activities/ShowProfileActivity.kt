@@ -28,10 +28,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-val TAG = "ShowProfileActivity"
-//const val TOPIC = "/topics/myTopic2"
-
 class ShowProfileActivity(): AppCompatActivity() {
+    val TAG = "ShowProfileActivity"
+
     private var user: User? = null
     private var currentUser: User? = null
     private var event: Event? = null
@@ -44,20 +43,11 @@ class ShowProfileActivity(): AppCompatActivity() {
     var email: String? = null
     lateinit var toggle: ActionBarDrawerToggle
 
-    var fbToken: String? = null
+    //var fbToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showprofile)
-
-        FirebaseMessagingWrapper.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-
-        FirebaseMessaging.getInstance().token.addOnSuccessListener { result ->
-            if(result != null){
-                FirebaseMessagingWrapper.token = result
-                fbToken = result
-            }
-        }
 
         //FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
@@ -188,6 +178,17 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 FollowUnfollow.setBackgroundColor(Color.parseColor("#FF6200EE"))
                             }
                             else {
+                                //invio notifica
+                                val title = "Follower"
+                                val username = currentUser!!.userName
+                                val message = "$username ha iniziato a seguirti!"
+                                PushNotification(
+                                    NotificationData(title, message),
+                                    user!!.FBToken!!
+                                ).also {
+                                    sendNotification(it)
+                                }
+
                                 //in teoria non ci dovrebbe essere bisogno dei check, quindi poi vedi se toglierli
                                 //per rendere il tutto più leggibile
                                 if (!currentUser!!.Following!!.contains(user!!.UserID)) {
@@ -201,17 +202,6 @@ class ShowProfileActivity(): AppCompatActivity() {
                                 if (!user!!.Followers!!.contains(userID!!)) {
                                     user!!.Followers!!.add(userID!!)
                                     FirebaseDbWrapper(this@ShowProfileActivity).writeDbShownUser(user!!)
-
-                                    //invio notifica
-                                    val title = "Follower"
-                                    val username = currentUser!!.userName
-                                    val message = "$username ha iniziato a seguirti!"
-                                    PushNotification(
-                                        NotificationData(title, message),
-                                        fbToken!!
-                                    ).also {
-                                        sendNotification(it)
-                                    }
 
                                     //update numerino
                                     findViewById<TextView>(R.id.ShowProfile_Followers).text = (user!!.Followers!!.size).toString()

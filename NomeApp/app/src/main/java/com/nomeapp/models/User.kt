@@ -9,6 +9,7 @@ class User() {
     var Followers: MutableList<String>? = mutableListOf()
     var Following: MutableList<String>? = mutableListOf()
     var Favourites: MutableList<Long>? = mutableListOf()
+    var FBToken: String? = ""
 
     constructor(
         userName: String,
@@ -18,7 +19,8 @@ class User() {
         Events: MutableList<Long>?,
         Followers: MutableList<String>?,
         Following: MutableList<String>?,
-        Favourites: MutableList<Long>?
+        Favourites: MutableList<Long>?,
+        FBToken: String
     ) : this() {
         this.userName = userName
         this.Name = Name
@@ -28,5 +30,6 @@ class User() {
         this.Followers = Followers
         this.Following = Following
         this.Favourites = Favourites
+        this.FBToken = FBToken
     }
 }
