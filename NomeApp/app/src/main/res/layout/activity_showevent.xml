@@ -186,7 +186,7 @@
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/showMyEventFragment"
                 android:layout_width="match_parent"
-                android:layout_height="136dp"
+                android:layout_height="75dp"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="140dp" />
 
